@@ -8,6 +8,7 @@ Este repositório junta os apontamentos usados nas aulas de Programação para o
 
 | Pasta/ficheiro | Conteúdo                                                                                 |
 | -------------- | ---------------------------------------------------------------------------------------- |
+| `Git/`         | Modelos de `.gitignore` e guia rápido de comandos Git essenciais.                        |
 | `JavaScript/`  | 17 capítulos em Markdown cobrindo o percurso completo: fundamentos → browser/intermédio. |
 | `Node/`        | Guia completo de Node.js + Express com foco em APIs REST, camadas e troubleshooting.     |
 | `React/`       | Materiais introdutórios de React (em evolução).                                          |
@@ -19,6 +20,8 @@ Este repositório junta os apontamentos usados nas aulas de Programação para o
 ## Git
 
 A pasta `Git/` contém modelos de ficheiros `.gitignore` para vários stacks e um guia rápido de comandos essenciais: [Git - Guia](Git/git-guia.md).
+
+---
 
 ## JavaScript — Capítulos
 
