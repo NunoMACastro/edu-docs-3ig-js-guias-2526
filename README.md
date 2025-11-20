@@ -2,6 +2,8 @@
 
 Este repositório junta os apontamentos usados nas aulas de Programação para o 12.º IG.
 
+[Regressar ao índice de repositórios](https://github.com/NunoMACastro/edu-3ig-indice-2526 "Índice de repositórios do 3.º IG")
+
 ---
 
 ## Estrutura
