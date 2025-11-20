@@ -10,7 +10,7 @@
 
 | Termo                  | Explicação                                                                                            |
 | ---------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Git**                | Sistema de controlo de versões — permite guardar o histórico de alterações do código.                 |
+| **Git**                | Sistema de controlo de versões - permite guardar o histórico de alterações do código.                 |
 | **Repositório (repo)** | Diretoria que contém o código e o histórico de versões.                                               |
 | **Commit**             | Registo de alterações com uma mensagem descritiva.                                                    |
 | **Branch**             | Linha de desenvolvimento paralela. Permite trabalhar em novas funcionalidades sem mexer na principal. |

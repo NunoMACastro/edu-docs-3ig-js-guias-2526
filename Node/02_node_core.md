@@ -1,6 +1,7 @@
 # 02) Node core útil
 
 ## path
+
 Construir caminhos de forma portátil.
 
 ```js
@@ -10,25 +11,26 @@ const ficheiro = path.join(raiz, "data", "todos.json");
 ```
 
 ## fs/promises
+
 I/O assíncrono.
 
 ```js
 import fs from "node:fs/promises";
 
 export async function lerJSON(caminho, fallback = null) {
-  try {
-    return JSON.parse(await fs.readFile(caminho, "utf8"));
-  } catch (e) {
-    if (e.code === "ENOENT") return fallback;
-    throw e;
-  }
+    try {
+        return JSON.parse(await fs.readFile(caminho, "utf8"));
+    } catch (e) {
+        if (e.code === "ENOENT") return fallback;
+        throw e;
+    }
 }
 
 export async function escreverJSON(caminho, dados) {
-  await fs.mkdir(path.dirname(caminho), { recursive: true });
-  const tmp = caminho + ".tmp";
-  await fs.writeFile(tmp, JSON.stringify(dados, null, 2), "utf8");
-  await fs.rename(tmp, caminho);
+    await fs.mkdir(path.dirname(caminho), { recursive: true });
+    const tmp = caminho + ".tmp";
+    await fs.writeFile(tmp, JSON.stringify(dados, null, 2), "utf8");
+    await fs.rename(tmp, caminho);
 }
 ```
 
@@ -56,6 +58,7 @@ const id = crypto.randomUUID();
 ```
 
 ## Streams
+
 Para ficheiros grandes. Ver ideias em 13_troubleshooting.md.
 
 ## Quando usar cada módulo?
@@ -76,7 +79,7 @@ const id = setInterval(() => console.log("Loop"), 1000);
 clearInterval(id);
 ```
 
--   O Node usa um *event loop*. Chamadas a `setTimeout` não são precisas ao milissegundo — servem apenas para dizer “executa depois”.
+-   O Node usa um _event loop_. Chamadas a `setTimeout` não são precisas ao milissegundo - servem apenas para dizer “executa depois”.
 -   Para atrasar lógica nos serviços (ex.: enviar email 5 segundos depois), combina timers com Promises (`await new Promise((r) => setTimeout(r, 5000));`).
 
 ## Lidar com ficheiros JSON passo a passo
@@ -94,14 +97,14 @@ Nunca alteres o ficheiro diretamente com `fs.appendFile` para JSON, porque podes
 
 ```js
 try {
-  await fs.unlink("dados.txt");
+    await fs.unlink("dados.txt");
 } catch (e) {
-  if (e.code !== "ENOENT") throw e;
+    if (e.code !== "ENOENT") throw e;
 }
 ```
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Expandidas as descrições dos módulos core e adicionado guia de timers, JSON e tratamento de erros.
     -   Criada esta secção de changelog.

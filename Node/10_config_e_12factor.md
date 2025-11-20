@@ -67,6 +67,6 @@ export const config = Object.freeze({
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Explicadas as vantagens de `.env`, criado plano de aula e exercício guiado.
     -   Adicionada secção de changelog.

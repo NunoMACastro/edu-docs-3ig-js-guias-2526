@@ -1,4 +1,4 @@
-# [7] Arrays — Versão Didática (11.º ano)
+# [7] Arrays - Versão Didática (11.º ano)
 
 > **Objetivo**: trabalhar listas ordenadas de valores, saber quando alterar o array original e quando criar cópias imutáveis, além de dominar métodos básicos usados todos os dias.
 
@@ -29,7 +29,7 @@ const copia = Array.of(1, 2, 3);
 const sequencia = Array.from({ length: 5 }, (_, i) => i + 1); // [1..5]
 ```
 
-Usa sempre o literal `[]` quando possível — é mais claro.
+Usa sempre o literal `[]` quando possível - é mais claro.
 
 ---
 
@@ -123,7 +123,7 @@ Desestruturação permite extrair valores por posição com sintaxe concisa.
 -   Não uses `for...in` em arrays (pode trazer propriedades inesperadas). Prefere `for`, `for...of` ou métodos de array.
 -   Nomeia claramente os arrays: `alunos`, `notas`, `carrinho`. Evita nomes genéricos como `arr` em código final.
 -   Se precisares de partilhar um array entre várias funções/componentes, cria cópias imutáveis antes de mexer.
--   Lembra-te que `length = 0` apaga todo o conteúdo — usa apenas se souberes o que fazes.
+-   Lembra-te que `length = 0` apaga todo o conteúdo - usa apenas se souberes o que fazes.
 
 ---
 
@@ -140,6 +140,6 @@ Desestruturação permite extrair valores por posição com sintaxe concisa.
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Secção de Exercícios expandida para sete desafios sobre mutação, cópia e pesquisa.
     -   Changelog adicionado para manter histórico de alterações do capítulo.

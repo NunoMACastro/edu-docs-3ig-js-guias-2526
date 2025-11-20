@@ -225,7 +225,7 @@ console.log(calcular(4, 2, produto)); // 8
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Mini desafios ampliados com mais quatro propostas sobre closures e composição de funções.
     -   Changelog adicionado para acompanhar futuras melhorias do capítulo.
 

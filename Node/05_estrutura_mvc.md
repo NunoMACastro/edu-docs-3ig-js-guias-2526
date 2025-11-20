@@ -26,10 +26,11 @@ src/
 ```
 
 Responsabilidades:
-- Route: recebe req e res e chama o controller.
-- Controller: valida input, chama service e formata resposta.
-- Service: regras de negócio.
-- Repository: detalhe de acesso a dados (ficheiro ou base de dados).
+
+-   Route: recebe req e res e chama o controller.
+-   Controller: valida input, chama service e formata resposta.
+-   Service: regras de negócio.
+-   Repository: detalhe de acesso a dados (ficheiro ou base de dados).
 
 ## Como explicar cada camada aos alunos
 
@@ -42,7 +43,7 @@ Responsabilidades:
 ## Boas práticas extra
 
 1. **Um ficheiro, um propósito**: se o controller começa a ficar gigante, divide-o por recurso (`users.controller.js`, `todos.controller.js`).
-2. **Criar índices com `index.js`**: podes expor múltiplos routers a partir de `routes/index.js`, mas evita esconder ficheiros — para iniciantes é útil ver o caminho completo.
+2. **Criar índices com `index.js`**: podes expor múltiplos routers a partir de `routes/index.js`, mas evita esconder ficheiros - para iniciantes é útil ver o caminho completo.
 3. **Nomear pelas ações**: `todos.service.js` deve conter funções como `listar`, `obter`, `criar`… Usa verbos no infinitivo para manter consistência.
 4. **Data flow claro**: `req -> controller -> service -> repository -> service -> controller -> res`. Mostra este fluxo num quadro para fixar.
 
@@ -56,6 +57,6 @@ Responsabilidades:
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Adicionadas analogias para explicar as camadas e checklist para novas funcionalidades.
     -   Incluída esta secção de changelog.

@@ -1,4 +1,4 @@
-# 01 — React: Introdução e Setup (12.º ano)
+# 01 - React: Introdução e Setup (12.º ano)
 
 > **Objetivo**: perceber **o que é o React**, como funciona **por alto**, o que é uma **SPA**, o que precisas de instalar, e **criar o teu primeiro projeto** com **Vite**. Vamos fazer o “Olá, mundo!”, explicar **JSX** (o HTML‑like do React) e a **estrutura de pastas**. No fim há exercícios.
 
@@ -68,7 +68,7 @@ npm run dev
 
 Abre o endereço que aparece (ex.: `http://localhost:5173`).
 
-> Se preferires JavaScript puro (sem TS), o template `react` já é JS. (Há também `react-swc`, mais rápido na build — opcional.)
+> Se preferires JavaScript puro (sem TS), o template `react` já é JS. (Há também `react-swc`, mais rápido na build - opcional.)
 
 ---
 

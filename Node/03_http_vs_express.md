@@ -6,16 +6,17 @@
 import http from "node:http";
 
 const server = http.createServer((req, res) => {
-  if (req.url === "/") return res.writeHead(200).end("Olá");
-  res.writeHead(404).end("Não encontrado");
+    if (req.url === "/") return res.writeHead(200).end("Olá");
+    res.writeHead(404).end("Não encontrado");
 });
 
 server.listen(3000);
 ```
 
 ## Porque Express
-- Roteamento, middlewares, express.json, gestão de erros, ecossistema grande.
-- Ideal para aulas e projetos reais.
+
+-   Roteamento, middlewares, express.json, gestão de erros, ecossistema grande.
+-   Ideal para aulas e projetos reais.
 
 Nos ficheiros seguintes montamos a app Express passo a passo.
 
@@ -27,11 +28,13 @@ Nos ficheiros seguintes montamos a app Express passo a passo.
 4. Escreves o cabeçalho (`res.writeHead`) e o corpo (`res.end`).
 
 O módulo nativo dá-te total controlo, mas tens de:
+
 -   Converter o body manualmente (JSON, form-data, etc.).
 -   Tratar erros em todos os `try/catch`.
 -   Escrever lógica repetida para cada rota.
 
 O Express automatiza estes passos:
+
 -   `express.json()` já converte o body.
 -   Middlewares permitem compor funcionalidades (CORS, autenticação...).
 -   O roteador (`app.get`, `app.post`) associa funções diretamente às rotas.
@@ -46,10 +49,10 @@ O Express automatiza estes passos:
 ## Analogias para explicar em aula
 
 -   **HTTP nativo** é como cozinhar tudo do zero: controlas cada ingrediente mas demora mais.
--   **Express** é como uma cozinha com bancadas organizadas e utensílios prontos — consegues focar-te na receita (regras de negócio) em vez de reinventar cada passo.
+-   **Express** é como uma cozinha com bancadas organizadas e utensílios prontos - consegues focar-te na receita (regras de negócio) em vez de reinventar cada passo.
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Adicionadas explicações sobre o ciclo pedido/resposta e critérios para escolher entre HTTP nativo e Express.
     -   Acrescentada secção de changelog.

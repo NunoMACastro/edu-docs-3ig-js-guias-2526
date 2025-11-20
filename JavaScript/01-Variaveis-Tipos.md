@@ -152,6 +152,6 @@ a === c; // true
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Secção de Exercícios expandida para sete propostas práticas.
     -   Adicionada a primeira entrada de changelog para registar futuras alterações.

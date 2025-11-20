@@ -19,7 +19,7 @@
 
 ---
 
-## 1) `fetch` — o pedido mais simples
+## 1) `fetch` - o pedido mais simples
 
 `fetch(url)` **pede** ao browser que vá buscar a URL. Ele **não bloqueia** o JS; quando a resposta chega, tu continuas.
 
@@ -36,10 +36,10 @@ async function exemploGET() {
 
 **Métodos mais comuns**
 
--   **GET** — ler dados
--   **POST** — criar/enviar dados
--   **PUT/PATCH** — atualizar
--   **DELETE** — remover
+-   **GET** - ler dados
+-   **POST** - criar/enviar dados
+-   **PUT/PATCH** - atualizar
+-   **DELETE** - remover
 
 ---
 
@@ -265,12 +265,12 @@ async function getPrivado(url, token) {
 
 ## 11) Mini desafios
 
-1. **Botão Carregar** — cria um botão que, ao clicar, usa `fetch("alunos.json")`, chama `response.json()` e mostra os nomes numa `<ul>`.
-2. **Mensagem de erro** — altera o desafio anterior para mostrar “Tenta mais tarde” num `<p>` se o `fetch` falhar (simula trocando o URL por um inexistente).
-3. **Pesquisa simples** — cria um formulário com `<input name="q">`. No `submit`, usa `urlComParams` para montar `/api/alunos?q=valor` (pode ser apenas `console.log` da URL) e limpa o formulário.
-4. **Loader** — antes de fazer `fetch`, mostra “A carregar…”; quando termina, troca para “Concluído” ou “Erro”. Usa `try/catch` com `await`.
-5. **POST fictício** — cria um formulário com `nome` e `nota`, lê com `FormData` e envia para `https://jsonplaceholder.typicode.com/posts` com `fetch` (método `POST`). Mostra o `id` devolvido.
-6. **Abortar pedido** — usa `AbortController` para cancelar um `fetch` após 2 segundos (`setTimeout`). Mostra no `console` se foi cancelado ou concluído.
+1. **Botão Carregar** - cria um botão que, ao clicar, usa `fetch("alunos.json")`, chama `response.json()` e mostra os nomes numa `<ul>`.
+2. **Mensagem de erro** - altera o desafio anterior para mostrar “Tenta mais tarde” num `<p>` se o `fetch` falhar (simula trocando o URL por um inexistente).
+3. **Pesquisa simples** - cria um formulário com `<input name="q">`. No `submit`, usa `urlComParams` para montar `/api/alunos?q=valor` (pode ser apenas `console.log` da URL) e limpa o formulário.
+4. **Loader** - antes de fazer `fetch`, mostra “A carregar…”; quando termina, troca para “Concluído” ou “Erro”. Usa `try/catch` com `await`.
+5. **POST fictício** - cria um formulário com `nome` e `nota`, lê com `FormData` e envia para `https://jsonplaceholder.typicode.com/posts` com `fetch` (método `POST`). Mostra o `id` devolvido.
+6. **Abortar pedido** - usa `AbortController` para cancelar um `fetch` após 2 segundos (`setTimeout`). Mostra no `console` se foi cancelado ou concluído.
 
 ---
 
@@ -285,8 +285,8 @@ async function getPrivado(url, token) {
 
 ## Changelog
 
--   **v1.2.0 — 2025-11-10**
+-   **v1.2.0 - 2025-11-10**
     -   Mini desafios simplificados para cenários de browser com `fetch` a ficheiros locais ou APIs públicas.
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Exercícios renomeados para Mini desafios e revistos para cobrir o ciclo completo de pedidos.
     -   Changelog adicionado para acompanhar futuras melhorias do capítulo.

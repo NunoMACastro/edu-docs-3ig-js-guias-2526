@@ -1,6 +1,6 @@
-# .gitignore — Template abrangente (multi-stack)
+# .gitignore - Template abrangente (multi-stack)
 
-> Objetivo: um `.gitignore` **pronto a usar** para a maioria dos projetos (Node.js, Python, Java/C#, mobile, web). Inclui ficheiros de sistema (ex.: `.DS_Store`) e lixo de IDEs. Adapta conforme necessário — especialmente em **lockfiles** e **.vscode**.
+> Objetivo: um `.gitignore` **pronto a usar** para a maioria dos projetos (Node.js, Python, Java/C#, mobile, web). Inclui ficheiros de sistema (ex.: `.DS_Store`) e lixo de IDEs. Adapta conforme necessário - especialmente em **lockfiles** e **.vscode**.
 
 ## Como usar
 
@@ -146,7 +146,7 @@ out/
 # TypeScript
 *.tsbuildinfo
 
-# Lockfiles (normalmente deves COMMITAR — mantém comentado a menos que decidas ignorar)
+# Lockfiles (normalmente deves COMMITAR - mantém comentado a menos que decidas ignorar)
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml

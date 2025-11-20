@@ -7,14 +7,22 @@
 import { Router } from "express";
 import * as ctrl from "../controllers/todos.controller.js";
 import { validate } from "../middlewares/validate.js";
-import { todoCreateSchema, todoUpdateSchema, idParamSchema } from "../schemas/todo.schemas.js";
+import {
+    todoCreateSchema,
+    todoUpdateSchema,
+    idParamSchema,
+} from "../schemas/todo.schemas.js";
 
 const r = Router();
 
 r.get("/", ctrl.listar);
 r.get("/:id", validate({ params: idParamSchema }), ctrl.obter);
 r.post("/", validate({ body: todoCreateSchema }), ctrl.criar);
-r.patch("/:id", validate({ params: idParamSchema, body: todoUpdateSchema }), ctrl.atualizar);
+r.patch(
+    "/:id",
+    validate({ params: idParamSchema, body: todoUpdateSchema }),
+    ctrl.atualizar
+);
 r.delete("/:id", validate({ params: idParamSchema }), ctrl.remover);
 
 export default r;
@@ -28,31 +36,31 @@ import * as service from "../services/todos.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const listar = asyncHandler(async (_req, res) => {
-  const itens = await service.listar();
-  res.json(itens);
+    const itens = await service.listar();
+    res.json(itens);
 });
 
 export const obter = asyncHandler(async (req, res) => {
-  const item = await service.obter(req.params.id);
-  if (!item) return res.status(404).json({ error: "Todo não encontrado" });
-  res.json(item);
+    const item = await service.obter(req.params.id);
+    if (!item) return res.status(404).json({ error: "Todo não encontrado" });
+    res.json(item);
 });
 
 export const criar = asyncHandler(async (req, res) => {
-  const novo = await service.criar(req.body);
-  res.status(201).json(novo);
+    const novo = await service.criar(req.body);
+    res.status(201).json(novo);
 });
 
 export const atualizar = asyncHandler(async (req, res) => {
-  const item = await service.atualizar(req.params.id, req.body);
-  if (!item) return res.status(404).json({ error: "Todo não encontrado" });
-  res.json(item);
+    const item = await service.atualizar(req.params.id, req.body);
+    if (!item) return res.status(404).json({ error: "Todo não encontrado" });
+    res.json(item);
 });
 
 export const remover = asyncHandler(async (req, res) => {
-  const ok = await service.remover(req.params.id);
-  if (!ok) return res.status(404).json({ error: "Todo não encontrado" });
-  res.status(204).send();
+    const ok = await service.remover(req.params.id);
+    if (!ok) return res.status(404).json({ error: "Todo não encontrado" });
+    res.status(204).send();
 });
 ```
 
@@ -62,19 +70,21 @@ export const remover = asyncHandler(async (req, res) => {
 // src/middlewares/validate.js
 import { ZodError } from "zod";
 export function validate(schemas = {}) {
-  return (req, res, next) => {
-    try {
-      if (schemas.params) req.params = schemas.params.parse(req.params);
-      if (schemas.query) req.query = schemas.query.parse(req.query);
-      if (schemas.body) req.body = schemas.body.parse(req.body);
-      next();
-    } catch (e) {
-      if (e instanceof ZodError) {
-        return res.status(400).json({ error: "Validação falhou", details: e.issues });
-      }
-      next(e);
-    }
-  };
+    return (req, res, next) => {
+        try {
+            if (schemas.params) req.params = schemas.params.parse(req.params);
+            if (schemas.query) req.query = schemas.query.parse(req.query);
+            if (schemas.body) req.body = schemas.body.parse(req.body);
+            next();
+        } catch (e) {
+            if (e instanceof ZodError) {
+                return res
+                    .status(400)
+                    .json({ error: "Validação falhou", details: e.issues });
+            }
+            next(e);
+        }
+    };
 }
 ```
 
@@ -83,12 +93,12 @@ export function validate(schemas = {}) {
 import { z } from "zod";
 
 export const idParamSchema = z.object({
-  id: z.string().uuid("id precisa ser UUID válido"),
+    id: z.string().uuid("id precisa ser UUID válido"),
 });
 
 export const todoCreateSchema = z.object({
-  titulo: z.string().min(1),
-  concluido: z.boolean().optional().default(false),
+    titulo: z.string().min(1),
+    concluido: z.boolean().optional().default(false),
 });
 
 export const todoUpdateSchema = todoCreateSchema.partial();
@@ -120,7 +130,7 @@ Mantém o plural para coleções e usa `:` para parâmetros dinâmicos (`:id`).
 
 -   Quando um recurso não é encontrado, devolve `{ error: "..." }` e um `status 404`.
 -   Ao criar algo com sucesso usa `201` e devolve o objeto completo (para mostrar o ID gerado).
--   Um `DELETE` bem-sucedido pode devolver `204 No Content` — não precisa de body.
+-   Um `DELETE` bem-sucedido pode devolver `204 No Content` - não precisa de body.
 
 ## Exercício rápido (para os alunos)
 
@@ -130,6 +140,6 @@ Mantém o plural para coleções e usa `:` para parâmetros dinâmicos (`:id`).
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Explicadas as responsabilidades de router/controller/service e reforçado o uso de verbos HTTP.
     -   Incluída análise sobre validação com e sem Zod e secção de changelog.

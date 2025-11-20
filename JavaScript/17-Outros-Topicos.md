@@ -7,12 +7,12 @@
 ## 0) Mapa do capítulo
 
 -   **URL & Query Strings** com `URL` e `URLSearchParams`
--   **History API** (`pushState`, `replaceState`, `popstate`) — navegação sem recarregar
--   **IntersectionObserver** — detectar quando algo entra no ecrã (lazy‑loading, infinito)
--   **Intl** — formatar números, moedas e datas em `pt-PT`
--   **Acessibilidade (A11y)** — labels, foco visível, ARIA mínimo
--   **Segurança no front‑end** — XSS e boas práticas
--   **Performance** — `DocumentFragment`, debouncing/throttling, `requestAnimationFrame`, `console.time`
+-   **History API** (`pushState`, `replaceState`, `popstate`) - navegação sem recarregar
+-   **IntersectionObserver** - detectar quando algo entra no ecrã (lazy‑loading, infinito)
+-   **Intl** - formatar números, moedas e datas em `pt-PT`
+-   **Acessibilidade (A11y)** - labels, foco visível, ARIA mínimo
+-   **Segurança no front‑end** - XSS e boas práticas
+-   **Performance** - `DocumentFragment`, debouncing/throttling, `requestAnimationFrame`, `console.time`
 
 ---
 
@@ -50,7 +50,7 @@ const url = urlComParams("/api/produtos", { page: 3, q: "caderno A5" });
 
 ## 2) History API (navegação sem recarregar a página)
 
-Permite alterar a **barra de endereço** e reagir aos **botões voltar/avançar** sem recarregar tudo — útil para **SPAs simples**.
+Permite alterar a **barra de endereço** e reagir aos **botões voltar/avançar** sem recarregar tudo - útil para **SPAs simples**.
 
 ```html
 <nav>
@@ -138,7 +138,7 @@ io.observe(sentinel);
 
 ## 4) Intl (formatar números, moedas e datas)
 
-O objeto `Intl` adapta formatações ao **país/idioma** — perfeito para `pt-PT`.
+O objeto `Intl` adapta formatações ao **país/idioma** - perfeito para `pt-PT`.
 
 ```js
 // Moedas
@@ -164,11 +164,11 @@ const rtf = new Intl.RelativeTimeFormat("pt-PT", { numeric: "auto" });
 console.log(rtf.format(-5, "minute")); // "há 5 minutos"
 ```
 
-> Vantagem: não precisas de inventar formatações — usas a do sistema/idioma correto.
+> Vantagem: não precisas de inventar formatações - usas a do sistema/idioma correto.
 
 ---
 
-## 5) Acessibilidade (A11y) — o básico que faz diferença
+## 5) Acessibilidade (A11y) - o básico que faz diferença
 
 -   Usa **HTML semântico**: `<button>` para botões, `<nav>`, `<header>`, `<main>`, `<footer>`.
 -   **Labels** associadas a inputs: `<label for="email">Email</label><input id="email">`.
@@ -210,7 +210,7 @@ container.append(p);
 
 ---
 
-## 7) Performance — tornar a UI suave
+## 7) Performance - tornar a UI suave
 
 -   **Mudar muita coisa de uma vez** → usa `DocumentFragment` e injeta no fim.
 -   **Eventos rápidos** (scroll, input) → usa **debounce**/**throttle**.
@@ -267,13 +267,13 @@ console.timeEnd('render');
 
 ## 9) Mini desafios
 
-1. **Ler query** — escreve `getQuery(nome)` usando `new URLSearchParams(location.search)` e testa com `?q=js&page=2`.
-2. **Atualizar query** — cria um formulário com campo `q`. No `submit`, usa `url.searchParams.set` e `history.replaceState` para atualizar a barra de endereço sem recarregar.
-3. **SPA simples** — dois botões “Home” e “Sobre” que trocam o conteúdo de uma `<section>` e usam `history.pushState`/`popstate` para manter o estado ao navegar para trás.
-4. **IntersectionObserver básico** — observa o último `<li>` e, quando aparece no ecrã, adiciona mais três itens a partir de um array (sem servidor).
-5. **Intl** — mostra o preço `12.5` como `pt-PT` EUR e a data atual com `Intl.DateTimeFormat`. Ordena `["maçã", "manga", "abacate"]` com `localeCompare`.
-6. **A11y rápido** — cria um botão só com ícone e adiciona `aria-label`. Depois adiciona `aria-pressed` para indicar favorito e alterna o valor ao clicar.
-7. **Performance/medição** — cria 500 `<li>` usando `DocumentFragment` e mede com `console.time`/`console.timeEnd` quanto demorou.
+1. **Ler query** - escreve `getQuery(nome)` usando `new URLSearchParams(location.search)` e testa com `?q=js&page=2`.
+2. **Atualizar query** - cria um formulário com campo `q`. No `submit`, usa `url.searchParams.set` e `history.replaceState` para atualizar a barra de endereço sem recarregar.
+3. **SPA simples** - dois botões “Home” e “Sobre” que trocam o conteúdo de uma `<section>` e usam `history.pushState`/`popstate` para manter o estado ao navegar para trás.
+4. **IntersectionObserver básico** - observa o último `<li>` e, quando aparece no ecrã, adiciona mais três itens a partir de um array (sem servidor).
+5. **Intl** - mostra o preço `12.5` como `pt-PT` EUR e a data atual com `Intl.DateTimeFormat`. Ordena `["maçã", "manga", "abacate"]` com `localeCompare`.
+6. **A11y rápido** - cria um botão só com ícone e adiciona `aria-label`. Depois adiciona `aria-pressed` para indicar favorito e alterna o valor ao clicar.
+7. **Performance/medição** - cria 500 `<li>` usando `DocumentFragment` e mede com `console.time`/`console.timeEnd` quanto demorou.
 
 ---
 
@@ -288,8 +288,8 @@ console.timeEnd('render');
 
 ## Changelog
 
--   **v1.2.0 — 2025-11-10**
+-   **v1.2.0 - 2025-11-10**
     -   Mini desafios reescritos com passos mais guiados (sem dependência de APIs externas ou listas enormes).
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Secção final convertida em Mini desafios com foco em APIs modernas do browser.
     -   Adicionado changelog para manter histórico de alterações.

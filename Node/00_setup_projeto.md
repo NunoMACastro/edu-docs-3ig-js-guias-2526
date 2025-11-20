@@ -98,7 +98,7 @@ Dica: cria também .editorconfig, eslint.config.js e prettier.config.cjs para un
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Adicionadas explicações teóricas sobre cada comando, dependência e sobre a estrutura de pastas.
     -   Incluído checklist pedagógico e criada a secção de changelog para acompanhar futuras alterações.
     -   Referência cruzada para o novo capítulo de introdução ao Node.

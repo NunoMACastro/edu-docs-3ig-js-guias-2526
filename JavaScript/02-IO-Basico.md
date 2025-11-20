@@ -97,7 +97,7 @@ rl.close();
 -   Converte entradas para o tipo certo logo após leres (números, booleanos, etc.).
 -   Usa `console.log` para mensagens normais e `console.error` para erros; ajuda muito quando o projeto crescer.
 -   Limpa `console.log` supérfluos antes de entregar trabalhos finais.
--   Nunca assumas que o utilizador escreveu algo válido — valida sempre.
+-   Nunca assumas que o utilizador escreveu algo válido - valida sempre.
 
 ---
 
@@ -113,6 +113,6 @@ rl.close();
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Acrescentados sete exercícios cobrindo browser e Node para treinar I/O.
     -   Passa a existir secção de changelog para acompanhar futuras revisões.

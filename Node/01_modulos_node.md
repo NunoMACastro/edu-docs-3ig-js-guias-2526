@@ -62,7 +62,7 @@ No import, usas `{ geraToken }`. Se tentares importar algo que não existe, rece
 
 ```js
 export default function soma(a, b) {
-  return a + b;
+    return a + b;
 }
 ```
 
@@ -76,8 +76,8 @@ Só pode haver um `default` por ficheiro e, ao importar, podes dar o nome que qu
 ```js
 // Carregar apenas quando o comando admin é usado
 async function carregarAdmin() {
-  const mod = await import("./admin-tools.js");
-  return mod;
+    const mod = await import("./admin-tools.js");
+    return mod;
 }
 ```
 
@@ -97,6 +97,6 @@ async function carregarAdmin() {
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Acrescentadas explicações sobre a diferença histórica entre CommonJS e ES Modules, tipos de export e top-level await.
     -   Incluído checklist para depurar imports e secção de changelog.

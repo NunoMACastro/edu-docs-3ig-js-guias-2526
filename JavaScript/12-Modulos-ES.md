@@ -107,7 +107,7 @@ inc();
 console.log(total); // 1 (reflete a atualização)
 ```
 
-Não podes fazer `total = 5` fora do módulo original — só o ficheiro que exporta é que pode reatribuir.
+Não podes fazer `total = 5` fora do módulo original - só o ficheiro que exporta é que pode reatribuir.
 
 ---
 
@@ -171,7 +171,7 @@ No Node moderno podes usar `import dados from "./dados.json" assert { type: "jso
 ## 7) Boas práticas
 
 -   Cada módulo deve ter uma responsabilidade clara.
--   Evita defaults quando exportas muitas coisas do mesmo ficheiro — `named exports` tornam o autocompletar mais fácil.
+-   Evita defaults quando exportas muitas coisas do mesmo ficheiro - `named exports` tornam o autocompletar mais fácil.
 -   Usa index/barrel apenas quando realmente simplifica (demasiadas camadas podem confundir).
 -   Documenta no topo do ficheiro o que ele expõe (`// Exporta: getAluno, salvarAluno`).
 
@@ -187,8 +187,8 @@ No Node moderno podes usar `import dados from "./dados.json" assert { type: "jso
 
 ## Changelog
 
--   **v1.2.0 — 2025-11-10**
+-   **v1.2.0 - 2025-11-10**
     -   Mini desafios simplificados e agora focados em cenários de browser (sem Node CLI).
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Separação entre boas práticas e mini desafios, com quatro novos desafios avançados.
     -   Changelog adicionado para registar alterações ao capítulo.

@@ -1,9 +1,9 @@
 /* 
 
 Requisitos recomendados
-— Node ≥ 18 LTS (tem `fetch` global e boas APIs modernas)
-— npm ≥ 9
-— Editor: VS Code com as extensões ESLint/Prettier
+- Node ≥ 18 LTS (tem `fetch` global e boas APIs modernas)
+- npm ≥ 9
+- Editor: VS Code com as extensões ESLint/Prettier
 
 TOC
 -----------------------------------------------------------------------------
@@ -13,22 +13,22 @@ TOC
 [3]  Servidor HTTP nativo vs Express (porque Express)
 [4]  Express: app base, middlewares, rotas, respostas, estáticos
 [5]  Estrutura de pastas sugerida (MVC leve + camadas)
-[6]  Controladores, Router e validação (manual e com Zod — opcional)
+[6]  Controladores, Router e validação (manual e com Zod - opcional)
 [7]  Erros e error‑handling central (404/500), asyncHandler
-[8]  Persistência leve em ficheiro (JSON) — sem DB (para já)
+[8]  Persistência leve em ficheiro (JSON) - sem DB (para já)
 [9]  CORS, Helmet, Rate‑Limit, Logging (Morgan), compressão
 [10] Variáveis de ambiente (.env), 12‑Factor e config
-[11] Testes rápidos (Supertest + Vitest/Jest) — visão geral
+[11] Testes rápidos (Supertest + Vitest/Jest) - visão geral
 
 Glossário rápido (mostra aos alunos antes de mergulhar no código):
-— **Request**: pedido que chega do browser/app móvel. Traz método (GET/POST...), URL, headers e body.
-— **Response**: resposta que o servidor devolve com um código (200, 404...) e dados (JSON, HTML, ficheiro).
-— **Middleware**: função que corre entre o pedido entrar e a resposta sair. Pode ler/modificar `req` e `res` ou terminar o pedido.
-— **Router**: conjunto de rotas relacionadas (ex.: tudo sobre `/api/v1/todos`). Ajuda a dividir a aplicação em módulos.
-— **Controller**: função que conhece a regra do endpoint. Lê dados do pedido, chama serviços e decide o que devolver.
-— **Service**: camada onde vivem as regras de negócio (por exemplo, “um todo precisa de título”).
-— **Repository**: módulo que sabe falar com o armazenamento (ficheiro JSON, base de dados…).
-— **Handler de erro**: middleware especial para responder quando algo corre mal.
+- **Request**: pedido que chega do browser/app móvel. Traz método (GET/POST...), URL, headers e body.
+- **Response**: resposta que o servidor devolve com um código (200, 404...) e dados (JSON, HTML, ficheiro).
+- **Middleware**: função que corre entre o pedido entrar e a resposta sair. Pode ler/modificar `req` e `res` ou terminar o pedido.
+- **Router**: conjunto de rotas relacionadas (ex.: tudo sobre `/api/v1/todos`). Ajuda a dividir a aplicação em módulos.
+- **Controller**: função que conhece a regra do endpoint. Lê dados do pedido, chama serviços e decide o que devolver.
+- **Service**: camada onde vivem as regras de negócio (por exemplo, “um todo precisa de título”).
+- **Repository**: módulo que sabe falar com o armazenamento (ficheiro JSON, base de dados…).
+- **Handler de erro**: middleware especial para responder quando algo corre mal.
 
 =============================================================================
 [0] SETUP RÁPIDO DE PROJETO
@@ -74,14 +74,14 @@ src/
   public/            # (opcional) ficheiros estáticos
 
 =============================================================================
-[1] MÓDULOS EM NODE — ESM vs COMMONJS
+[1] MÓDULOS EM NODE - ESM vs COMMONJS
 =============================================================================
 ESM (ECMAScript Modules) → `import ... from` e `export` (igual ao browser moderno).
 CommonJS → `const x = require("x")` e `module.exports = ...` (o “antigo” Node).
 
 Boas práticas de hoje:
-— Preferir **ESM** (define "type":"module" no package.json).
-— Quando precisares de JSON: usa `fs/promises` + `JSON.parse`, ou `import` (Node 20
+- Preferir **ESM** (define "type":"module" no package.json).
+- Quando precisares de JSON: usa `fs/promises` + `JSON.parse`, ou `import` (Node 20
   suporta import de JSON com `assert { type: "json" }`, mas fica fora deste guia).
 
 Exemplos rápidos:
@@ -94,8 +94,8 @@ const mod = await import("./utils/math.js");
 console.log(mod.soma(2, 3));
 
 Resolução de módulos:
-— Imports relativos sempre com extensão: "./ficheiro.js"
-— `NODE_PATH` e aliases requerem configs extra (tsconfig/webpack/vite — fora do scope)
+- Imports relativos sempre com extensão: "./ficheiro.js"
+- `NODE_PATH` e aliases requerem configs extra (tsconfig/webpack/vite - fora do scope)
 
 =============================================================================
 [2] NODE CORE ÚTIL: path, fs/promises, process, os, events, crypto, streams
@@ -134,13 +134,13 @@ import { EventEmitter } from "node:events";
 const bus = new EventEmitter();
 bus.on("novo_todo", (todo) => console.log("Evento:", todo));
 
-/* ===== crypto (hash, random) — para passwords ver secção [9]/Auth nota rápida ===== */
+/* ===== crypto (hash, random) - para passwords ver secção [9]/Auth nota rápida ===== */
 import crypto from "node:crypto";
 const id = crypto.randomUUID(); // "b2e2..."
 const sum = crypto.createHash("sha256").update("abc").digest("hex");
 
 /* ===== streams (ler ficheiros grandes sem carregar tudo na RAM) ===== */
-// Ex.: criar um endpoint que faz stream de um .log — fica como exercício em [12]
+// Ex.: criar um endpoint que faz stream de um .log - fica como exercício em [12]
 /*
 =============================================================================
 [3] HTTP NATIVO vs EXPRESS
@@ -160,12 +160,12 @@ const server = http.createServer((req, res) => {
 server.listen(3000);
 /*
 Porquê Express?
-— Roteamento simples, middlewares, JSON de corpo, erros centralizados, ecossistema
+- Roteamento simples, middlewares, JSON de corpo, erros centralizados, ecossistema
   gigante (CORS, Helmet, Rate‑limit, etc.). Ideal para aulas e projetos.
 Exemplo: A seguir 
 
 =============================================================================
-[4] EXPRESS — APP BASE, MIDDLEWARES, ROTAS, RESPOSTAS, ESTÁTICOS
+[4] EXPRESS - APP BASE, MIDDLEWARES, ROTAS, RESPOSTAS, ESTÁTICOS
 =============================================================================
 
 /* ===== src/app.js ===== */
@@ -237,10 +237,10 @@ src/
   public/               # estáticos
 
 Separação de responsabilidades:
-— **Route**: recebe req/res e chama o controller.
-— **Controller**: valida input, chama service, devolve resposta.
-— **Service**: regras de negócio.
-— **Repository**: detalhe de acesso a dados (ficheiro/DB).
+- **Route**: recebe req/res e chama o controller.
+- **Controller**: valida input, chama service, devolve resposta.
+- **Service**: regras de negócio.
+- **Repository**: detalhe de acesso a dados (ficheiro/DB).
 
 =============================================================================
 [6] CONTROLADORES, ROUTER E VALIDAÇÃO
@@ -361,7 +361,7 @@ export const asyncHandler = (fn) => (req, res, next) =>
     Promise.resolve(fn(req, res, next)).catch(next);
 /*
 =============================================================================
-[8] PERSISTÊNCIA EM FICHEIRO (JSON) — *didático*, troca por DB no futuro
+[8] PERSISTÊNCIA EM FICHEIRO (JSON) - *didático*, troca por DB no futuro
 =============================================================================
 
 /* ===== src/repositories/todos.repo.file.js ===== */
@@ -445,11 +445,11 @@ export async function remover(id) {
 =============================================================================
 [9] CORS, HELMET, RATE‑LIMIT, LOGGING, COMPRESSÃO (+ Auth nota rápida)
 =============================================================================
-— **CORS**: controla quais origens (front-ends) podem chamar a tua API.
-— **Helmet**: adiciona headers de segurança comuns (X‑Frame‑Options, etc.).
-— **Rate‑limit**: protege contra abuso (DDOS/lots of requests).
-— **Morgan/Winston/Pino**: logging simples vs estruturado.
-— **Compression**: comprime as respostas (gzip/br).
+- **CORS**: controla quais origens (front-ends) podem chamar a tua API.
+- **Helmet**: adiciona headers de segurança comuns (X‑Frame‑Options, etc.).
+- **Rate‑limit**: protege contra abuso (DDOS/lots of requests).
+- **Morgan/Winston/Pino**: logging simples vs estruturado.
+- **Compression**: comprime as respostas (gzip/br).
 
 Instalar rate‑limit e um logger estrutural (opcional):
 $ npm i express-rate-limit pino pino-pretty
@@ -466,8 +466,8 @@ const limiter = rateLimit({ windowMs: 15*60*1000, max: 100 });
 app.use(limiter);
 
 Auth (visão geral para futuro):
-— NUNCA guardes passwords em claro. Usa `bcryptjs` ou `argon2`.
-— JWT (jsonwebtokens) para sessões stateless. Guarda o token em HTTP‑only cookies
+- NUNCA guardes passwords em claro. Usa `bcryptjs` ou `argon2`.
+- JWT (jsonwebtokens) para sessões stateless. Guarda o token em HTTP‑only cookies
   ou no header `Authorization: Bearer`. Define expiração e *refresh tokens*.
 
 =============================================================================
@@ -483,9 +483,9 @@ Ler no código:
 const PORT = process.env.PORT ?? 3000;
 
 Boas práticas (12‑Factor):
-— Não “hardcode” segredos/URLs no código.
-— Parâmetros variáveis (portas, chaves, URLs) via env.
-— Um “config module” ajuda a centralizar:
+- Não “hardcode” segredos/URLs no código.
+- Parâmetros variáveis (portas, chaves, URLs) via env.
+- Um “config module” ajuda a centralizar:
 
 /* ===== src/utils/config.js ===== */
 function reqEnv(name, def = undefined) {
@@ -500,7 +500,7 @@ export const config = Object.freeze({
 }); /* %>
 /*
 =============================================================================
-[11] TESTES RÁPIDOS (Supertest + Vitest/Jest) — visão geral
+[11] TESTES RÁPIDOS (Supertest + Vitest/Jest) - visão geral
 =============================================================================
 $ npm i -D supertest vitest
 Esqueleto:
@@ -589,7 +589,7 @@ app.locals.fmtData = (ts) =>
 // app.use((req, _res, next) => { res.locals.user = req.user || null; next(); });
 
 // ============================================================================
-// Rotas de páginas (UI) — exemplo com Todos a partir do teu service
+// Rotas de páginas (UI) - exemplo com Todos a partir do teu service
 // ============================================================================
 
 // File: src/routes/pages.router.js
@@ -641,7 +641,7 @@ export default pages;
 //   app.use("/", pagesRouter);
 
 // ============================================================================
-// Views — exemplos mínimos
+// Views - exemplos mínimos
 // ============================================================================
 
 // File: src/views/layout.ejs   (se estiveres a usar express-ejs-layouts)
@@ -650,7 +650,7 @@ export default pages;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= typeof titulo !== "undefined" ? titulo + " — " : "" %><%= appName %></title>
+    <title><%= typeof titulo !== "undefined" ? titulo + " - " : "" %><%= appName %></title>
     <link rel="stylesheet" href="/static/styles.css">
     <% /* Partials comuns: meta tags, ícones, etc. 
     <%- include("partials/head") %>
@@ -681,7 +681,7 @@ export default pages;
 
 // File: src/views/partials/footer.ejs
 <footer class="site-footer">
-  <small>&copy; <%= new Date().getFullYear() %> — <%= appName %></small>
+  <small>&copy; <%= new Date().getFullYear() %> - <%= appName %></small>
 </footer>
 
 // File: src/views/pages/home.ejs
@@ -757,6 +757,6 @@ export default pages;
 
 /*
 ## Changelog
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Adicionado glossário introdutório e criada secção de changelog para o guia completo.
 */

@@ -194,6 +194,6 @@ function lerJSONSeguro(texto, fallback = {}) {
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Mini desafios expandidos para sete propostas cobrindo erros síncronos e assíncronos.
     -   Changelog inaugurado para seguir alterações do capítulo.

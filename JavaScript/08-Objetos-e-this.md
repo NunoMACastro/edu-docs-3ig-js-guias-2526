@@ -65,7 +65,7 @@ const aluno = { nome: "Bruno", [campo]: 18 }; // cria a chave "nota"
 
 ### `Object.create(null)` (quando queres um "dicionário puro")
 
-Remove a herança padrão — útil para guardar pares simples sem métodos herdados.
+Remove a herança padrão - útil para guardar pares simples sem métodos herdados.
 
 ```js
 const dicionario = Object.create(null);
@@ -194,6 +194,6 @@ JSON usa aspas duplas e não aceita comentários.
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Secção de Exercícios ampliada com sete atividades sobre criação, cópia, `this` e utilitários `Object.*`.
     -   Changelog incluído para registar evoluções do capítulo.

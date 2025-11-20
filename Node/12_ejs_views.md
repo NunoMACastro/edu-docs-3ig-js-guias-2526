@@ -1,17 +1,21 @@
 # 12) Views com EJS (SSR opcional)
 
 ## O que é EJS
+
 Motor de templates para gerar HTML no servidor:
-- <% código %>
-- <%= expr_escapada %> (seguro por defeito)
-- <%- expr_sem_escape %> (apenas para HTML de confiança)
+
+-   <% código %>
+-   <%= expr_escapada %> (seguro por defeito)
+-   <%- expr_sem_escape %> (apenas para HTML de confiança)
 
 ## Instalar
+
 ```bash
 npm i ejs express-ejs-layouts
 ```
 
 ## Estrutura
+
 ```
 src/
   views/
@@ -47,7 +51,10 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.locals.appName = "Minha App";
 app.locals.fmtData = (ts) =>
-  new Intl.DateTimeFormat("pt-PT", { dateStyle: "medium", timeStyle: "short" }).format(ts);
+    new Intl.DateTimeFormat("pt-PT", {
+        dateStyle: "medium",
+        timeStyle: "short",
+    }).format(ts);
 ```
 
 ## Router de páginas
@@ -60,46 +67,55 @@ import * as todos from "../services/todos.service.js";
 const pages = Router();
 
 pages.get("/", (_req, res) => {
-  res.render("pages/home", { titulo: "Bem-vindo", agora: Date.now() });
+    res.render("pages/home", { titulo: "Bem-vindo", agora: Date.now() });
 });
 
 pages.get("/todos", async (_req, res, next) => {
-  try {
-    const lista = await todos.listar();
-    res.render("pages/todos/index", { titulo: "Lista de Tarefas", lista });
-  } catch (e) { next(e); }
+    try {
+        const lista = await todos.listar();
+        res.render("pages/todos/index", { titulo: "Lista de Tarefas", lista });
+    } catch (e) {
+        next(e);
+    }
 });
 
 pages.get("/todos/new", (_req, res) => {
-  res.render("pages/todos/new", { titulo: "Novo Todo", errors: [], values: {} });
+    res.render("pages/todos/new", {
+        titulo: "Novo Todo",
+        errors: [],
+        values: {},
+    });
 });
 
 pages.post("/todos", async (req, res, next) => {
-  try {
-    const { titulo } = req.body;
-    if (!titulo?.trim()) {
-      return res.status(400).render("pages/todos/new", {
-        titulo: "Novo Todo",
-        errors: [{ message: "Título é obrigatório" }],
-        values: { titulo },
-      });
+    try {
+        const { titulo } = req.body;
+        if (!titulo?.trim()) {
+            return res.status(400).render("pages/todos/new", {
+                titulo: "Novo Todo",
+                errors: [{ message: "Título é obrigatório" }],
+                values: { titulo },
+            });
+        }
+        await todos.criar({ titulo });
+        res.redirect("/todos");
+    } catch (e) {
+        next(e);
     }
-    await todos.criar({ titulo });
-    res.redirect("/todos");
-  } catch (e) { next(e); }
 });
 
 export default pages;
 ```
 
 Dicas rápidas:
+
 1. Usa <%= ... %> por defeito (escapado).
 2. Se precisares de embutir JSON em script, evita fechar acidentalmente a tag:
-   ```ejs
-   <script>
-     const DATA = <%- JSON.stringify(obj).replace(/</g, "\u003c") %>;
-   </script>
-   ```
+    ```ejs
+    <script>
+      const DATA = <%- JSON.stringify(obj).replace(/</g, "\u003c") %>;
+    </script>
+    ```
 3. Em produção, ativa cache de views com app.set("view cache", true). O Express ativa por defeito quando NODE_ENV é production.
 
 ## Quando usar SSR com EJS?
@@ -132,6 +148,6 @@ Explica que o `res.render` recebe um objeto com dados e a view transforma essas 
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Acrescentadas explicações sobre quando usar SSR, fluxo de dados, formulários e exercícios.
     -   Incluída secção de changelog.

@@ -167,6 +167,6 @@ Isto ajuda a compreender o que `map`/`filter` fazem nos capítulos seguintes.
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Secção de Exercícios ampliada para sete propostas cobrindo `for`, `while`, `do...while` e padrões comuns.
     -   Adicionado changelog para registar futuras alterações do capítulo.

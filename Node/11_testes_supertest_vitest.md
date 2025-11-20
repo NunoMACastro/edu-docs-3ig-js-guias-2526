@@ -1,6 +1,7 @@
 # 11) Testes com Supertest e Vitest
 
 ## Instalar
+
 ```bash
 npm i -D supertest vitest
 ```
@@ -14,17 +15,18 @@ import request from "supertest";
 import { app } from "../src/app.js";
 
 describe("health", () => {
-  it("GET /api/health devolve ok", async () => {
-    const res = await request(app).get("/api/health");
-    expect(res.status).toBe(200);
-    expect(res.body.status).toBe("ok");
-  });
+    it("GET /api/health devolve ok", async () => {
+        const res = await request(app).get("/api/health");
+        expect(res.status).toBe(200);
+        expect(res.body.status).toBe("ok");
+    });
 });
 ```
 
 ## Scripts úteis
-- test: vitest --run
-- test:watch: vitest
+
+-   test: vitest --run
+-   test:watch: vitest
 
 ## Porque testar APIs?
 
@@ -52,11 +54,16 @@ import request from "supertest";
 import { app } from "../src/app.js";
 
 describe("todos", () => {
-  it("cria um todo válido", async () => {
-    const res = await request(app).post("/api/v1/todos").send({ titulo: "Estudar Node" });
-    expect(res.status).toBe(201);
-    expect(res.body).toMatchObject({ titulo: "Estudar Node", concluido: false });
-  });
+    it("cria um todo válido", async () => {
+        const res = await request(app)
+            .post("/api/v1/todos")
+            .send({ titulo: "Estudar Node" });
+        expect(res.status).toBe(201);
+        expect(res.body).toMatchObject({
+            titulo: "Estudar Node",
+            concluido: false,
+        });
+    });
 });
 ```
 
@@ -68,6 +75,6 @@ describe("todos", () => {
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Acrescentadas razões pedagógicas para testar, estrutura recomendada e novo exemplo de teste para criação de todos.
     -   Incluída secção de changelog.

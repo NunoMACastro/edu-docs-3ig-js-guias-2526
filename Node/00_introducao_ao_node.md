@@ -83,7 +83,7 @@ e corre `node hello.js`. Mostra aos alunos que o terminal agora executa JavaScri
 
 -   **Runtime:** ambiente que entende e executa JavaScript (Node, Deno, Bun, browser).
 -   **Event loop:** orquestrador que decide qual função corre a seguir.
--   **LTS:** versão com suporte longo (18 meses) — a mais estável.
+-   **LTS:** versão com suporte longo (18 meses) - a mais estável.
 -   **npm:** Node Package Manager, instala dependências (bibliotecas).
 -   **npx:** executa comandos de pacotes sem instalá-los globalmente.
 -   **ES Modules:** sintaxe moderna de import/export.
@@ -156,14 +156,14 @@ Browser (cliente) --HTTP--> Express (servidor) --fs/DB--> Ficheiro/BD
 ### Relação com Node
 
 -   Express simplifica a criação de rotas REST com `app.get/post/patch/delete`.
--   Middlewares tratam autenticação, parsing de body e CORS — componentes críticos em APIs REST.
+-   Middlewares tratam autenticação, parsing de body e CORS - componentes críticos em APIs REST.
 -   Por ser leve e rápido em I/O, Node é ideal para gateways REST que agregam dados de várias fontes.
 
 ---
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Adicionadas secções sobre arquitetura cliente-servidor aplicada ao Node e princípios de APIs REST.
--   **v1.0.0 — 2025-11-10**
+-   **v1.0.0 - 2025-11-10**
     -   Criação do capítulo introdutório com história, arquitetura, casos de uso e glossário do Node.js.

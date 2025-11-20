@@ -13,53 +13,58 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const F = path.join(__dirname, "..", "data", "todos.json");
 
 async function lerTodos() {
-  try {
-    return JSON.parse(await fs.readFile(F, "utf8"));
-  } catch (e) {
-    if (e.code === "ENOENT") return [];
-    throw e;
-  }
+    try {
+        return JSON.parse(await fs.readFile(F, "utf8"));
+    } catch (e) {
+        if (e.code === "ENOENT") return [];
+        throw e;
+    }
 }
 
 async function gravarTodos(lista) {
-  await fs.mkdir(path.dirname(F), { recursive: true });
-  const tmp = F + ".tmp";
-  await fs.writeFile(tmp, JSON.stringify(lista, null, 2), "utf8");
-  await fs.rename(tmp, F);
+    await fs.mkdir(path.dirname(F), { recursive: true });
+    const tmp = F + ".tmp";
+    await fs.writeFile(tmp, JSON.stringify(lista, null, 2), "utf8");
+    await fs.rename(tmp, F);
 }
 
 export async function listar() {
-  return lerTodos();
+    return lerTodos();
 }
 
 export async function obter(id) {
-  const L = await lerTodos();
-  return L.find((t) => t.id === id) || null;
+    const L = await lerTodos();
+    return L.find((t) => t.id === id) || null;
 }
 
 export async function criar({ titulo, concluido = false }) {
-  const novo = { id: crypto.randomUUID(), titulo, concluido, criadoEm: Date.now() };
-  const L = await lerTodos();
-  L.push(novo);
-  await gravarTodos(L);
-  return novo;
+    const novo = {
+        id: crypto.randomUUID(),
+        titulo,
+        concluido,
+        criadoEm: Date.now(),
+    };
+    const L = await lerTodos();
+    L.push(novo);
+    await gravarTodos(L);
+    return novo;
 }
 
 export async function atualizar(id, patch) {
-  const L = await lerTodos();
-  const idx = L.findIndex((t) => t.id === id);
-  if (idx === -1) return null;
-  L[idx] = { ...L[idx], ...patch, atualizadoEm: Date.now() };
-  await gravarTodos(L);
-  return L[idx];
+    const L = await lerTodos();
+    const idx = L.findIndex((t) => t.id === id);
+    if (idx === -1) return null;
+    L[idx] = { ...L[idx], ...patch, atualizadoEm: Date.now() };
+    await gravarTodos(L);
+    return L[idx];
 }
 
 export async function remover(id) {
-  const L = await lerTodos();
-  const filtrado = L.filter((t) => t.id !== id);
-  if (filtrado.length === L.length) return false;
-  await gravarTodos(filtrado);
-  return true;
+    const L = await lerTodos();
+    const filtrado = L.filter((t) => t.id !== id);
+    if (filtrado.length === L.length) return false;
+    await gravarTodos(filtrado);
+    return true;
 }
 ```
 
@@ -93,6 +98,6 @@ export const remover = (id) => repo.remover(id);
 
 ## Changelog
 
--   **v1.1.0 — 2025-11-10**
+-   **v1.1.0 - 2025-11-10**
     -   Incluídas explicações sobre segurança ao escrever ficheiros, limitações de concorrência e exercícios de extensão.
     -   Secção de changelog adicionada.
