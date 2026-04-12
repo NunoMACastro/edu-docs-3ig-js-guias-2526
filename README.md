@@ -1,33 +1,47 @@
-# Guias JavaScript (12.º ano)
+# Tuts - Materiais de Programação (12.º ano)
 
-Este repositório junta os apontamentos usados nas aulas de Programação para o 12.º IG.
+Este repositório reúne os materiais usados nas aulas de Programação (12.º IG), organizados por módulos: Git, JavaScript, Node.js, React, Fullstack e Documentação.
 
 [Índice de repositórios do 3.º IG](https://github.com/NunoMACastro/edu-3ig-indice-2526 "Índice de repositórios do 3.º IG")
 
 ---
 
-## Estrutura
+## Mapa do repositório
 
-| Pasta/ficheiro | Conteúdo                                                                                 |
-| -------------- | ---------------------------------------------------------------------------------------- |
-| `Git/`         | Modelos de `.gitignore` e guia rápido de comandos Git essenciais.                        |
-| `JavaScript/`  | 17 capítulos em Markdown cobrindo o percurso completo: fundamentos → browser/intermédio. |
-| `Node/`        | Guia completo de Node.js + Express com foco em APIs REST, camadas e troubleshooting.     |
-| `React/`       | Materiais introdutórios de React (em evolução).                                          |
+| Pasta/ficheiro           | Conteúdo                                                                   |
+| ------------------------ | -------------------------------------------------------------------------- |
+| `Git/`                   | Guia rápido de comandos Git e template de `.gitignore`.                    |
+| `JavaScript/`            | 17 capítulos de JavaScript (fundamentos a browser/intermédio).             |
+| `Node/`                  | Percurso completo de Node.js + Express (15 guias em Markdown + 1 guia JS). |
+| `React/`                 | 17 capítulos de React + README próprio do módulo.                          |
+| `React/Fichas/`          | 8 fichas/tutorials práticos com imagens de apoio.                          |
+| `Fullstack/`             | 3 capítulos para integrar React + Express + MongoDB.                       |
+| `Documentacao/`          | 9 capítulos sobre documentação técnica/produto + README do módulo.         |
+| `Documentacao/Exemplos/` | 15 ficheiros modelo para documentação de projetos e contexto para IA.      |
 
-> Todos os capítulos de JavaScript seguem o mesmo formato: título, objetivo, secções numeradas, exemplos comentados e desafios no fim.
+---
+
+## Percurso recomendado
+
+1. `Git/` (base de trabalho em equipa)
+2. `JavaScript/` (fundamentos da linguagem)
+3. `Node/` (backend e APIs)
+4. `React/` (frontend SPA)
+5. `Fullstack/` (integração front + back + dados)
+6. `Documentacao/` (documentação técnica e operacional)
 
 ---
 
 ## Git
 
-A pasta `Git/` contém modelos de ficheiros `.gitignore` para vários stacks e um guia rápido de comandos essenciais: [Git - Guia](Git/git-guia.md).
+- [Git - guia rápido](Git/git-guia.md)
+- [Template `.gitignore`](Git/template-gitignore.md)
 
 ---
 
-## JavaScript - Capítulos
+## JavaScript (17 capítulos)
 
-### Fundamentos (01‑12)
+### Fundamentos (01-12)
 
 1. [01 - Variáveis e Tipos](JavaScript/01-Variaveis-Tipos.md)
 2. [02 - Input/Output Básico](JavaScript/02-IO-Basico.md)
@@ -39,64 +53,122 @@ A pasta `Git/` contém modelos de ficheiros `.gitignore` para vários stacks e u
 8. [08 - Objetos e `this`](JavaScript/08-Objetos-e-this.md)
 9. [09 - Exceções](JavaScript/09-Excecoes.md)
 10. [10 - Funções](JavaScript/10-Funcoes.md)
-11. [11 - Funções de Alto Nível em Arrays](JavaScript/11-Arrays-HighOrder.md)
+11. [11 - Funções de alto nível em arrays](JavaScript/11-Arrays-HighOrder.md)
 12. [12 - Módulos ES](JavaScript/12-Modulos-ES.md)
 
-### Intermédio / Browser (13‑17)
+### Intermédio / Browser (13-17)
 
 13. [13 - Classes e OOP](JavaScript/13-POO-Classes.md)
 14. [14 - Assíncrono e Event Loop](JavaScript/14-Assincrono-EventLoop.md)
-15. [15 - DOM Básico](JavaScript/15-DOM-Basico.md)
+15. [15 - DOM básico](JavaScript/15-DOM-Basico.md)
 16. [16 - Fetch / AJAX](JavaScript/16-Fetch-AJAX.md)
-17. [17 - Outros Tópicos Úteis](JavaScript/17-Outros-Topicos.md)
-
-Cada ficheiro tem exemplos prontos a colar no DevTools/Node e termina com desafios curtos para garantir prática imediata.
+17. [17 - Outros tópicos úteis](JavaScript/17-Outros-Topicos.md)
 
 ---
 
-## Como estudar
+## Node.js (guia didático)
 
-1. **Percurso recomendado**
-    - Sessão 1: capítulos 01‑04 (variáveis, operadores, strings)
-    - Sessão 2: 05‑07 (controlo, ciclos, arrays)
-    - Sessão 3: 08‑10 (objetos, exceções, funções)
-    - Sessão 4: 11‑12 (HOFs e módulos)
-    - Sessões 5‑6: 13‑17 (OOP, async, DOM, Fetch, extras)
-
----
-
-## Ambiente sugerido
-
--   **Browser (DevTools → Console)** para testar snippets de forma rápida ou usar JSFiddle / JS Playground.
--   **Node.js** para scripts standalone: `node exemplo.js`.
--   Usa `"use strict"` ou `<script type="module">` para manter o comportamento moderno.
+1. [00 - Introdução ao Node.js](Node/00_introducao_ao_node.md)
+2. [00 - Setup rápido de projeto](Node/00_setup_projeto.md)
+3. [01 - Módulos em Node](Node/01_modulos_node.md)
+4. [02 - Node core útil](Node/02_node_core.md)
+5. [03 - HTTP nativo vs Express](Node/03_http_vs_express.md)
+6. [03_Guia_js_Node_Express.js](Node/03_Guia_js_Node_Express.js)
+7. [04 - Express base](Node/04_express_basico.md)
+8. [05 - Estrutura MVC leve](Node/05_estrutura_mvc.md)
+9. [06 - Rotas, controladores e validação](Node/06_rotas_controladores_validacao.md)
+10. [07 - Erros e asyncHandler](Node/07_erros_e_async_handler.md)
+11. [08 - Persistência em JSON](Node/08_persistencia_json.md)
+12. [09 - Segurança e logging](Node/09_seguranca_logging.md)
+13. [10 - Config e 12-Factor](Node/10_config_e_12factor.md)
+14. [11 - Testes com Supertest/Vitest](Node/11_testes_supertest_vitest.md)
+15. [12 - Views com EJS](Node/12_ejs_views.md)
+16. [13 - Troubleshooting](Node/13_troubleshooting.md)
 
 ---
 
 ## React
 
-A pasta `React/` contém guias de introdução à framework (setup, componentes, estado). Estes materiais seguem a mesma filosofia: capítulos em Markdown focados em exemplos e desafios.
+### Guia principal
+
+- [README do módulo React](React/README.md)
+- [01 - Fundamentos e setup](React/01_fundamentos_e_setup.md)
+- [02 - JSX e componentes](React/02_jsx_e_componentes.md)
+- [03 - Props e composição](React/03_props_e_composicao.md)
+- [04 - Estado e eventos](React/04_estado_e_eventos.md)
+- [05 - Listas e condicionais](React/05_listas_e_condicionais.md)
+- [06 - Formulários controlados](React/06_formularios_controlados.md)
+- [07 - Comunicação síncrona e assíncrona](React/07_comunicacao_sincrona_e_assincrona.md)
+- [08 - useEffect e dados](React/08_useEffect_e_dados.md)
+- [09 - React Router: fundamentos](React/09_react_router_fundamentos.md)
+- [10 - Navegação e rotas dinâmicas](React/10_navegacao_e_rotas_dinamicas.md)
+- [11 - Consumo API e backend Node](React/11_consumo_api_e_backend_node.md)
+- [12 - Context API e estado global](React/12_context_api_estado_global.md)
+- [13 - HTTP, REST, CORS e contratos API](React/13_http_rest_cors_e_contratos_api.md)
+- [14 - Autenticação em SPA](React/14_autenticacao_em_spa_jwt_sessions_cookies.md)
+- [15 - Upload, paginação e filtros](React/15_upload_paginacao_filtros_e_cliente_api.md)
+- [16 - Qualidade profissional](React/16_qualidade_profissional_tooling_testes_typescript.md)
+- [17 - Organização e mini-projeto guiado](React/17_organizacao_boas_praticas_e_miniprojeto_guiado.md)
+
+### Fichas e exercícios complementares (`React/Fichas/`)
+
+- [Tutorial 01](React/Fichas/TUTORIAL_01.md)
+- [Tutorial 02](React/Fichas/TUTORIAL_02.md)
+- [Tutorial 03](React/Fichas/TUTORIAL_03.md)
+- [Tutorial 03 - Exercícios finais](React/Fichas/TUTORIAL_03_EXERCICIOS_FINAIS.md)
+- [Tutorial 04](React/Fichas/TUTORIAL_04.md)
+- [Tutorial 05](React/Fichas/TUTORIAL_05.md)
+- [Tutorial 06A](React/Fichas/TUTORIAL_06A.md)
+- [Tutorial 06B](React/Fichas/TUTORIAL_06B.md)
 
 ---
 
-## Node.js - Guias didáticos
+## Fullstack
 
-Ordem sugerida:
+- [README do módulo Fullstack](Fullstack/README.md)
+- [01 - Fluxo React -> Express -> MongoDB](Fullstack/01_fluxo_front_back_db.md)
+- [02 - Contrato de API e erros](Fullstack/02_contrato_api_e_erros.md)
+- [03 - Setup fullstack](Fullstack/03_setup_fullstack.md)
 
-1. [00 - Introdução ao Node.js](Node/00_introducao_ao_node.md): história, event loop, arquitetura cliente-servidor, APIs REST e glossário essencial.
-2. [00 - Setup rápido de projeto](Node/00_setup_projeto.md): instalação, dependências e estrutura base (`src/`, scripts npm e boas práticas de equipa).
-3. [01 - Módulos em Node](Node/01_modulos_node.md): diferença entre ES Modules e CommonJS, imports relativos e top-level `await`.
-4. [02 - Node core útil](Node/02_node_core.md): `path`, `fs/promises`, `process`, `os`, `events`, `crypto` e quando usar cada um.
-5. [03 - HTTP nativo vs Express](Node/03_http_vs_express.md) e [03_Guia_js_Node_Express.js](Node/03_Guia_js_Node_Express.js): panorama completo de HTTP, glossário de camadas e guia passo a passo para montar APIs.
-6. [04 - Express base](Node/04_express_basico.md): middlewares globais, health checks e separação `app`/`server`.
-7. [05 - Estrutura MVC leve](Node/05_estrutura_mvc.md): responsabilidades de routes, controllers, services e repositories.
-8. [06 - Rotas, controladores e validação](Node/06_rotas_controladores_validacao.md): routers Express, verbos HTTP e validação com Zod.
-9. [07 - Erros e asyncHandler](Node/07_erros_e_async_handler.md): gestão centralizada de 404/500 e criação de erros personalizados.
-10. [08 - Persistência em JSON](Node/08_persistencia_json.md): ler/escrever ficheiros com segurança antes de migrar para uma BD.
-11. [09 - Segurança e logging](Node/09_seguranca_logging.md): CORS, Helmet, rate-limit, compressão e notas sobre autenticação.
-12. [10 - Config e 12-Factor](Node/10_config_e_12factor.md): `.env`, módulos de configuração e boas práticas.
-13. [11 - Testes com Supertest/Vitest](Node/11_testes_supertest_vitest.md): motivos para testar e exemplos prontos.
-14. [12 - Views com EJS](Node/12_ejs_views.md): SSR opcional para prototipar interfaces simples.
-15. [13 - Troubleshooting](Node/13_troubleshooting.md): erros comuns, estratégia de depuração e ferramentas úteis.
+---
 
-Todos os ficheiros de `Node/` terminam com um `## Changelog` para documentar evoluções futuras.
+## Documentação
+
+### Guia principal
+
+- [README do módulo Documentação](Documentacao/README.md)
+- [01 - Visão geral da documentação](Documentacao/01_visao_geral.md)
+- [02 - README profissional](Documentacao/02_readme_profissional.md)
+- [03 - Documentação técnica](Documentacao/03_documentacao_tecnica.md)
+- [04 - Documentação da API](Documentacao/04_documentacao_api.md)
+- [05 - Documentação de dados](Documentacao/05_documentacao_dados.md)
+- [06 - Documentação de código](Documentacao/06_documentacao_codigo.md)
+- [07 - Documentação de testes](Documentacao/07_documentacao_testes.md)
+- [08 - Deploy e operação](Documentacao/08_deploy_operacao.md)
+- [09 - Documentação para agentes de IA](Documentacao/09_documentacao_para_ia.md)
+
+### Exemplos (`Documentacao/Exemplos/`)
+
+- [README de exemplos](Documentacao/Exemplos/README.md)
+- [API](Documentacao/Exemplos/API.md)
+- [DADOS](Documentacao/Exemplos/DADOS.md)
+- [DOCUMENTACAO_TECNICA](Documentacao/Exemplos/DOCUMENTACAO_TECNICA.md)
+- [DOCUMENTACAO_CODIGO](Documentacao/Exemplos/DOCUMENTACAO_CODIGO.md)
+- [TESTES](Documentacao/Exemplos/TESTES.md)
+- [DEPLOY](Documentacao/Exemplos/DEPLOY.md)
+- [DOCUMENTACAO_IA](Documentacao/Exemplos/DOCUMENTACAO_IA.md)
+- [AGENTS](Documentacao/Exemplos/AGENTS.md)
+- [AI_CONTEXT](Documentacao/Exemplos/AI_CONTEXT.md)
+- [AI_PROFILES](Documentacao/Exemplos/AI_PROFILES.md)
+- [AI_LIMITS](Documentacao/Exemplos/AI_LIMITS.md)
+- [AI_CONTRACTS](Documentacao/Exemplos/AI_CONTRACTS.md)
+- [AI_TESTING](Documentacao/Exemplos/AI_TESTING.md)
+- [AI_CHANGELOG](Documentacao/Exemplos/AI_CHANGELOG.md)
+
+---
+
+## Ambiente sugerido
+
+- Browser atualizado (DevTools)
+- Node.js LTS + npm
+- Editor de código (VS Code ou equivalente)
