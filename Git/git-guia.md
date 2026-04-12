@@ -148,6 +148,16 @@ git fetch --prune # remove referências a branches remotas que foram apagadas
 2. Criar Pull Request no GitHub
 3. Fazer merge e apagar branch
 
+## 12. Forçar o .gitignore a ser aplicado a ficheiros antigos
+
+Se adicionaste regras ao `.gitignore` mas os ficheiros já estavam a ser rastreados pelo Git, precisas de remover esses ficheiros do índice:
+
+```bash
+git rm -r --cached .
+git add .
+git commit -m "Aplicar .gitignore a ficheiros existentes"
+```
+
 ---
 
 ## 12. Ajuda
