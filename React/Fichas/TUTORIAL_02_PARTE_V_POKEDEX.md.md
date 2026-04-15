@@ -1,12 +1,14 @@
-# Pokédex v4 (Ficha 06B)
+# Pokédex v4 (Tutorial 02 - Parte 5)
 
-Esta ficha continua diretamente da Ficha 06A.
+Esta ficha continua diretamente da Tutorial 02 - Parte 4.
 Pré-requisitos:
-- Ficha 06A concluída.
+
+- Tutorial 02 - Parte 4 concluída.
 - App funcional com login/registo e favoritos por utilizador.
 - Rota privada `/favoritos` a funcionar com `ProtectedRoute`.
 
 Nesta ficha vais acrescentar:
+
 - equipas paginadas;
 - perfil do utilizador;
 - upload de avatar;
@@ -319,7 +321,6 @@ Cria também em `frontend/src/pages/`:
 - `RegisterPage.jsx`
 - `TeamsPage.jsx`
 - `ProfilePage.jsx`
-
 
 ### 6.4) Services canónicos
 
@@ -705,6 +706,7 @@ function App() {
 
 export default App;
 ```
+
 ### 8.5) Teams (carregar/criar/apagar/paginar)
 
 - **Ponto de situação:** auth frontend funcional; agora ligas gestão de equipas à API real.
@@ -1098,6 +1100,7 @@ export default ProfilePage;
 - URL da imagem abre diretamente: `http://localhost:3000/uploads/...`.
 
 ---
+
 ## 10) Checkpoint final: testes manuais completos + erros comuns
 
 ### O que é
@@ -1121,7 +1124,7 @@ Validação funcional fim-a-fim da ficha.
 
 3. **Porque estamos a fazer assim neste projeto**
 
-- A Ficha 06 junta muitas peças; só testes fim-a-fim confirmam integração real.
+- Este tutorial junta muitas peças; só testes fim-a-fim confirmam integração real.
 - A checklist final evita o “parece funcionar” baseado em meia dúzia de cliques.
 - Validar status codes acelera muito o debug e evita tentativas aleatórias.
 
@@ -1268,7 +1271,7 @@ Item checklist + teste executado + resultado observado + estado final.
 - [ ] Rotas protegidas funcionam com `ProtectedRoute` e `authReady`.
 - [ ] Testes manuais fim-a-fim executados com sucesso.
 
-Se tudo estiver marcado, a Ficha 06 está concluída e consistente com a Ficha 05.
+Se tudo estiver marcado, o projeto está concluído.
 
 ## Changelog (edições do enunciado)
 

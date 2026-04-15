@@ -1,4 +1,4 @@
-# Tutorial passo a passo - Migração da Pokédex Explorer (Ficha 03) para Pokédex v2 com Router (Ficha 04) (12.º ano)
+# Tutorial passo a passo - Migração da Pokédex Explorer (Tutorial 02 - Parte I) para Pokédex v2 com Router (Tutorial 02 - Parte 2) (12.º ano)
 
 Este tutorial **continua diretamente a Ficha 3**.
 A ideia é simples: **mantemos a mesma app**, o mesmo visual e os mesmos dados,
@@ -109,12 +109,12 @@ Uma Pokédex digital com dados reais da **PokéAPI**, agora com rotas reais:
 
 **Tabela rápida - Antes (State) vs Depois (URL)**
 
-| Aspeto       | Ficha 03 (state)                | Ficha 04 (URL)    |
-| ------------ | ------------------------------- | ----------------- |
-| Detalhes     | `currentPage`/`selectedPokemon` | `/pokemon/:id`    |
-| Filtros      | estado local                    | `?q=...&type=...` |
-| Back/Forward | manual                          | nativo do browser |
-| Refresh      | perde “página”                  | mantém rota       |
+| Aspeto       | Tutorial 02 - Parte I (state)   | Tutorial 02 - Parte 2 (URL) |
+| ------------ | ------------------------------- | --------------------------- |
+| Detalhes     | `currentPage`/`selectedPokemon` | `/pokemon/:id`              |
+| Filtros      | estado local                    | `?q=...&type=...`           |
+| Back/Forward | manual                          | nativo do browser           |
+| Refresh      | perde “página”                  | mantém rota                 |
 
 ---
 

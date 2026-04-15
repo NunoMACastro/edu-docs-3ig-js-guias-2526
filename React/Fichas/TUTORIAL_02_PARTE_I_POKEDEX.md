@@ -1,4 +1,4 @@
-# Tutorial passo a passo - Pokédex Explorer (Ficha 03) (12.º ano)
+# Tutorial passo a passo - Pokédex Explorer (Tutorial 02 - Parte I) (12.º ano)
 
 Este tutorial explica, do início ao fim, como construir a app **pokedex-explorer**.
 É uma ficha pensada para consolidar os **8 temas fundamentais de React** (ficheiros 1–8 da pasta React).

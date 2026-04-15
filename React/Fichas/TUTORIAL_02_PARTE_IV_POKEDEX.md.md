@@ -1,9 +1,9 @@
-# Tutorial passo a passo - Pokédex v4 (Ficha 06A) (12.º ano)
+# Tutorial passo a passo - Pokédex v4 (Tutorial 02 - Parte 4) (12.º ano)
 
-Esta é a Ficha 06A.
-Continua na Ficha 06B.
+Esta é a Tutorial 02 - Parte 4.
+Continua na Tutorial 02 - Parte 5.
 
-Este tutorial continua diretamente a Ficha 05.
+Este tutorial continua diretamente a Tutorial 02 - Parte 3.
 A app mantém o visual, a navegação e as páginas principais - ou seja, o aluno não começa do zero e não perde o trabalho anterior.
 Home/Details/Favorites continuam a funcionar como antes (mesma UX), mas agora com sessão e base de dados.
 
@@ -39,11 +39,11 @@ Integração completa:
 > refactor, integração, segurança, persistência, e código organizado.
 > No fim, vais ter uma Pokédex fullstack que funciona como uma aplicação real. Espero eu... :D
 
-## 0) O que vais construir e o que muda vs Ficha 05
+## 0) O que vais construir e o que muda vs Tutorial 02 - Parte 3
 
 ### O que é
 
-A Ficha 06A pega no **código final da Ficha 05** e evolui a app para uma versão com autenticação, persistência em MongoDB e favoritos por utilizador.
+A Tutorial 02 - Parte 4 pega no **código final da Tutorial 02 - Parte 3** e evolui a app para uma versão com autenticação, persistência em MongoDB e favoritos por utilizador.
 
 ### Teoria
 
@@ -63,7 +63,7 @@ A Ficha 06A pega no **código final da Ficha 05** e evolui a app para uma versã
 
 3. **Porque estamos a fazer assim neste projeto**
 
-- Esta secção existe para fixar que a Ficha 06 é evolução da Ficha 05.
+- Esta secção existe para fixar que a Tutorial 02 - Parte 4 é evolução da Tutorial 02 - Parte 3.
 - Mantemos os contratos estáveis para poderes focar nas novidades (auth, Mongo, CSRF, upload) sem debugging desnecessário.
 - A separação clara frontend/backend evita misturar responsabilidades e facilita testes por camada.
 
@@ -82,7 +82,7 @@ A Ficha 06A pega no **código final da Ficha 05** e evolui a app para uma versã
 
 ### Porque fazemos isto
 
-Na Ficha 05 tinhas favoritos em memória e frontend/backend já separados. Agora vais fechar o ciclo real de uma SPA fullstack:
+Na Tutorial 02 - Parte 3 tinhas favoritos em memória e frontend/backend já separados. Agora vais fechar o ciclo real de uma SPA fullstack:
 
 - sessão com cookies HttpOnly
 - proteção CSRF para mutações
@@ -91,7 +91,7 @@ Na Ficha 05 tinhas favoritos em memória e frontend/backend já separados. Agora
 
 ### Contratos obrigatórios desta ficha
 
-#### Favorites (compatível com Ficha 05)
+#### Favorites (compatível com Tutorial 02 - Parte 3)
 
 | Método | Endpoint             | Body               | Resposta           |
 | ------ | -------------------- | ------------------ | ------------------ |
@@ -101,14 +101,14 @@ Na Ficha 05 tinhas favoritos em memória e frontend/backend já separados. Agora
 
 Mesmo guardando no Mongo/User internamente, para o frontend o contrato mantém-se: `GET -> number[]`.
 
-> Não uses variantes alternativas. Este contrato é único em toda a Ficha 06.
+> Não uses variantes alternativas. Este contrato é único em toda a Tutorial 02 - Parte 4.
 
 ### Checkpoint 0
 
-- O projeto da Ficha 05 arranca em duas janelas:
+- O projeto da Tutorial 02 - Parte 3 arranca em duas janelas:
     - `backend/` com `node src/server.js` (ou `npm run dev`, se já tiveres script)
     - `frontend/` com `npm run dev`
-- A rota `GET http://localhost:3000/api/favorites` ainda responde (estado base da Ficha 05).
+- A rota `GET http://localhost:3000/api/favorites` ainda responde (estado base da Tutorial 02 - Parte 3).
 
 ### 0.1) Ordem de execução (fluxo recomendado)
 
@@ -118,7 +118,7 @@ Objetivo: reduzir erros por passos fora de ordem.
 2. Ligar MongoDB (fail fast no arranque).
 3. Implementar auth + cookies + CSRF.
 4. Atualizar favorites para “por utilizador”.
-5. (Ficha 06B) Criar teams + upload de avatar.
+5. (Tutorial 02 - Parte 5) Criar teams + upload de avatar.
 6. Refactor do frontend (pages, services, context, router).
 
 ### 0.2) Checkpoints obrigatórios (versão rápida)
@@ -182,11 +182,11 @@ services/ -> funções de acesso a API, sem UI ou lógica de estado. Por exemplo
 
 - Nunca versionar credenciais reais; usar sempre `.env.example` como contrato de configuração.
 
-### Estado inicial esperado (Fim da Ficha 05)
+### Estado inicial esperado (Fim da Tutorial 02 - Parte 3)
 
-A Ficha 06 integra-se sobre o estado final da Ficha 05.
+A Tutorial 02 - Parte 4 integra-se sobre o estado final da Tutorial 02 - Parte 3.
 
-Estado final da Ficha 05 (estrutura de pastas e ficheiros):
+Estado final da Tutorial 02 - Parte 3 (estrutura de pastas e ficheiros):
 
 ```text
 frontend/
@@ -225,9 +225,9 @@ backend/
 
 ### 1.1) Criar a v4 (cópia da v3)
 
-Objetivo: garantir que não perdes o estado final da Ficha 05 ao iniciar a Ficha 06.
+Objetivo: garantir que não perdes o estado final da Tutorial 02 - Parte 3 ao iniciar a Tutorial 02 - Parte 4.
 
-Copia a pasta do projeto da Ficha 05 para uma nova pasta chamada, por exemplo, `pokedex-v4`.
+Copia a pasta do projeto da Tutorial 02 - Parte 3 para uma nova pasta chamada, por exemplo, `pokedex-v4`.
 
 Dentro de `pokedex-v4`, mantém as duas pastas:
 
@@ -238,7 +238,7 @@ backend
 > Dica rápida: se te perderes no terminal, usa `pwd` para ver onde estás.
 > Para subir uma pasta, usa `cd ..`.
 
-Se quiseres usar o git, inicia um novo repositório dentro de `pokedex-v4` e clona o código da Ficha 05 como commit inicial. Assim, podes fazer commits incrementais à medida que avanças na Ficha 06.
+Se quiseres usar o git, inicia um novo repositório dentro de `pokedex-v4` e clona o código da Tutorial 02 - Parte 3 como commit inicial. Assim, podes fazer commits incrementais à medida que avanças na Tutorial 02 - Parte 4.
 
 ### Estrutura final que vamos construir nesta ficha
 
@@ -307,7 +307,7 @@ frontend/
 
 ### Checkpoint 1
 
-- Tens as pastas da ficha 05 `backend/` e `frontend/` na raiz do projeto.
+- Tens as pastas da Tutorial 02 - Parte 3 `backend/` e `frontend/` na raiz do projeto.
 - O alias `@` continua ativo no frontend (confirmar em `frontend/vite.config.js`).
 
 ---
@@ -1356,7 +1356,7 @@ Critérios binários de validação (debug guiado):
 - Se `/api/auth/me` devolver `401`, verifica: cookie `token` presente + `withCredentials: true` + `JWT_SECRET` estável.
 - Se qualquer mutação devolver `403`, verifica: cookie `csrfToken` presente + header `X-CSRF-Token` a coincidir.
 - Se `logout` devolver `200` mas sessão continuar, verifica: `clearCookie` usa as mesmas opções-base do `res.cookie`.
-- Se estiveres ainda com frontend da Ficha 05, é normal ver `403` em `POST/DELETE` até concluíres a secção 6
+- Se estiveres ainda com frontend da Tutorial 02 - Parte 3, é normal ver `403` em `POST/DELETE` até concluíres a secção 6
   (`apiClient` com `withCredentials` + header CSRF automático).
 
 ### Erros comuns (CORS/cookies/CSRF)
@@ -1394,7 +1394,7 @@ Agora fechamos o recurso de favoritos por utilizador nesta ficha.
 
 3. **Porque estamos a fazer assim neste projeto**
 
-- O contrato simples de favorites facilita compatibilidade com Ficha 05.
+- O contrato simples de favorites facilita compatibilidade com Tutorial 02 - Parte 3.
 - Teams 1..6 reflete regra natural da Pokédex (equipa limitada).
 - Upload de avatar fecha o ciclo de integração frontend/backend com ficheiros reais.
 - Limitar `q` protege de regex demasiado pesada e pedidos abusivos.
@@ -1453,7 +1453,7 @@ A autenticação sem dados por utilizador não resolve o objetivo da app. Esta s
 ```js
 /**
  * Ficheiro: backend/src/routes/favorites.routes.js
- * Objetivo: gerir favoritos por utilizador mantendo contrato compatível com a Ficha 05.
+ * Objetivo: gerir favoritos por utilizador mantendo contrato compatível com a Tutorial 02 - Parte 3.
 
  */
 
@@ -1642,7 +1642,7 @@ Sem esta separação, o projeto cresce confuso e os imports ficam incoerentes.
 - **Validação rápida:** após os `mv`, podem existir erros temporários de import; isso resolve no passo **5.3**
   ao atualizar `App.jsx` para `@/pages/...`.
 
-Se na tua Ficha 05 já existe `src/pages`, adapta estes comandos: o objetivo é que as rotas fiquem em `pages/` e não em `components/`.
+Se na tua Tutorial 02 - Parte 3 já existe `src/pages`, adapta estes comandos: o objetivo é que as rotas fiquem em `pages/` e não em `components/`.
 
 Se os ficheiros têm nomes diferentes:
 
@@ -1986,11 +1986,11 @@ Se algo falhar aqui, valida pela ordem:
 
 ---
 
-## 7) Frontend: Context atualizado (compatível com Ficha 05) + `authReady`
+## 7) Frontend: Context atualizado (compatível com Tutorial 02 - Parte 3) + `authReady`
 
 ### O que é
 
-Vamos evoluir o `PokedexContext` para incluir autenticação sem quebrar as páginas da Ficha 05.
+Vamos evoluir o `PokedexContext` para incluir autenticação sem quebrar as páginas da Tutorial 02 - Parte 3.
 
 ### Teoria
 
@@ -2011,7 +2011,7 @@ Vamos evoluir o `PokedexContext` para incluir autenticação sem quebrar as pág
 3. **Porque estamos a fazer assim neste projeto**
 
 - Evita redirecionar para login antes de confirmar sessão existente.
-- Mantém compatibilidade com páginas da Ficha 05 (pokemon/favorites continuam no contexto).
+- Mantém compatibilidade com páginas da Tutorial 02 - Parte 3 (pokemon/favorites continuam no contexto).
 - Centraliza login/logout/toggleFavorite para toda a app usar o mesmo fluxo.
 
 4. **Erros comuns e sintomas**
@@ -2049,7 +2049,7 @@ Sem `authReady`, as rotas protegidas podem redirecionar antes da restauração d
 ### 7.1) Substituir `frontend/src/context/PokedexContext.jsx`
 
 - **Ponto de situação:** services prontos; agora concentras estado e fluxo da app.
-- **Objetivo deste passo:** integrar sessão (`authReady`, login/logout, restoreSession) mantendo compatibilidade com Ficha 05.
+- **Objetivo deste passo:** integrar sessão (`authReady`, login/logout, restoreSession) mantendo compatibilidade com Tutorial 02 - Parte 3.
 - **Ficheiros:** substituir `frontend/src/context/PokedexContext.jsx`.
 - **Validação rápida:** app não redireciona cedo no refresh e favoritos sincronizam após login/restauração.
 
@@ -2754,7 +2754,7 @@ Validação funcional fim-a-fim da ficha.
 
 3. **Porque estamos a fazer assim neste projeto**
 
-- A Ficha 06 junta muitas peças; só testes fim-a-fim confirmam integração real.
+- A Tutorial 02 - Parte 4 junta muitas peças; só testes fim-a-fim confirmam integração real.
 - A checklist final evita o “parece funcionar” baseado em meia dúzia de cliques.
 - Validar status codes acelera muito o debug e evita tentativas aleatórias.
 
@@ -2894,4 +2894,4 @@ Item checklist + teste executado + resultado observado + estado final.
 - [ ] Rotas protegidas funcionam com `ProtectedRoute` e `authReady`.
 - [ ] Testes manuais fim-a-fim executados com sucesso.
 
-Se tudo estiver marcado, a Ficha 06A está concluída e consistente com a Ficha 05.
+Se tudo estiver marcado, a Tutorial 02 - Parte 4 está concluída e consistente com a Tutorial 02 - Parte 3.

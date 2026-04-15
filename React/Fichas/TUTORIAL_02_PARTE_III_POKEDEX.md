@@ -1,4 +1,4 @@
-# Tutorial passo a passo - Pokédex v3 com Backend + Context (Ficha 05) (12.º ano)
+# Tutorial passo a passo - Pokédex v3 com Backend + Context (Tutorial 02 - Parte 3) (12.º ano)
 
 Este tutorial **continua diretamente a Ficha 4**.
 A app mantém o Router, as páginas e a experiência do utilizador.
