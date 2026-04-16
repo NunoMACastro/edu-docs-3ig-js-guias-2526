@@ -1,209 +1,498 @@
-# Exercícios de Introdução ao React (12º ano)
+# Tutorial passo a passo - Lista de Boas-vindas (Ficha React 12.º ano)
 
-## Exercício 1: Instalar o React
+Este tutorial explica, do início ao fim, como construir uma app React introdutória.
 
-1. Abre o terminal e navega até à pasta onde queres criar o teu projeto React.
-2. Executa o seguinte comando para criar um novo projeto React usando o Vite:
+É uma ficha pensada para consolidar os seguintes temas:
+
+1. Fundamentos e setup
+2. JSX e componentes
+3. Estado e eventos
+4. Formulários controlados
+5. Listas e renderização condicional
+6. Composição com props
+
+---
+
+## 0) O que vais construir
+
+Uma app chamada **Lista de Boas-vindas** que permite:
+
+- alternar tema claro/escuro;
+- escrever um nome num formulário;
+- ao submeter, mostrar `Olá, <nome>!`;
+- guardar esse nome numa lista apresentada por baixo.
+
+### Vocabulário rápido
+
+- **Componente**: bloco reutilizável da interface.
+- **Estado (`state`)**: dados que mudam e atualizam a UI.
+- **Props**: dados/funções passadas do componente pai para o filho.
+- **Input controlado**: `value` e `onChange` ligados ao estado React.
+
+### Debug rápido para toda a ficha
+
+1. Estás na pasta certa? (`pwd`)
+2. O projeto foi criado sem erros?
+3. O servidor está a correr? (`npm run dev`)
+4. A consola do browser mostra erros?
+5. Os imports têm caminhos corretos?
+
+### Pontos de paragem
+
+- **Paragem A**: app mínima com título e texto.
+- **Paragem B**: botão de tema funciona.
+- **Paragem C**: formulário mostra saudação com o último nome.
+- **Paragem D**: cada nome entra na lista.
+- **Paragem E**: app separada em componentes (`FormularioNome`, `ListaNomes`).
+
+### 0.1) Mapa de fases
+
+- Fase 1 - Setup e app mínima: `src/App.jsx`
+- Fase 2 - Tema com `useState`: `src/App.jsx`
+- Fase 3 - Formulário controlado + saudação: `src/App.jsx`
+- Fase 4 - Lista incremental de nomes: `src/App.jsx`
+- Fase 5 - Separação por componentes: `src/App.jsx`, `src/components/FormularioNome.jsx`, `src/components/ListaNomes.jsx`
+
+---
+
+## 1) Pré-requisitos
+
+- Node.js 18+
+- npm
+- VS Code (ou outro editor)
+
+Verifica versões:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 2) Criar o projeto com Vite
+
+1. Criar projeto:
 
 ```bash
 npm create vite@latest ficha01 -- --template react
 ```
 
-3. Navega até à pasta do projeto:
+2. Entrar na pasta:
 
 ```bash
 cd ficha01
 ```
 
-4. Instala as dependências do projeto:
+3. Instalar dependências:
 
 ```bash
 npm install
 ```
 
-5. Se o servidor de desenvolvimento não iniciar automaticamente, executa o seguinte comando para iniciar o servidor:
+4. Arrancar servidor:
 
 ```bash
 npm run dev
 ```
 
-## Exercício 2: Criar um Componente Simples
+5. Abrir no editor (opcional):
 
-1. Abre o ficheiro `src/App.jsx`.
-2. Substitui o conteúdo do ficheiro pelo seguinte código para criar um componente simples que exibe uma mensagem de boas-vindas:
+```bash
+code .
+```
+
+---
+
+## 3) Limpeza inicial
+
+Se quiseres começar limpo:
+
+- apagar `src/App.css`;
+- remover `import "./App.css"` do `src/App.jsx`.
+
+No fim, garante que tens pelo menos:
+
+```text
+src/
+  App.jsx
+  main.jsx
+```
+
+---
+
+## 4) Fase 1 - App mínima (Paragem A)
+
+Substitui o conteúdo de `src/App.jsx` por:
 
 ```jsx
-import React from "react"; // Esta importação é opcional a partir do React 17, mas é boa prática incluí-la.
-
 function App() {
     return (
-        <div>
-            <h1>Bem-vindo ao React!</h1>
-            <p>Este é o meu primeiro componente React.</p>
-        </div>
+        <main style={{ padding: "24px", fontFamily: "Arial, sans-serif" }}>
+            <h1>Lista de Boas-vindas</h1>
+            <p>Primeira app React da turma.</p>
+        </main>
     );
 }
 
 export default App;
 ```
 
-## Exercício 3: Criar um botão que muda a cor do fundo
+**Checkpoint A**
 
-1. No mesmo ficheiro `src/App.jsx`, adiciona um estado para controlar a cor do fundo e um botão para alterar essa cor. Substitui o conteúdo do ficheiro pelo seguinte código:
+- Vês título e texto na página.
+- Não há erros na consola.
+
+---
+
+## 5) Fase 2 - Tema claro/escuro (Paragem B)
+
+Agora adiciona estado com `useState` e botão de alternância.
+
+`src/App.jsx`:
 
 ```jsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 function App() {
-    const [backgroundColor, setBackgroundColor] = useState("white");
+    const [temaEscuro, setTemaEscuro] = useState(false);
 
-    const changeBackgroundColor = () => {
-        setBackgroundColor(backgroundColor === "white" ? "lightblue" : "white");
+    const estilos = {
+        minHeight: "100vh",
+        padding: "24px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: temaEscuro ? "#1f2937" : "#f3f4f6",
+        color: temaEscuro ? "#f9fafb" : "#111827",
     };
 
     return (
-        <div
-            style={{
-                backgroundColor: backgroundColor,
-                height: "100vh",
-                padding: "20px",
-            }}
-        >
-            <h1>Bem-vindo ao React!</h1>
-            <p>Este é o meu primeiro componente React.</p>
-            <button onClick={changeBackgroundColor}>Mudar Cor do Fundo</button>
-        </div>
+        <main style={estilos}>
+            <h1>Lista de Boas-vindas</h1>
+            <p>Primeira app React da turma.</p>
+
+            <button onClick={() => setTemaEscuro(!temaEscuro)}>
+                Mudar tema
+            </button>
+        </main>
     );
 }
 
 export default App;
 ```
 
-## Exercício 4: Criar um componente de lista
+**Checkpoint B**
 
-1. Cria um novo ficheiro chamado `src/components/Lista.jsx`.
+- O botão altera fundo e cor de texto.
+- O estado mantém-se coerente a cada clique.
 
-2. Adiciona o seguinte código ao ficheiro `src/components/Lista.jsx` para criar um componente que exibe uma lista de itens:
+---
 
-```jsx
-import React from "react";
+## 6) Fase 3 - Formulário controlado e saudação (Paragem C)
 
-function Lista() {
-    const items = ["Item 1", "Item 2", "Item 3", "Item 4"];
+Nesta fase:
 
-    return (
-        <div>
-            <h2>Minha Lista</h2>
-            <ul>
-                {items.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
-            </ul>
-        </div>
-    );
-}
+- crias um input controlado (`value` + `onChange`);
+- no submit mostras saudação com o último nome enviado.
 
-export default Lista;
-```
-
-3. Agora, importa o componente `Lista` no ficheiro `src/App.jsx` e adiciona-o ao JSX para exibir a lista na tua aplicação:
+`src/App.jsx`:
 
 ```jsx
-import React, { useState } from "react";
-import Lista from "./components/Lista"; // Importa o componente Lista
+import { useState } from "react";
 
 function App() {
-    const [backgroundColor, setBackgroundColor] = useState("white");
-
-    const changeBackgroundColor = () => {
-        setBackgroundColor(backgroundColor === "white" ? "lightblue" : "white");
-    };
-
-    return (
-        <div
-            style={{
-                backgroundColor: backgroundColor,
-                height: "100vh",
-                padding: "20px",
-            }}
-        >
-            <h1>Bem-vindo ao React!</h1>
-            <p>Este é o meu primeiro componente React.</p>
-            <button onClick={changeBackgroundColor}>Mudar Cor do Fundo</button>
-            <Lista /> {/* Adiciona o componente Lista aqui */}
-        </div>
-    );
-}
-
-export default App;
-```
-
-## Exercício 5: Criar um componente de formulário
-
-1. Cria um novo ficheiro chamado `src/components/Formulario.jsx`.
-
-2. Adiciona o seguinte código ao ficheiro `src/components/Formulario.jsx` para criar um componente de formulário simples:
-
-```jsx
-import React, { useState } from "react";
-
-function Formulario() {
+    const [temaEscuro, setTemaEscuro] = useState(false);
     const [nome, setNome] = useState("");
+    const [ultimoNome, setUltimoNome] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        alert(`Olá, ${nome}!`);
+    const estilos = {
+        minHeight: "100vh",
+        padding: "24px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: temaEscuro ? "#1f2937" : "#f3f4f6",
+        color: temaEscuro ? "#f9fafb" : "#111827",
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const nomeLimpo = nome.trim();
+        if (!nomeLimpo) return;
+
+        setUltimoNome(nomeLimpo);
+        setNome("");
     };
 
     return (
-        <div>
-            <h2>Formulário de Saudação</h2>
-            <form onSubmit={handleSubmit}>
+        <main style={estilos}>
+            <h1>Lista de Boas-vindas</h1>
+            <p>Primeira app React da turma.</p>
+
+            <button onClick={() => setTemaEscuro(!temaEscuro)}>
+                Mudar tema
+            </button>
+
+            <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
                 <input
                     type="text"
-                    placeholder="Digite seu nome"
+                    placeholder="Escreve um nome"
                     value={nome}
-                    onChange={(e) => setNome(e.target.value)}
+                    onChange={(event) => setNome(event.target.value)}
                 />
-                <button type="submit">Enviar</button>
+                <button type="submit">Adicionar</button>
             </form>
-        </div>
-    );
-}
 
-export default Formulario;
-```
-
-3. Agora, importa o componente `Formulario` no ficheiro `src/App.jsx` e adiciona-o ao JSX para exibir o formulário na tua aplicação:
-
-```jsx
-import React, { useState } from "react";
-import Lista from "./components/Lista"; // Importa o componente Lista
-import Formulario from "./components/Formulario"; // Importa o componente Formulario
-
-function App() {
-    const [backgroundColor, setBackgroundColor] = useState("white");
-
-    const changeBackgroundColor = () => {
-        setBackgroundColor(backgroundColor === "white" ? "lightblue" : "white");
-    };
-
-    return (
-        <div
-            style={{
-                backgroundColor: backgroundColor,
-                height: "100vh",
-                padding: "20px",
-            }}
-        >
-            <h1>Bem-vindo ao React!</h1>
-            <p>Este é o meu primeiro componente React.</p>
-            <button onClick={changeBackgroundColor}>Mudar Cor do Fundo</button>
-            <Lista /> {/* Adiciona o componente Lista aqui */}
-            <Formulario /> {/* Adiciona o componente Formulario aqui */}
-        </div>
+            {ultimoNome && <p>Olá, {ultimoNome}!</p>}
+        </main>
     );
 }
 
 export default App;
 ```
+
+**Checkpoint C**
+
+- Se submeteres vazio, nada acontece.
+- Se submeteres um nome, aparece `Olá, nome!`.
+- O input limpa após submit.
+
+---
+
+## 7) Fase 4 - Guardar nomes numa lista (Paragem D)
+
+Agora vem o comportamento principal da ficha:
+
+Sempre que submetes um nome:
+
+1. mostra `Olá, <nome>!`;
+2. adiciona o nome à lista;
+3. mostra a lista por baixo.
+
+`src/App.jsx`:
+
+```jsx
+import { useState } from "react";
+
+function App() {
+    const [temaEscuro, setTemaEscuro] = useState(false);
+    const [nome, setNome] = useState("");
+    const [ultimoNome, setUltimoNome] = useState("");
+    const [nomes, setNomes] = useState([]);
+
+    const estilos = {
+        minHeight: "100vh",
+        padding: "24px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: temaEscuro ? "#1f2937" : "#f3f4f6",
+        color: temaEscuro ? "#f9fafb" : "#111827",
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const nomeLimpo = nome.trim();
+        if (!nomeLimpo) return;
+
+        setUltimoNome(nomeLimpo);
+        setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
+        setNome("");
+    };
+
+    return (
+        <main style={estilos}>
+            <h1>Lista de Boas-vindas</h1>
+            <p>Primeira app React da turma.</p>
+
+            <button onClick={() => setTemaEscuro(!temaEscuro)}>
+                Mudar tema
+            </button>
+
+            <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
+                <input
+                    type="text"
+                    placeholder="Escreve um nome"
+                    value={nome}
+                    onChange={(event) => setNome(event.target.value)}
+                />
+                <button type="submit">Adicionar</button>
+            </form>
+
+            {ultimoNome && <p>Olá, {ultimoNome}!</p>}
+
+            <h2>Lista de nomes</h2>
+            <ul>
+                {nomes.map((nomeAtual, index) => (
+                    <li key={`${nomeAtual}-${index}`}>{nomeAtual}</li>
+                ))}
+            </ul>
+        </main>
+    );
+}
+
+export default App;
+```
+
+**Checkpoint D**
+
+- A saudação mostra sempre o último nome submetido.
+- A lista acumula todos os nomes submetidos.
+- O render da lista usa `.map()`.
+
+---
+
+## 8) Fase 5 - Separar em componentes (Paragem E)
+
+Nesta fase vais manter o mesmo comportamento, mas com melhor organização.
+
+### 8.1) Criar `src/components/ListaNomes.jsx`
+
+```jsx
+function ListaNomes({ nomes }) {
+    return (
+        <>
+            <h2>Lista de nomes</h2>
+            <ul>
+                {nomes.map((nomeAtual, index) => (
+                    <li key={`${nomeAtual}-${index}`}>{nomeAtual}</li>
+                ))}
+            </ul>
+        </>
+    );
+}
+
+export default ListaNomes;
+```
+
+### 8.2) Criar `src/components/FormularioNome.jsx`
+
+```jsx
+import { useState } from "react";
+
+function FormularioNome({ onAdicionarNome }) {
+    const [nome, setNome] = useState("");
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const nomeLimpo = nome.trim();
+        if (!nomeLimpo) return;
+
+        onAdicionarNome(nomeLimpo);
+        setNome("");
+    };
+
+    return (
+        <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
+            <input
+                type="text"
+                placeholder="Escreve um nome"
+                value={nome}
+                onChange={(event) => setNome(event.target.value)}
+            />
+            <button type="submit">Adicionar</button>
+        </form>
+    );
+}
+
+export default FormularioNome;
+```
+
+### 8.3) Atualizar `src/App.jsx`
+
+```jsx
+import { useState } from "react";
+import FormularioNome from "./components/FormularioNome";
+import ListaNomes from "./components/ListaNomes";
+
+function App() {
+    const [temaEscuro, setTemaEscuro] = useState(false);
+    const [ultimoNome, setUltimoNome] = useState("");
+    const [nomes, setNomes] = useState([]);
+
+    const estilos = {
+        minHeight: "100vh",
+        padding: "24px",
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: temaEscuro ? "#1f2937" : "#f3f4f6",
+        color: temaEscuro ? "#f9fafb" : "#111827",
+    };
+
+    const adicionarNome = (nomeNovo) => {
+        setUltimoNome(nomeNovo);
+        setNomes((nomesAnteriores) => [...nomesAnteriores, nomeNovo]);
+    };
+
+    return (
+        <main style={estilos}>
+            <h1>Lista de Boas-vindas</h1>
+            <p>Primeira app React da turma.</p>
+
+            <button onClick={() => setTemaEscuro(!temaEscuro)}>
+                Mudar tema
+            </button>
+
+            <FormularioNome onAdicionarNome={adicionarNome} />
+
+            {ultimoNome && <p>Olá, {ultimoNome}!</p>}
+
+            <ListaNomes nomes={nomes} />
+        </main>
+    );
+}
+
+export default App;
+```
+
+**Checkpoint E**
+
+- Comportamento final mantém-se igual ao da fase anterior.
+- O `App` fica mais simples e legível.
+- A lista e o formulário ficam reutilizáveis.
+
+---
+
+## 9) Erros comuns e correções
+
+1. `Cannot find module ...`
+
+- Confirma se criaste `src/components/ListaNomes.jsx` e `src/components/FormularioNome.jsx`.
+- Revê maiúsculas/minúsculas nos nomes dos ficheiros e imports.
+
+2. O botão não muda o tema
+
+- Confirma o `onClick={() => setTemaEscuro(!temaEscuro)}`.
+- Confirma que `temaEscuro` está a ser usado no objeto `estilos`.
+
+3. Submeter não faz nada
+
+- Verifica se o botão tem `type="submit"`.
+- Verifica se o `<form>` tem `onSubmit={handleSubmit}`.
+
+4. Lista não atualiza
+
+- Confirma se estás a usar:
+
+```jsx
+setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
+```
+
+- Não uses `nomes.push(...)` diretamente.
+
+---
+
+## 10) Desafios finais
+
+1. Não permitir nomes repetidos.
+2. Adicionar botão para remover cada nome.
+3. Mostrar contador total de nomes.
+4. Ordenar lista alfabeticamente.
+5. Guardar lista no `localStorage`.
+
+---
+
+## 11) Checklist de validação
+
+Antes de terminares, confirma:
+
+- projeto criado com Vite e a correr;
+- tema claro/escuro funcional;
+- formulário controlado funcional;
+- saudação ao último nome submetido;
+- lista de nomes acumulada e visível;
+- app separada em componentes.
