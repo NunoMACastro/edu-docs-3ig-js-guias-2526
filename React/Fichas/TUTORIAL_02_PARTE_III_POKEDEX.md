@@ -659,7 +659,7 @@ Com Context:
 
 ## 5) Criar o backend Express
 
-[Consultar documentação do Node.js e Express](../Node/)
+[Consultar documentação do Node.js e Express](../../Node/)
 
 ### 5.0) Mini-teoria: Express, middleware, CORS e ES Modules
 

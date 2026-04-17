@@ -1,4 +1,4 @@
-# React.js (12.º Ano) - 15 · HTTP, REST, CORS e contratos de API
+# React.js (12.º Ano) - 13 · HTTP, REST, CORS e contratos de API
 
 > **Objetivo deste ficheiro**
 >

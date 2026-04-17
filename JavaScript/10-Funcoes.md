@@ -152,13 +152,15 @@ function fatorial(n) {
 
 Contar vogais numa palavra:
 
-````js
+```js
 function contarVogais(palavra) {
     if (palavra.length === 0) return 0;
     const primeira = palavra[0].toLowerCase();
     const resto = palavra.slice(1);
     const ehVogal = "aeiou".includes(primeira) ? 1 : 0;
     return ehVogal + contarVogais(resto);
+}
+```
 
 ---
 
@@ -174,7 +176,7 @@ let total = 0;
 function adicionar(n) {
     total += n; // impura (depende de total)
 }
-````
+```
 
 Prefere funções puras sempre que possível: mais fáceis de testar e repetir.
 
@@ -197,7 +199,7 @@ Arrow functions capturam o `this` exterior, portanto são ótimas para callbacks
 
 ---
 
-## 9) Funções de Callback
+## 8) Funções de Callback
 
 Funções que são passadas como argumentos para outras funções.
 
@@ -213,7 +215,7 @@ console.log(calcular(4, 2, soma)); // 6
 console.log(calcular(4, 2, produto)); // 8
 ```
 
-## 8) Mini desafios
+## 9) Mini desafios
 
 1. Escreve uma função `saudacao(nome, hora)` que devolve uma saudação diferente consoante a hora do dia (manhã, tarde, noite). Usa valores por defeito para `hora` (hora atual).
 2. Cria uma função `contador(inicio)`que faz uma contagem decrescente desde o argumento `inicio` até 0, imprimindo cada número.
@@ -228,7 +230,3 @@ console.log(calcular(4, 2, produto)); // 8
 -   **v1.1.0 - 2025-11-10**
     -   Mini desafios ampliados com mais quatro propostas sobre closures e composição de funções.
     -   Changelog adicionado para acompanhar futuras melhorias do capítulo.
-
-```
-
-```

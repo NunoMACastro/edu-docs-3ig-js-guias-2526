@@ -75,7 +75,7 @@ Para comparar números especiais:
 
 ```js
 Number.isNaN(valor); // melhor forma de testar NaN
-Object.is(-0, 0); // true se quiseres distinguir o sinal (curiosidade)
+Object.is(-0, 0); // false (distingue o sinal de zero)
 ```
 
 ---

@@ -1,6 +1,6 @@
 # Tuts - Materiais de Programação (12.º ano)
 
-Este repositório reúne os materiais usados nas aulas de Programação (12.º IG), organizados por módulos: Git, JavaScript, Node.js, React, Fullstack e Documentação.
+Este repositório reúne os materiais usados nas aulas de Programação (12.º IG), organizados por módulos: Git, JavaScript, Node.js, MongoDB, React, Fullstack e Documentação.
 
 [Índice de repositórios do 3.º IG](https://github.com/NunoMACastro/edu-3ig-indice-2526 "Índice de repositórios do 3.º IG")
 
@@ -13,6 +13,7 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 | `Git/`                   | Guia rápido de comandos Git e template de `.gitignore`.                    |
 | `JavaScript/`            | 17 capítulos de JavaScript (fundamentos a browser/intermédio).             |
 | `Node/`                  | Percurso completo de Node.js + Express (15 guias em Markdown + 1 guia JS). |
+| `MongoDB/`               | 8 capítulos de MongoDB (Atlas, Node driver, Mongoose e desempenho).         |
 | `React/`                 | 17 capítulos de React + README próprio do módulo.                          |
 | `React/Fichas/`          | 8 fichas/tutorials práticos com imagens de apoio.                          |
 | `Fullstack/`             | 3 capítulos para integrar React + Express + MongoDB.                       |
@@ -26,9 +27,10 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 1. `Git/` (base de trabalho em equipa)
 2. `JavaScript/` (fundamentos da linguagem)
 3. `Node/` (backend e APIs)
-4. `React/` (frontend SPA)
-5. `Fullstack/` (integração front + back + dados)
-6. `Documentacao/` (documentação técnica e operacional)
+4. `MongoDB/` (persistência e modelação de dados)
+5. `React/` (frontend SPA)
+6. `Fullstack/` (integração front + back + dados)
+7. `Documentacao/` (documentação técnica e operacional)
 
 ---
 
@@ -87,6 +89,19 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 
 ---
 
+## MongoDB (8 capítulos)
+
+1. [01 - Introdução e setup Atlas](MongoDB/01_introducao_e_setup_atlas.md)
+2. [02 - Modelação de documentos e relações](MongoDB/02_modelacao_documentos_e_relacoes.md)
+3. [03 - CRUD básico e operadores](MongoDB/03_crud_basico_e_operadores.md)
+4. [04 - Node driver: fundamentos](MongoDB/04_node_driver_fundamentos.md)
+5. [05 - Mongoose: schemas e models](MongoDB/05_mongoose_schemas_models.md)
+6. [06 - Agregações e pipeline](MongoDB/06_agregacoes_e_pipeline.md)
+7. [07 - Queries e indexação](MongoDB/07_queries_e_indexacao.md)
+8. [08 - Validação e erros](MongoDB/08_validacao_e_erros.md)
+
+---
+
 ## React
 
 ### Guia principal
@@ -112,14 +127,14 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 
 ### Fichas e exercícios complementares (`React/Fichas/`)
 
-- [Tutorial 01](React/Fichas/TUTORIAL_01.md)
-- [Tutorial 02](React/Fichas/TUTORIAL_02.md)
-- [Tutorial 03](React/Fichas/TUTORIAL_03.md)
-- [Tutorial 03 - Exercícios finais](React/Fichas/TUTORIAL_03_EXERCICIOS_FINAIS.md)
-- [Tutorial 04](React/Fichas/TUTORIAL_04.md)
-- [Tutorial 05](React/Fichas/TUTORIAL_05.md)
-- [Tutorial 06A](React/Fichas/TUTORIAL_06A.md)
-- [Tutorial 06B](React/Fichas/TUTORIAL_06B.md)
+- [Ficha 01 - Introdução](React/Fichas/FICHA_01_INTRO.md)
+- [Ficha 02 - Task Tracker](React/Fichas/FICHA_02_TASK_TRACKER.md)
+- [Tutorial 01 - Meteo](React/Fichas/TUTORIAL_01_METEO.md)
+- [Tutorial 02 Parte I - Pokedex](React/Fichas/TUTORIAL_02_PARTE_I_POKEDEX.md)
+- [Tutorial 02 Parte II - Pokedex](React/Fichas/TUTORIAL_02_PARTE_II_POKEDEX.md.md)
+- [Tutorial 02 Parte III - Pokedex](React/Fichas/TUTORIAL_02_PARTE_III_POKEDEX.md)
+- [Tutorial 02 Parte IV - Pokedex](React/Fichas/TUTORIAL_02_PARTE_IV_POKEDEX.md.md)
+- [Tutorial 02 Parte V - Pokedex](React/Fichas/TUTORIAL_02_PARTE_V_POKEDEX.md.md)
 
 ---
 

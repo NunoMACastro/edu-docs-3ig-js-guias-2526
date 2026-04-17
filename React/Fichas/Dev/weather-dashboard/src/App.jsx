@@ -88,7 +88,7 @@ function App() {
         return () => {
             ignore = true;
         };
-    }, [selectedCityId]);
+    }, [selectedCity]);
 
     useEffect(() => {
         let ignore = false;
@@ -126,7 +126,7 @@ function App() {
         return () => {
             ignore = true;
         };
-    }, [compareCityIds]);
+    }, [compareCities]);
 
     const comparisonRows = useMemo(() => {
         return compareCityIds

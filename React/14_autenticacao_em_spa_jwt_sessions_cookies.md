@@ -1,4 +1,4 @@
-# React.js (12.º Ano) - 16 · Autenticação em SPA: JWT, Sessions e Cookies
+# React.js (12.º Ano) - 14 · Autenticação em SPA: JWT, Sessions e Cookies
 
 > **Objetivo deste ficheiro**
 >

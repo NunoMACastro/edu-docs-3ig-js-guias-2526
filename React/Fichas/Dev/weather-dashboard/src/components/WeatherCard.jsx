@@ -48,20 +48,23 @@ function getWeatherIcon(code) {
     return WiCloudy;
 }
 
+function renderWeatherIcon(code, className) {
+    const Icon = getWeatherIcon(code);
+    return <Icon className={className} aria-hidden="true" />;
+}
+
 function WeatherCard({ cityName, current }) {
     if (!current) return null;
-
-    const ConditionIcon = getWeatherIcon(current.weatherCode);
 
     return (
         <article className="panel weather-card">
             <div>
                 <h2 className="weather-card__title">{cityName}</h2>
                 <p className="weather-card__condition">
-                    <ConditionIcon
-                        className="weather-card__condition-icon"
-                        aria-hidden="true"
-                    />
+                    {renderWeatherIcon(
+                        current.weatherCode,
+                        "weather-card__condition-icon",
+                    )}
                     <strong>{getWeatherLabel(current.weatherCode)}</strong>
                 </p>
                 <div className="weather-card__meta">
@@ -97,7 +100,7 @@ function WeatherCard({ cityName, current }) {
                 </div>
             </div>
             <div className="weather-icon" aria-hidden="true">
-                <ConditionIcon className="weather-icon__svg" />
+                {renderWeatherIcon(current.weatherCode, "weather-icon__svg")}
             </div>
         </article>
     );

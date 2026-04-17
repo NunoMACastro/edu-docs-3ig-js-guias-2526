@@ -19,6 +19,7 @@ Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
 -   **React + Vite:** módulo React concluído até ao consumo de API.
 -   **Node + Express:** módulo Node com app base e rotas.
 -   **MongoDB Atlas:** cluster criado e `MONGODB_URI` funcional.
+-   **MongoDB (módulo):** recomendado concluir `../MongoDB/01_introducao_e_setup_atlas.md` a `../MongoDB/08_validacao_e_erros.md`.
 -   **Terminal:** para correr frontend e backend em paralelo.
 
 ## Portas típicas

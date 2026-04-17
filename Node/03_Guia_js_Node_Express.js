@@ -191,8 +191,7 @@ app.use(express.urlencoded({ extended: true })); // forms
 // Estáticos (opcional): /public fica acessível como /static/...
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-// const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// A linha de cima está comentada para não dar erro neste ficheiro guia.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 // Health endpoint (monitorização simples)

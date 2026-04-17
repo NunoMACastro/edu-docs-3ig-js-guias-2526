@@ -143,8 +143,8 @@ function App() {
 
 ## 5. [EXTRA] Pontes para auth/upload/paginação
 
--   **Auth:** vê `../React/16_autenticacao_em_spa_jwt_sessions_cookies.md`.
--   **Upload:** vê `../React/17_upload_paginacao_filtros_e_cliente_api.md`.
+-   **Auth:** vê `../React/14_autenticacao_em_spa_jwt_sessions_cookies.md`.
+-   **Upload:** vê `../React/15_upload_paginacao_filtros_e_cliente_api.md`.
 -   **Paginação/Filtros:** vê `../MongoDB/07_queries_e_indexacao.md`.
 
 <a id="exercicios"></a>

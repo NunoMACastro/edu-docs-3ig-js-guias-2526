@@ -55,7 +55,9 @@ import rateLimit from "express-rate-limit";
 app.use(helmet());
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN?.split(",") ?? "*",
+        origin: process.env.CORS_ORIGIN
+            ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+            : false,
         credentials: true,
     })
 );
@@ -64,7 +66,7 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 ```
 
-Explica aos alunos como transformar `CORS_ORIGIN` numa lista separada por vírgulas, permitindo só os domínios necessários.
+Explica aos alunos como transformar `CORS_ORIGIN` numa lista separada por vírgulas, permitindo só os domínios necessários (sem usar `"*"` com `credentials: true`).
 
 ## Logging estruturado com Pino
 

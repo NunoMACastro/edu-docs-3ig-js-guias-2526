@@ -1,4 +1,4 @@
-# React.js (12.º Ano) - 17 · Upload, paginação, filtros e cliente de API
+# React.js (12.º Ano) - 15 · Upload, paginação, filtros e cliente de API
 
 > **Objetivo deste ficheiro**
 >

@@ -85,7 +85,8 @@ Imagina que vais fazer análises ao sangue:
 
 Para isso, usamos o construtor `Promise`:
 
-```jsconst p = new Promise((resolve, reject) => {
+```js
+const p = new Promise((resolve, reject) => {
     // faz algo assíncrono
     if (/* correu bem */) {
         resolve(valor); // promessa cumprida
@@ -97,7 +98,7 @@ Para isso, usamos o construtor `Promise`:
 
 **Consumir uma Promise**
 
-Consumir uma promisse significa dizer o que fazer quando ela for resolvida ou rejeitada. Para isso, usamos os métodos:
+Consumir uma promise significa dizer o que fazer quando ela for resolvida ou rejeitada. Para isso, usamos os métodos:
 
 -   **`then`** recebe o valor;
 -   **`catch`** recebe o erro;
