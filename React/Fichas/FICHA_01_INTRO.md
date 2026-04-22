@@ -1,15 +1,15 @@
 # Tutorial passo a passo - Lista de Boas-vindas (Ficha React 12.º ano)
 
-Este tutorial explica, do início ao fim, como construir uma app React introdutória.
+Este tutorial leva-te do zero a uma app React simples, mas completa para uma aula introdutória.
 
-É uma ficha pensada para consolidar os seguintes temas:
+Objetivos pedagógicos desta ficha:
 
-1. Fundamentos e setup
-2. JSX e componentes
-3. Estado e eventos
-4. Formulários controlados
-5. Listas e renderização condicional
-6. Composição com props
+1. Entender a estrutura mínima de um componente React.
+2. Usar `useState` para alterar a interface em tempo real.
+3. Criar um formulário controlado (`value` + `onChange`).
+4. Reagir ao `submit` de um formulário sem recarregar a página.
+5. Renderizar listas com `.map()` e `key`.
+6. Separar responsabilidades em componentes.
 
 ---
 
@@ -24,10 +24,18 @@ Uma app chamada **Lista de Boas-vindas** que permite:
 
 ### Vocabulário rápido
 
-- **Componente**: bloco reutilizável da interface.
-- **Estado (`state`)**: dados que mudam e atualizam a UI.
-- **Props**: dados/funções passadas do componente pai para o filho.
-- **Input controlado**: `value` e `onChange` ligados ao estado React.
+- **Componente**: função que devolve JSX para construir interface.
+- **Estado (`state`)**: dados que mudam durante a execução.
+- **Props**: dados/funções passadas do pai para o filho.
+- **Input controlado**: o valor do input vem do estado React.
+- **Renderização condicional**: mostrar algo apenas se certa condição for verdadeira.
+
+### Como estudar esta ficha (recomendado)
+
+1. Implementa fase a fase, sem saltar diretamente para o final.
+2. Testa no browser no fim de cada fase.
+3. Se houver erro, resolve antes de avançar.
+4. Lê os comentários do código e explica em voz alta o que cada bloco faz.
 
 ### Debug rápido para toda a ficha
 
@@ -67,6 +75,8 @@ Verifica versões:
 node -v
 npm -v
 ```
+
+Se algum comando falhar, instala primeiro o Node.js e repete.
 
 ---
 
@@ -119,24 +129,47 @@ src/
   main.jsx
 ```
 
+Porque fazemos isto? Para reduzir distrações e focar apenas no que está a ser ensinado.
+
 ---
 
 ## 4) Fase 1 - App mínima (Paragem A)
 
+Objetivo da fase:
+
+- perceber a estrutura mínima de um componente React;
+- confirmar que o projeto está funcional.
+
 Substitui o conteúdo de `src/App.jsx` por:
 
 ```jsx
+/**
+ * Componente principal mínimo da app.
+ * Nesta fase, o objetivo é apenas confirmar renderização.
+ * @returns {JSX.Element}
+ */
 function App() {
     return (
+        // Container principal com estilo inline simples.
         <main style={{ padding: "24px", fontFamily: "Arial, sans-serif" }}>
+            {/* Título principal da aplicação. */}
             <h1>Lista de Boas-vindas</h1>
+
+            {/* Pequena descrição para contextualizar o ecrã. */}
             <p>Primeira app React da turma.</p>
         </main>
     );
 }
 
+// Export default para o Vite/React conseguir montar este componente.
 export default App;
 ```
+
+Leitura guiada:
+
+1. `function App()` define o componente.
+2. `return (...)` devolve JSX (estrutura visual).
+3. `export default App` permite importar este componente no `main.jsx`.
 
 **Checkpoint A**
 
@@ -147,29 +180,60 @@ export default App;
 
 ## 5) Fase 2 - Tema claro/escuro (Paragem B)
 
-Agora adiciona estado com `useState` e botão de alternância.
+Objetivo da fase:
+
+- introduzir estado com `useState`;
+- usar evento `onClick` para alterar UI.
+
+Conceito-chave:
+
+- `useState(false)` cria uma variável de estado e uma função para a atualizar.
+- Sempre que o estado muda, o componente re-renderiza.
 
 `src/App.jsx`:
 
 ```jsx
 import { useState } from "react";
 
+/**
+ * Componente principal com alternância de tema.
+ * @returns {JSX.Element}
+ */
 function App() {
+    // Estado booleano: false = tema claro, true = tema escuro.
     const [temaEscuro, setTemaEscuro] = useState(false);
 
+    // Objeto de estilos derivado do estado atual.
     const estilos = {
+        // Faz o conteúdo ocupar toda a altura do ecrã.
         minHeight: "100vh",
+        // Espaçamento interno global.
         padding: "24px",
+        // Fonte base para legibilidade.
         fontFamily: "Arial, sans-serif",
+        // Cor de fundo varia com o estado.
         backgroundColor: temaEscuro ? "#1f2937" : "#f3f4f6",
+        // Cor do texto também varia com o estado.
+        // A instrução segiuinte é equivalente a:
+        // if (temaEscuro) {
+        //     color = "#f9fafb";
+        // } else {
+        //     color = "#111827";
+        // }
         color: temaEscuro ? "#f9fafb" : "#111827",
     };
 
     return (
+        // Aplicamos o objeto de estilos calculado acima.
         <main style={estilos}>
+            {/* Conteúdo principal mantém-se. */}
             <h1>Lista de Boas-vindas</h1>
             <p>Primeira app React da turma.</p>
 
+            {/*
+              Ao clicar, invertemos o estado atual.
+              Se estava em false passa a true, e vice-versa.
+            */}
             <button onClick={() => setTemaEscuro(!temaEscuro)}>
                 Mudar tema
             </button>
@@ -179,6 +243,12 @@ function App() {
 
 export default App;
 ```
+
+Leitura guiada:
+
+1. `temaEscuro` decide as cores.
+2. `setTemaEscuro` altera o estado.
+3. O botão chama `setTemaEscuro(!temaEscuro)` para alternar.
 
 **Checkpoint B**
 
@@ -189,21 +259,36 @@ export default App;
 
 ## 6) Fase 3 - Formulário controlado e saudação (Paragem C)
 
-Nesta fase:
+Objetivo da fase:
 
-- crias um input controlado (`value` + `onChange`);
-- no submit mostras saudação com o último nome enviado.
+- criar input controlado;
+- tratar submissão de formulário;
+- mostrar saudação condicional.
+
+Conceitos-chave:
+
+- `event.preventDefault()` evita recarregar a página no submit.
+- `trim()` remove espaços no início/fim.
+- `ultimoNome && <p>...</p>` só renderiza se houver valor.
 
 `src/App.jsx`:
 
 ```jsx
 import { useState } from "react";
 
+/**
+ * App com tema e formulário controlado.
+ * @returns {JSX.Element}
+ */
 function App() {
+    // Estado do tema.
     const [temaEscuro, setTemaEscuro] = useState(false);
+    // Estado do texto atual no input.
     const [nome, setNome] = useState("");
+    // Estado do último nome submetido (para saudação).
     const [ultimoNome, setUltimoNome] = useState("");
 
+    // Estilos calculados com base no tema.
     const estilos = {
         minHeight: "100vh",
         padding: "24px",
@@ -212,12 +297,24 @@ function App() {
         color: temaEscuro ? "#f9fafb" : "#111827",
     };
 
+    /**
+     * Trata submissão do formulário de nome.
+     * @param {React.FormEvent<HTMLFormElement>} event - Evento submit.
+     */
     const handleSubmit = (event) => {
+        // Impede comportamento nativo do browser (refresh da página).
         event.preventDefault();
+
+        // Limpa espaços para evitar entradas como "   ".
         const nomeLimpo = nome.trim();
+
+        // Se não houver conteúdo válido, termina cedo.
         if (!nomeLimpo) return;
 
+        // Guarda o último nome válido para a saudação.
         setUltimoNome(nomeLimpo);
+
+        // Limpa o input após submissão.
         setNome("");
     };
 
@@ -226,10 +323,17 @@ function App() {
             <h1>Lista de Boas-vindas</h1>
             <p>Primeira app React da turma.</p>
 
+            {/* Botão de alternância do tema. */}
             <button onClick={() => setTemaEscuro(!temaEscuro)}>
                 Mudar tema
             </button>
 
+            {/*
+              Formulário controlado:
+              - o valor vem de "nome"
+              - cada alteração atualiza "setNome"
+              - o event no onChange é usado para capturar o texto escrito pelo utilizador. É um objeto que representa o evento de mudança, e "event.target.value" é o texto atual do input.
+            */}
             <form onSubmit={handleSubmit} style={{ marginTop: "16px" }}>
                 <input
                     type="text"
@@ -240,6 +344,7 @@ function App() {
                 <button type="submit">Adicionar</button>
             </form>
 
+            {/* Renderização condicional da saudação. */}
             {ultimoNome && <p>Olá, {ultimoNome}!</p>}
         </main>
     );
@@ -247,6 +352,12 @@ function App() {
 
 export default App;
 ```
+
+Leitura guiada:
+
+1. O input está sempre sincronizado com `nome`.
+2. No submit, validamos com `trim()`.
+3. O texto de saudação depende de `ultimoNome`.
 
 **Checkpoint C**
 
@@ -258,23 +369,33 @@ export default App;
 
 ## 7) Fase 4 - Guardar nomes numa lista (Paragem D)
 
-Agora vem o comportamento principal da ficha:
+Objetivo da fase:
 
-Sempre que submetes um nome:
+- acumular dados em lista;
+- renderizar lista com `.map()`.
 
-1. mostra `Olá, <nome>!`;
-2. adiciona o nome à lista;
-3. mostra a lista por baixo.
+Conceito-chave:
+
+- Estado com arrays deve ser atualizado de forma imutável.
+- Por isso usamos `setNomes((anteriores) => [...anteriores, novo])`.
 
 `src/App.jsx`:
 
 ```jsx
 import { useState } from "react";
 
+/**
+ * App com tema, formulário e lista de nomes.
+ * @returns {JSX.Element}
+ */
 function App() {
+    // Estado do tema.
     const [temaEscuro, setTemaEscuro] = useState(false);
+    // Estado do input.
     const [nome, setNome] = useState("");
+    // Estado da saudação (último nome submetido).
     const [ultimoNome, setUltimoNome] = useState("");
+    // Estado da lista acumulada de nomes.
     const [nomes, setNomes] = useState([]);
 
     const estilos = {
@@ -285,13 +406,24 @@ function App() {
         color: temaEscuro ? "#f9fafb" : "#111827",
     };
 
+    /**
+     * Submete o nome e atualiza saudação + lista.
+     * @param {React.FormEvent<HTMLFormElement>} event - Evento submit.
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // Normaliza o texto.
         const nomeLimpo = nome.trim();
         if (!nomeLimpo) return;
 
+        // Atualiza saudação com o último valor submetido.
         setUltimoNome(nomeLimpo);
+
+        // Atualiza lista de forma segura (imutável).
         setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
+
+        // Limpa o input para nova entrada.
         setNome("");
     };
 
@@ -314,10 +446,16 @@ function App() {
                 <button type="submit">Adicionar</button>
             </form>
 
+            {/* Mostra saudação apenas quando existir último nome. */}
             {ultimoNome && <p>Olá, {ultimoNome}!</p>}
 
+            {/* Secção da lista acumulada. */}
             <h2>Lista de nomes</h2>
             <ul>
+                {/*
+                  Renderiza cada nome.
+                  A key combina texto + índice para estabilidade básica nesta ficha.
+                */}
                 {nomes.map((nomeAtual, index) => (
                     <li key={`${nomeAtual}-${index}`}>{nomeAtual}</li>
                 ))}
@@ -329,6 +467,12 @@ function App() {
 export default App;
 ```
 
+Leitura guiada:
+
+1. `nomes` começa vazio.
+2. Cada submit válido faz append no array.
+3. `.map()` transforma cada item em `<li>`.
+
 **Checkpoint D**
 
 - A saudação mostra sempre o último nome submetido.
@@ -339,17 +483,36 @@ export default App;
 
 ## 8) Fase 5 - Separar em componentes (Paragem E)
 
-Nesta fase vais manter o mesmo comportamento, mas com melhor organização.
+Objetivo da fase:
+
+- organizar melhor o código;
+- separar UI por responsabilidades;
+- praticar `props`.
+
+Estratégia:
+
+- `FormularioNome` trata input + submit.
+- `ListaNomes` só apresenta a lista.
+- `App` mantém estado global e coordena tudo.
 
 ### 8.1) Criar `src/components/ListaNomes.jsx`
 
 ```jsx
+/**
+ * Lista visual de nomes submetidos.
+ * @param {{ nomes: string[] }} props - Props do componente.
+ * @returns {JSX.Element}
+ */
 function ListaNomes({ nomes }) {
     return (
         <>
+            {/* Cabeçalho da secção da lista. */}
             <h2>Lista de nomes</h2>
+
+            {/* Lista não ordenada com todos os nomes recebidos por props. */}
             <ul>
                 {nomes.map((nomeAtual, index) => (
+                    // A key identifica cada item no processo de reconciliação.
                     <li key={`${nomeAtual}-${index}`}>{nomeAtual}</li>
                 ))}
             </ul>
@@ -365,15 +528,32 @@ export default ListaNomes;
 ```jsx
 import { useState } from "react";
 
+/**
+ * Formulário para adicionar nomes.
+ * Mantém estado local do input e notifica o componente pai quando há submit válido.
+ * @param {{ onAdicionarNome: (nome: string) => void }} props - Props do componente.
+ * @returns {JSX.Element}
+ */
 function FormularioNome({ onAdicionarNome }) {
+    // Estado local do texto do input.
     const [nome, setNome] = useState("");
 
+    /**
+     * Processa submissão do formulário.
+     * @param {React.FormEvent<HTMLFormElement>} event - Evento submit.
+     */
     const handleSubmit = (event) => {
+        // Evita refresh da página.
         event.preventDefault();
+
+        // Normaliza entrada.
         const nomeLimpo = nome.trim();
         if (!nomeLimpo) return;
 
+        // Envia nome válido para o pai.
         onAdicionarNome(nomeLimpo);
+
+        // Limpa input local.
         setNome("");
     };
 
@@ -400,11 +580,20 @@ import { useState } from "react";
 import FormularioNome from "./components/FormularioNome";
 import ListaNomes from "./components/ListaNomes";
 
+/**
+ * Componente pai da app.
+ * Guarda estado global e distribui comportamento por props.
+ * @returns {JSX.Element}
+ */
 function App() {
+    // Tema global.
     const [temaEscuro, setTemaEscuro] = useState(false);
+    // Último nome submetido, usado na saudação.
     const [ultimoNome, setUltimoNome] = useState("");
+    // Lista global de nomes.
     const [nomes, setNomes] = useState([]);
 
+    // Estilos calculados dinamicamente por tema.
     const estilos = {
         minHeight: "100vh",
         padding: "24px",
@@ -413,8 +602,15 @@ function App() {
         color: temaEscuro ? "#f9fafb" : "#111827",
     };
 
+    /**
+     * Recebe um nome válido vindo do FormularioNome.
+     * @param {string} nomeNovo - Nome a adicionar.
+     */
     const adicionarNome = (nomeNovo) => {
+        // Atualiza saudação com o nome mais recente.
         setUltimoNome(nomeNovo);
+
+        // Acrescenta nome à lista mantendo imutabilidade.
         setNomes((nomesAnteriores) => [...nomesAnteriores, nomeNovo]);
     };
 
@@ -423,14 +619,18 @@ function App() {
             <h1>Lista de Boas-vindas</h1>
             <p>Primeira app React da turma.</p>
 
+            {/* Controlo de tema continua no pai. */}
             <button onClick={() => setTemaEscuro(!temaEscuro)}>
                 Mudar tema
             </button>
 
+            {/* Filho recebe callback para comunicar submit válido ao pai. */}
             <FormularioNome onAdicionarNome={adicionarNome} />
 
+            {/* Saudação é responsabilidade do pai porque usa estado global. */}
             {ultimoNome && <p>Olá, {ultimoNome}!</p>}
 
+            {/* Filho recebe apenas dados para renderizar lista. */}
             <ListaNomes nomes={nomes} />
         </main>
     );
@@ -438,6 +638,13 @@ function App() {
 
 export default App;
 ```
+
+Leitura guiada desta fase:
+
+1. O estado principal fica no `App`.
+2. O formulário só recolhe dados e chama `onAdicionarNome`.
+3. A lista só recebe `nomes` e renderiza.
+4. Esta separação facilita manutenção e reutilização.
 
 **Checkpoint E**
 
@@ -463,6 +670,7 @@ export default App;
 
 - Verifica se o botão tem `type="submit"`.
 - Verifica se o `<form>` tem `onSubmit={handleSubmit}`.
+- Verifica se o `trim()` não está a bloquear por input vazio.
 
 4. Lista não atualiza
 
@@ -472,7 +680,12 @@ export default App;
 setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
 ```
 
-- Não uses `nomes.push(...)` diretamente.
+- Não uses `nomes.push(...)` diretamente, porque isso muta o array.
+
+5. Saudação não aparece
+
+- Verifica se `setUltimoNome(...)` está dentro do submit válido.
+- Verifica se existe `{ultimoNome && <p>...</p>}` no JSX.
 
 ---
 
@@ -483,6 +696,7 @@ setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
 3. Mostrar contador total de nomes.
 4. Ordenar lista alfabeticamente.
 5. Guardar lista no `localStorage`.
+6. Mostrar mensagem quando a lista estiver vazia.
 
 ---
 
@@ -490,9 +704,10 @@ setNomes((nomesAnteriores) => [...nomesAnteriores, nomeLimpo]);
 
 Antes de terminares, confirma:
 
-- projeto criado com Vite e a correr;
-- tema claro/escuro funcional;
-- formulário controlado funcional;
-- saudação ao último nome submetido;
-- lista de nomes acumulada e visível;
-- app separada em componentes.
+- [ ] projeto criado com Vite e a correr;
+- [ ] tema claro/escuro funcional;
+- [ ] formulário controlado funcional;
+- [ ] saudação ao último nome submetido;
+- [ ] lista de nomes acumulada e visível;
+- [ ] app separada em componentes;
+- [ ] consegues explicar, com as tuas palavras, o papel de `useState`, `props` e `.map()`.
