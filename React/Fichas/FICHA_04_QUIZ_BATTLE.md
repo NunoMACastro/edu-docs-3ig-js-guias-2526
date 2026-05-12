@@ -1756,27 +1756,45 @@ Cria `src/components/ErrorState.jsx`:
 
 ```jsx
 /**
- * Mostra uma mensagem de erro e permite voltar ao início.
+ * Mostra uma mensagem de erro e permite voltar ao início ou usar fallback local.
  * @param {object} props - Props do componente.
  * @param {string} props.message - Mensagem de erro.
+ * @param {() => void} props.onUseLocalQuestions - Começa com perguntas locais.
  * @param {() => void} props.onReset - Volta ao início.
  * @returns {JSX.Element}
  */
-function ErrorState({ message, onReset }) {
+function ErrorState({ message, onUseLocalQuestions, onReset }) {
     return (
         <section className="quiz-card">
             <h2>Não foi possível começar o jogo</h2>
 
             {/* A mensagem vem do App, porque o erro nasce no pedido à API. */}
             <p className="error-text">{message}</p>
+            <p className="muted">
+                Podes voltar ao início ou continuar com as perguntas locais da ficha.
+            </p>
 
             {/*
-              O filho não sabe como reiniciar a app.
-              Chama o callback recebido do pai.
+              O filho não decide como recuperar do erro.
+              Apenas chama os callbacks recebidos do pai.
             */}
-            <button type="button" className="button-primary" onClick={onReset}>
-                Voltar ao início
-            </button>
+            <div className="button-row">
+                <button
+                    type="button"
+                    className="button-primary"
+                    onClick={onUseLocalQuestions}
+                >
+                    Usar perguntas locais
+                </button>
+
+                <button
+                    type="button"
+                    className="button-secondary"
+                    onClick={onReset}
+                >
+                    Voltar ao início
+                </button>
+            </div>
         </section>
     );
 }
@@ -2109,16 +2127,6 @@ useEffect(() => {
 }, [gameId, difficulty]);
 ```
 
-Adiciona renderização para `loading` e `error`:
-
-```jsx
-{gameStatus === "loading" && <LoadingState />}
-
-{gameStatus === "error" && (
-    <ErrorState message={errorMessage} onReset={resetGame} />
-)}
-```
-
 Atualiza `resetGame`:
 
 ```jsx
@@ -2131,11 +2139,44 @@ const resetGame = () => {
 };
 ```
 
+Adiciona também uma função para o caso de a API falhar e o jogador querer continuar com perguntas locais:
+
+```jsx
+const startLocalGame = () => {
+    // Usa as perguntas locais já criadas no início da ficha.
+    setQuestions(localQuestions);
+
+    // Reinicia o progresso do jogo.
+    setCurrentQuestionIndex(0);
+    setAnswerResults([]);
+    setTimeLeft(QUESTION_TIME_LIMIT);
+
+    // Limpa o erro antigo e entra diretamente no jogo.
+    setErrorMessage("");
+    setGameStatus("playing");
+};
+```
+
+Adiciona renderização para `loading` e `error`:
+
+```jsx
+{gameStatus === "loading" && <LoadingState />}
+
+{gameStatus === "error" && (
+    <ErrorState
+        message={errorMessage}
+        onUseLocalQuestions={startLocalGame}
+        onReset={resetGame}
+    />
+)}
+```
+
 **Checkpoint H**
 
 - Ao começar, aparece loading.
 - Depois aparecem perguntas vindas da API.
 - Se a API falhar, aparece o ecrã de erro.
+- Se a API falhar, podes carregar em “Usar perguntas locais” e continuar o jogo.
 - O fluxo final usa `questions.length`, ou seja, o tamanho da lista atualmente em jogo.
 - As perguntas locais continuam disponíveis como base didática/fallback interno.
 
@@ -2243,9 +2284,21 @@ Vamos colocar em Context:
 - `theme`;
 - funções para alterar estes valores.
 
+### Nota sobre ESLint e Fast Refresh
+
+Algumas configurações recentes do Vite/React usam a regra `react-refresh/only-export-components`. Essa regra prefere que um ficheiro exporte apenas componentes React, porque isso ajuda o Fast Refresh durante o desenvolvimento.
+
+Nesta ficha vamos manter o `Provider` e o hook `useGameSettings` no mesmo ficheiro para facilitar a leitura didática. Por isso, se tiveres essa regra ativa, coloca o comentário abaixo no topo do ficheiro.
+
+Em projetos maiores, uma alternativa mais limpa seria separar em dois ficheiros, por exemplo:
+
+- `GameSettingsProvider.jsx`;
+- `useGameSettings.js`.
+
 Cria `src/context/GameSettingsContext.jsx`:
 
 ```jsx
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useMemo, useState } from "react";
 
 const GameSettingsContext = createContext(null);
@@ -2445,6 +2498,8 @@ Por isso, a regra desta fase é:
 > Se a tradução falhar, a app mostra a pergunta original em inglês.
 
 Isto é uma decisão importante de UX: é melhor ter um quiz em inglês do que não ter quiz nenhum.
+
+Também é normal o loading ficar mais lento nesta fase. O pedido às perguntas acontece uma vez, mas a tradução pode implicar vários pedidos pequenos. Por isso, o fallback da tradução deve ficar dentro de `translationApi.js`: o `App.jsx` não deve ir para o ecrã de erro só porque a tradução falhou.
 
 ### 23.3) Criar `src/services/translationApi.js`
 
@@ -2791,6 +2846,16 @@ function App() {
         setErrorMessage("");
     };
 
+    const startLocalGame = () => {
+        // Fallback útil quando a API externa falha.
+        setQuestions(localQuestions);
+        setCurrentQuestionIndex(0);
+        setAnswerResults([]);
+        setTimeLeft(QUESTION_TIME_LIMIT);
+        setErrorMessage("");
+        setGameStatus("playing");
+    };
+
     const handleAnswer = (selectedAnswer) => {
         // Compara com a resposta certa da pergunta atual.
         const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
@@ -2849,8 +2914,12 @@ function App() {
                 {gameStatus === "loading" && <LoadingState />}
 
                 {gameStatus === "error" && (
-                    // O ecrã de erro recebe só a mensagem e a ação de voltar.
-                    <ErrorState message={errorMessage} onReset={resetGame} />
+                    // O ecrã de erro também permite continuar com perguntas locais.
+                    <ErrorState
+                        message={errorMessage}
+                        onUseLocalQuestions={startLocalGame}
+                        onReset={resetGame}
+                    />
                 )}
 
                 {gameStatus === "playing" && currentQuestion && (
@@ -2897,6 +2966,7 @@ No fim da ficha, a app deve cumprir:
 - A app tenta traduzir as perguntas com a MyMemory.
 - Se a tradução falhar, as perguntas continuam a aparecer em inglês.
 - Se a API falhar, aparece ecrã de erro.
+- Se a API falhar, existe um botão para usar perguntas locais.
 - O temporizador desce de segundo em segundo.
 - Quando o tempo chega a 0, as respostas ficam bloqueadas.
 - O botão “Avançar” conta como resposta errada.
@@ -2967,6 +3037,8 @@ Verifica:
 4. Estás a verificar `response.ok`?
 5. Estás a tratar `data.response_code`?
 
+Mesmo tratando bem o erro, uma API pública pode estar temporariamente indisponível. Por isso, a ficha inclui o botão “Usar perguntas locais” no `ErrorState`. Esse botão não corrige a API, mas mantém o jogo utilizável.
+
 ### A tradução não aparece em português
 
 Verifica:
@@ -3009,6 +3081,63 @@ Se o dado é específico de um componente filho, usa props.
 
 Exemplo: `onAnswer` deve continuar a ser prop, porque é uma ação específica de `QuestionCard`.
 
+### ESLint mostra erro em `GameSettingsContext.jsx`
+
+Se aparecer uma mensagem parecida com:
+
+```text
+Fast refresh only works when a file only exports components
+```
+
+é a regra `react-refresh/only-export-components`.
+
+Nesta ficha, a correção didática é manter o Provider e o hook juntos e adicionar no topo de `src/context/GameSettingsContext.jsx`:
+
+```jsx
+/* eslint-disable react-refresh/only-export-components */
+```
+
+Em projetos profissionais maiores, também podes separar o Provider e o hook em ficheiros diferentes.
+
+### ESLint mostra erro `set-state-in-effect`
+
+Algumas versões recentes do `eslint-plugin-react-hooks` avisam quando um `useEffect` faz `setState` diretamente no corpo do efeito.
+
+Regra prática:
+
+- usa `useEffect` para sincronizar com algo externo, como temporizadores, APIs ou eventos do browser;
+- evita usar `useEffect` só para recalcular ou copiar estado;
+- se um valor deriva de outro, prefere `useMemo` ou uma variável calculada;
+- se uma ação acontece por clique ou resposta, atualiza o estado dentro do handler dessa ação.
+
+Exemplo a evitar:
+
+```jsx
+useEffect(() => {
+    setIsAnswerLocked(false);
+}, [currentQuestionIndex]);
+```
+
+Melhor opção para esta ficha:
+
+```jsx
+const [answeredQuestionIndex, setAnsweredQuestionIndex] = useState(-1);
+const answeredQuestionRef = useRef(-1);
+const isAnswerLocked = answeredQuestionIndex === currentQuestionIndex;
+
+const handleAnswer = (selectedAnswer) => {
+    if (answeredQuestionRef.current === currentQuestionIndex) return;
+
+    answeredQuestionRef.current = currentQuestionIndex;
+    setAnsweredQuestionIndex(currentQuestionIndex);
+    // resto da lógica da resposta...
+};
+```
+
+Neste exemplo, `useRef` evita um duplo clique muito rápido antes de o React conseguir renderizar outra vez. Se usares este padrão, lembra-te de importar `useRef`.
+
+O mesmo cuidado vale para o desafio do `localStorage`: guarda a melhor pontuação quando o jogo termina dentro da função que trata a última resposta, em vez de criar um `useEffect` só para reagir a `gameStatus === "finished"`.
+
 ---
 
 ## 27) Desafios finais
@@ -3024,6 +3153,14 @@ Escolhe 2 ou 3:
 7. Criar componente `ScoreBadge`.
 8. Mostrar a dificuldade no ecrã final.
 9. Criar um botão “Usar perguntas locais” se a API falhar.
+
+Notas para resolver os desafios sem criar problemas novos:
+
+- No desafio do `localStorage`, guarda apenas dados simples: nome, pontuação, percentagem, dificuldade e data.
+- Não guardes a melhor pontuação num `useEffect` que depende de muitos estados. É mais simples guardar quando detetas a última resposta em `handleAnswer`.
+- No desafio do duplo clique, bloqueia a pergunta assim que a primeira resposta for registada.
+- No desafio “Usar perguntas locais”, reaproveita `localQuestions`; não faças novo pedido à API.
+- Se adicionares escolha de 5 ou 10 perguntas, passa esse valor para `fetchTriviaQuestions` e para o fallback local.
 
 ---
 
