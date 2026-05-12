@@ -1,4 +1,4 @@
-# Tutorial passo a passo - Quiz Battle: Derrota o Boss (Ficha React 12.º ano)
+# Tutorial passo a passo - Quiz Game: Jogo de Perguntas (Ficha React 12.º ano)
 
 Esta ficha guia-te na construção de uma pequena app React em formato de jogo.
 
@@ -29,13 +29,13 @@ Competências trabalhadas:
 
 ## 0) O que vais construir
 
-Uma app chamada **Quiz Battle** onde o jogador responde a perguntas para derrotar um boss.
+Uma app chamada **Quiz Game** onde o jogador responde a perguntas para testar conhecimentos.
 
 A app permite:
 
 - escrever o nome do jogador;
 - escolher dificuldade;
-- começar uma batalha;
+- começar um jogo;
 - responder a perguntas de escolha múltipla;
 - ver um temporizador por pergunta;
 - calcular pontuação final;
@@ -71,7 +71,7 @@ A app permite:
 Esta ficha usa snippets de duas formas:
 
 1. **Substitui o ficheiro**: quando o enunciado disser “Substitui `src/App.jsx` por”, deves trocar o conteúdo completo desse ficheiro.
-2. **Adiciona / atualiza / substitui um bloco**: quando o enunciado disser “Adiciona estado”, “Atualiza `startBattle`” ou “Substitui o bloco `playing`”, deves manter o resto do ficheiro igual e alterar apenas a parte indicada.
+2. **Adiciona / atualiza / substitui um bloco**: quando o enunciado disser “Adiciona estado”, “Atualiza `startGame`” ou “Substitui o bloco `playing`”, deves manter o resto do ficheiro igual e alterar apenas a parte indicada.
 
 Regra prática:
 
@@ -106,11 +106,13 @@ Regra prática:
 - **Paragem H**: perguntas carregadas da API com `useEffect`.
 - **Paragem I**: prop drilling identificado.
 - **Paragem J**: `useContext` usado para preferências globais.
+- **Paragem K**: perguntas traduzidas para português com fallback.
 
 ### Mapa mental da app
 
 - **Dados locais**: `localQuestions.js`, usados para aprender a mecânica do jogo.
 - **Dados externos**: perguntas carregadas da Open Trivia DB.
+- **Tradução externa**: textos traduzidos pela MyMemory, quando possível.
 - **Estado principal**: vive no `App.jsx`.
 - **Componentes**: mostram partes da interface e recebem props.
 - **Serviço da API**: vive em `services/triviaApi.js`.
@@ -120,11 +122,12 @@ Regra prática:
 
 1. **`useState`** - nome, dificuldade, estado do jogo, pergunta atual, respostas, tempo, loading e erro.
 2. **`useEffect` local** - temporizador que diminui de segundo em segundo.
-3. **`useEffect` externo** - pedido à API quando começa uma batalha.
+3. **`useEffect` externo** - pedido à API quando começa um jogo.
 4. **`useMemo`** - estatísticas finais e respostas baralhadas.
 5. **Props** - componentes recebem dados e callbacks.
 6. **Prop drilling** - exemplo com `theme`, `playerName` e `difficulty`.
 7. **`useContext`** - preferências globais sem passar props por todos os níveis.
+8. **Camada de tradução** - segunda API com fallback para manter a app funcional.
 
 ### Conceitos essenciais
 
@@ -193,8 +196,8 @@ npm -v
 ## 2) Criar o projeto
 
 ```bash
-npm create vite@latest ficha04-quiz-battle -- --template react
-cd ficha04-quiz-battle
+npm create vite@latest ficha04-quiz-game -- --template react
+cd ficha04-quiz-game
 npm install
 npm run dev
 ```
@@ -230,7 +233,7 @@ src/
 Ao longo da ficha, o projeto vai ficar assim:
 
 ```text
-ficha04-quiz-battle/
+ficha04-quiz-game/
 ├─ index.html
 ├─ package.json
 └─ src/
@@ -239,7 +242,8 @@ ficha04-quiz-battle/
    ├─ data/
    │  └─ localQuestions.js
    ├─ services/
-   │  └─ triviaApi.js
+   │  ├─ triviaApi.js
+   │  └─ translationApi.js
    ├─ context/
    │  └─ GameSettingsContext.jsx
    ├─ components/
@@ -264,6 +268,12 @@ Ideia desta fase:
 
 - preparar uma interface simples, legível e consistente;
 - evitar excesso de estilos inline nas fases finais.
+
+Ficheiros a criar/editar nesta fase:
+
+- criar `src/styles/index.css`;
+- criar `src/styles/quiz.css`;
+- editar `src/main.jsx`.
 
 Cria `src/styles/index.css`:
 
@@ -307,37 +317,67 @@ Cria `src/styles/quiz.css`:
 .app {
     min-height: 100vh;
     padding: 24px;
-    background: #f3f4f6;
+    background:
+        radial-gradient(circle at top left, #dbeafe 0, transparent 30%),
+        radial-gradient(circle at bottom right, #dcfce7 0, transparent 28%),
+        #f8fafc;
     color: #111827;
 }
 
 /* Classe alternativa aplicada quando o tema escuro estiver ativo. */
 .app--dark {
-    background: #111827;
+    background:
+        radial-gradient(circle at top left, #1d4ed8 0, transparent 28%),
+        radial-gradient(circle at bottom right, #047857 0, transparent 24%),
+        #0f172a;
     color: #f9fafb;
 }
 
 /* Limita a largura da app para o conteúdo não ficar demasiado espalhado. */
 .quiz-shell {
-    max-width: 760px;
+    max-width: 820px;
     margin: 0 auto;
+}
+
+/* Título principal da app. */
+.quiz-shell h1 {
+    margin: 0;
+    font-size: 2.4rem;
+}
+
+/* Texto introdutório logo abaixo do título. */
+.quiz-shell > p {
+    margin: 8px 0 0;
+    color: #475569;
+}
+
+.app--dark .quiz-shell > p {
+    color: #cbd5e1;
 }
 
 /* Cartão base usado para cada ecrã principal da ficha. */
 .quiz-card {
     margin-top: 24px;
-    padding: 20px;
-    border: 1px solid #d1d5db;
+    padding: 24px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
     border-radius: 8px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.92);
     color: #111827;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(10px);
+}
+
+/* Remove a margem superior do primeiro título dentro de um cartão. */
+.quiz-card h2 {
+    margin-top: 0;
 }
 
 /* Ajusta o cartão quando o tema escuro está ativo. */
 .app--dark .quiz-card {
-    border-color: #374151;
-    background: #1f2937;
+    border-color: rgba(148, 163, 184, 0.24);
+    background: rgba(15, 23, 42, 0.9);
     color: #f9fafb;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
 /* Cada linha de formulário fica em coluna: label em cima, campo por baixo. */
@@ -350,9 +390,24 @@ Cria `src/styles/quiz.css`:
 /* Estilo comum para campos de texto e seleção. */
 .form-row input,
 .form-row select {
-    padding: 10px;
-    border: 1px solid #9ca3af;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
     border-radius: 6px;
+    background: #ffffff;
+    color: #111827;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    outline: 3px solid rgba(37, 99, 235, 0.18);
+    border-color: #2563eb;
+}
+
+.app--dark .form-row input,
+.app--dark .form-row select {
+    border-color: #475569;
+    background: #020617;
+    color: #f8fafc;
 }
 
 /* Grelhas simples para botões principais e respostas. */
@@ -367,11 +422,23 @@ Cria `src/styles/quiz.css`:
 .button-primary,
 .button-secondary,
 .answer-button {
-    padding: 10px 14px;
+    padding: 11px 14px;
     border: 1px solid #2563eb;
     border-radius: 6px;
     background: #2563eb;
     color: white;
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.button-primary:hover:not(:disabled),
+.button-secondary:hover:not(:disabled),
+.answer-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
 }
 
 /* Botão secundário: usado para ações menos principais. */
@@ -382,15 +449,27 @@ Cria `src/styles/quiz.css`:
 
 /* Respostas parecem botões, mas com aspeto mais neutro. */
 .answer-button {
-    border-color: #d1d5db;
-    background: #ffffff;
-    color: #111827;
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #0f172a;
     text-align: left;
 }
 
 /* Pequeno feedback ao passar o rato por uma resposta ativa. */
 .answer-button:hover:not(:disabled) {
     border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.app--dark .answer-button {
+    border-color: #475569;
+    background: #111827;
+    color: #f8fafc;
+}
+
+.app--dark .answer-button:hover:not(:disabled) {
+    border-color: #60a5fa;
+    background: #1e293b;
 }
 
 /* Espaçamento do bloco do temporizador. */
@@ -400,16 +479,16 @@ Cria `src/styles/quiz.css`:
 
 /* Fundo da barra do temporizador. */
 .timer-bar {
-    height: 10px;
+    height: 12px;
     overflow: hidden;
     border-radius: 999px;
-    background: #e5e7eb;
+    background: #e2e8f0;
 }
 
 /* Parte preenchida da barra. A largura será controlada por React. */
 .timer-bar__fill {
     height: 100%;
-    background: #22c55e;
+    background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
     transition: width 0.2s ease;
 }
 
@@ -421,6 +500,16 @@ Cria `src/styles/quiz.css`:
 /* Texto secundário, usado para ajuda ou contexto. */
 .muted {
     color: #6b7280;
+}
+
+.app--dark .muted {
+    color: #cbd5e1;
+}
+
+@media (min-width: 700px) {
+    .answer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 ```
 
@@ -436,7 +525,7 @@ import "./styles/quiz.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>
+    </React.StrictMode>,
 );
 ```
 
@@ -453,11 +542,13 @@ Ideia nova desta fase:
 
 - apenas renderização estática.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Substitui `src/App.jsx` por:
 
 ```jsx
 /**
- * Componente principal da app Quiz Battle.
+ * Componente principal da app Quiz Game.
  * Nesta fase só validamos o layout base.
  * @returns {JSX.Element}
  */
@@ -468,12 +559,12 @@ function App() {
         <main className="app">
             {/* "quiz-shell" limita a largura para melhorar a leitura. */}
             <div className="quiz-shell">
-                <h1>Quiz Battle</h1>
-                <p>Responde a perguntas para derrotar o boss.</p>
+                <h1>Quiz Game</h1>
+                <p>Responde a perguntas para testar conhecimentos.</p>
 
                 {/* Nesta fase, o cartão é apenas estático. */}
                 <section className="quiz-card">
-                    <h2>Preparar batalha</h2>
+                    <h2>Preparar jogo</h2>
                     <p className="muted">
                         Na próxima fase vais controlar o nome e a dificuldade
                         com estado React.
@@ -489,8 +580,8 @@ export default App;
 
 **Checkpoint A**
 
-- Vês o título `Quiz Battle`.
-- Vês o cartão “Preparar batalha”.
+- Vês o título `Quiz Game`.
+- Vês o cartão “Preparar jogo”.
 - Não há erros na consola.
 
 ---
@@ -500,6 +591,8 @@ export default App;
 Ideia nova desta fase:
 
 - criar inputs controlados com `useState`.
+
+Ficheiro a editar nesta fase: `src/App.jsx`.
 
 Atualiza `src/App.jsx`:
 
@@ -520,11 +613,11 @@ function App() {
     return (
         <main className="app">
             <div className="quiz-shell">
-                <h1>Quiz Battle</h1>
-                <p>Responde a perguntas para derrotar o boss.</p>
+                <h1>Quiz Game</h1>
+                <p>Responde a perguntas para testar conhecimentos.</p>
 
                 <section className="quiz-card">
-                    <h2>Preparar batalha</h2>
+                    <h2>Preparar jogo</h2>
 
                     <label className="form-row">
                         Nome do jogador
@@ -588,10 +681,12 @@ Ideia nova desta fase:
 - controlar o ecrã atual da app;
 - impedir começar sem nome.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Estados do jogo:
 
 - `idle`: ecrã inicial;
-- `playing`: batalha em curso;
+- `playing`: jogo em curso;
 - `finished`: resultado final;
 - mais tarde vamos adicionar `loading`.
 
@@ -618,17 +713,17 @@ function App() {
     const cleanPlayerName = playerName.trim();
 
     // Regra simples de validação: pelo menos 2 caracteres úteis.
-    const canStartBattle = cleanPlayerName.length >= 2;
+    const canStartGame = cleanPlayerName.length >= 2;
 
-    const startBattle = () => {
+    const startGame = () => {
         // Se o nome ainda não for válido, a função termina imediatamente.
-        if (!canStartBattle) return;
+        if (!canStartGame) return;
 
-        // Mudar o estado do jogo faz a UI trocar do ecrã inicial para a batalha.
+        // Mudar o estado do jogo faz a UI trocar do ecrã inicial para o jogo.
         setGameStatus("playing");
     };
 
-    const resetBattle = () => {
+    const resetGame = () => {
         // Volta ao ecrã inicial.
         setGameStatus("idle");
     };
@@ -636,12 +731,12 @@ function App() {
     return (
         <main className="app">
             <div className="quiz-shell">
-                <h1>Quiz Battle</h1>
+                <h1>Quiz Game</h1>
 
                 {gameStatus === "idle" && (
                     // Renderização condicional: este bloco só aparece no estado "idle".
                     <section className="quiz-card">
-                        <h2>Preparar batalha</h2>
+                        <h2>Preparar jogo</h2>
 
                         <label className="form-row">
                             Nome do jogador
@@ -669,7 +764,7 @@ function App() {
                             </select>
                         </label>
 
-                        {!canStartBattle && (
+                        {!canStartGame && (
                             // Feedback imediato para explicar porque o botão está bloqueado.
                             <p className="error-text">
                                 Escreve pelo menos 2 caracteres no nome.
@@ -684,10 +779,10 @@ function App() {
                             <button
                                 type="button"
                                 className="button-primary"
-                                onClick={startBattle}
-                                disabled={!canStartBattle}
+                                onClick={startGame}
+                                disabled={!canStartGame}
                             >
-                                Começar batalha
+                                Começar jogo
                             </button>
                         </div>
                     </section>
@@ -696,7 +791,7 @@ function App() {
                 {gameStatus === "playing" && (
                     // Bloco temporário para confirmar a transição de estado.
                     <section className="quiz-card">
-                        <h2>Batalha em curso</h2>
+                        <h2>Jogo em curso</h2>
                         <p>Jogador: {cleanPlayerName}</p>
                         <p>Dificuldade: {difficulty}</p>
                         <button
@@ -712,11 +807,11 @@ function App() {
                 {gameStatus === "finished" && (
                     // Bloco final temporário. Mais tarde mostraremos estatísticas reais.
                     <section className="quiz-card">
-                        <h2>Fim da batalha</h2>
+                        <h2>Fim do jogo</h2>
                         <button
                             type="button"
                             className="button-primary"
-                            onClick={resetBattle}
+                            onClick={resetGame}
                         >
                             Voltar ao início
                         </button>
@@ -733,8 +828,8 @@ export default App;
 **Checkpoint B2**
 
 - Não consegues começar sem nome válido.
-- O botão começa a batalha.
-- O botão de teste termina a batalha.
+- O botão começa o jogo.
+- O botão de teste termina o jogo.
 - O botão final volta ao início.
 
 ---
@@ -746,6 +841,11 @@ Ideia nova desta fase:
 - começar com dados locais antes da API.
 
 Isto evita misturar duas dificuldades ao mesmo tempo: primeiro aprendemos a mecânica do jogo, depois carregamos dados externos.
+
+Ficheiros a criar/editar nesta fase:
+
+- criar `src/data/localQuestions.js`;
+- editar `src/App.jsx`.
 
 Cria `src/data/localQuestions.js`:
 
@@ -853,6 +953,8 @@ Ideia nova desta fase:
 - registar se a resposta foi certa ou errada;
 - avançar para a próxima pergunta.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Adiciona estado:
 
 ```jsx
@@ -885,7 +987,7 @@ const handleAnswer = (selectedAnswer) => {
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
     if (isLastQuestion) {
-        // Se era a última pergunta, a batalha termina.
+        // Se era a última pergunta, o jogo termina.
         setGameStatus("finished");
         return;
     }
@@ -895,17 +997,17 @@ const handleAnswer = (selectedAnswer) => {
 };
 ```
 
-Atualiza `startBattle` para reiniciar progresso:
+Atualiza `startGame` para reiniciar progresso:
 
 ```jsx
-const startBattle = () => {
+const startGame = () => {
     // Mantemos a validação da fase anterior.
-    if (!canStartBattle) return;
+    if (!canStartGame) return;
 
-    // Cada nova batalha deve começar na primeira pergunta.
+    // Cada novo jogo deve começar na primeira pergunta.
     setCurrentQuestionIndex(0);
 
-    // Cada nova batalha deve limpar respostas antigas.
+    // Cada novo jogo deve limpar respostas antigas.
     setAnswerResults([]);
 
     // Só depois de reiniciar o progresso mudamos para o ecrã de jogo.
@@ -967,12 +1069,14 @@ Ideia nova desta fase:
 
 - mostrar resultado com base nas respostas registadas.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Substitui o bloco `finished`:
 
 ```jsx
 {gameStatus === "finished" && (
     <section className="quiz-card">
-        <h2>Fim da batalha</h2>
+        <h2>Fim do jogo</h2>
         <p>Jogador: {cleanPlayerName}</p>
         <p>
             Respostas certas: {answerResults.filter(Boolean).length} de{" "}
@@ -982,7 +1086,7 @@ Substitui o bloco `finished`:
         <button
             type="button"
             className="button-primary"
-            onClick={resetBattle}
+            onClick={resetGame}
         >
             Voltar ao início
         </button>
@@ -1006,6 +1110,8 @@ Ideia nova desta fase:
 
 Não vamos criar `score`, `percentage` e `victory` com `useState`, porque estes valores derivam de `answerResults` e `totalQuestions`.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Atualiza o import:
 
 ```jsx
@@ -1017,7 +1123,7 @@ Este snippet substitui apenas a linha de import do React. O resto do ficheiro ma
 Adiciona antes do `return`:
 
 ```jsx
-const battleStats = useMemo(() => {
+const gameStats = useMemo(() => {
     // Conta apenas os valores true.
     // Boolean é prático aqui porque cada resposta fica registada como true/false.
     const correctAnswers = answerResults.filter(Boolean).length;
@@ -1042,7 +1148,7 @@ const battleStats = useMemo(() => {
         percentage,
         victory,
     };
-// O cálculo só precisa de ser refeito quando mudam as respostas ou o total.
+    // O cálculo só precisa de ser refeito quando mudam as respostas ou o total.
 }, [answerResults, totalQuestions]);
 ```
 
@@ -1051,19 +1157,21 @@ Atualiza o bloco `finished`:
 ```jsx
 {gameStatus === "finished" && (
     <section className="quiz-card">
-        <h2>{battleStats.victory ? "Vitória!" : "Derrota!"}</h2>
+        <h2>
+            {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
+        </h2>
         <p>Jogador: {cleanPlayerName}</p>
-        <p>Pontuação: {battleStats.score}</p>
+        <p>Pontuação: {gameStats.score}</p>
         <p>
-            Certas: {battleStats.correctAnswers} de{" "}
-            {battleStats.totalQuestions}
+            Certas: {gameStats.correctAnswers} de{" "}
+            {gameStats.totalQuestions}
         </p>
-        <p>Percentagem: {battleStats.percentage}%</p>
+        <p>Percentagem: {gameStats.percentage}%</p>
 
         <button
             type="button"
             className="button-primary"
-            onClick={resetBattle}
+            onClick={resetGame}
         >
             Voltar ao início
         </button>
@@ -1087,6 +1195,8 @@ Ideia nova desta fase:
 - evitar que as respostas mudem de ordem em cada render.
 
 Se usares `sort(() => Math.random() - 0.5)` diretamente no JSX, as respostas podem mudar de ordem sempre que o componente renderiza. Mais tarde, quando houver temporizador, isso seria muito confuso.
+
+Ficheiro a editar nesta fase: `src/App.jsx`.
 
 Adiciona esta função fora do componente `App`:
 
@@ -1117,8 +1227,8 @@ const currentAnswers = useMemo(() => {
         currentQuestion.correctAnswer,
         ...currentQuestion.incorrectAnswers,
     ]);
-// Só queremos baralhar quando muda a pergunta atual.
-// Se o tempo mudar, currentQuestion não muda, por isso a ordem mantém-se.
+    // Só queremos baralhar quando muda a pergunta atual.
+    // Se o tempo mudar, currentQuestion não muda, por isso a ordem mantém-se.
 }, [currentQuestion]);
 ```
 
@@ -1137,6 +1247,8 @@ Ideia nova desta fase:
 - usar `useEffect` para um efeito local.
 
 Vamos dar 15 segundos por pergunta.
+
+Ficheiro a editar nesta fase: `src/App.jsx`.
 
 Atualiza o import:
 
@@ -1161,16 +1273,16 @@ Adiciona estado:
 const [timeLeft, setTimeLeft] = useState(QUESTION_TIME_LIMIT);
 ```
 
-Atualiza `startBattle`:
+Atualiza `startGame`:
 
 ```jsx
-const startBattle = () => {
-    if (!canStartBattle) return;
+const startGame = () => {
+    if (!canStartGame) return;
 
     setCurrentQuestionIndex(0);
     setAnswerResults([]);
 
-    // Cada batalha começa com o tempo completo.
+    // Cada jogo começa com o tempo completo.
     setTimeLeft(QUESTION_TIME_LIMIT);
     setGameStatus("playing");
 };
@@ -1180,7 +1292,7 @@ Adiciona o efeito:
 
 ```jsx
 useEffect(() => {
-    // O temporizador só deve correr durante a batalha.
+    // O temporizador só deve correr durante o jogo.
     // Se estivermos no menu, loading, erro ou resultado, não faz nada.
     if (gameStatus !== "playing") return;
 
@@ -1198,7 +1310,7 @@ useEffect(() => {
     return () => {
         clearTimeout(timeoutId);
     };
-// Dependências: o efeito depende do estado do jogo e do tempo atual.
+    // Dependências: o efeito depende do estado do jogo e do tempo atual.
 }, [gameStatus, timeLeft]);
 ```
 
@@ -1231,6 +1343,8 @@ Ideia nova desta fase:
 - bloquear respostas quando o tempo termina;
 - contar a pergunta como errada se o jogador avançar sem responder.
 
+Ficheiro a editar nesta fase: `src/App.jsx`.
+
 Cria esta função:
 
 ```jsx
@@ -1247,41 +1361,45 @@ const handleTimeout = () => {
 Atualiza os botões de resposta:
 
 ```jsx
-{currentAnswers.map((answer) => (
-    <button
-        key={answer}
-        type="button"
-        className="answer-button"
-        onClick={() => handleAnswer(answer)}
-        disabled={timeLeft === 0}
-    >
-        {answer}
-    </button>
-))}
+{
+    currentAnswers.map((answer) => (
+        <button
+            key={answer}
+            type="button"
+            className="answer-button"
+            onClick={() => handleAnswer(answer)}
+            disabled={timeLeft === 0}
+        >
+            {answer}
+        </button>
+    ));
+}
 ```
 
 Depois da grelha de respostas, adiciona:
 
 ```jsx
-{timeLeft === 0 && (
-    <div className="button-row">
-        <p className="error-text">Tempo esgotado.</p>
-        <button
-            type="button"
-            className="button-secondary"
-            onClick={handleTimeout}
-        >
-            Avançar
-        </button>
-    </div>
-)}
+{
+    timeLeft === 0 && (
+        <div className="button-row">
+            <p className="error-text">Tempo esgotado.</p>
+            <button
+                type="button"
+                className="button-secondary"
+                onClick={handleTimeout}
+            >
+                Avançar
+            </button>
+        </div>
+    );
+}
 ```
 
 **Checkpoint E2**
 
 - Quando o tempo chega a 0, os botões ficam bloqueados.
 - O botão “Avançar” conta a pergunta como errada.
-- A batalha continua normalmente.
+- O jogo continua normalmente.
 
 ---
 
@@ -1292,9 +1410,20 @@ Ideia nova desta fase:
 - separar responsabilidades;
 - passar dados e callbacks por props.
 
+Ficheiros a criar/editar nesta fase:
+
+- criar a pasta `src/components/`;
+- criar `src/components/StartScreen.jsx`;
+- criar `src/components/TimerBar.jsx`;
+- criar `src/components/QuestionCard.jsx`;
+- criar `src/components/ResultScreen.jsx`;
+- editar `src/App.jsx`.
+
 Cria a pasta `src/components/`.
 
 ### 16.1) `StartScreen.jsx`
+
+Cria o ficheiro `src/components/StartScreen.jsx`:
 
 ```jsx
 /**
@@ -1304,8 +1433,8 @@ Cria a pasta `src/components/`.
  * @param {(name: string) => void} props.onPlayerNameChange - Atualiza o nome.
  * @param {string} props.difficulty - Dificuldade atual.
  * @param {(difficulty: string) => void} props.onDifficultyChange - Atualiza a dificuldade.
- * @param {boolean} props.canStartBattle - Indica se o nome é válido.
- * @param {() => void} props.onStartBattle - Começa a batalha.
+ * @param {boolean} props.canStartGame - Indica se o nome é válido.
+ * @param {() => void} props.onStartGame - Começa o jogo.
  * @returns {JSX.Element}
  */
 function StartScreen({
@@ -1316,14 +1445,14 @@ function StartScreen({
     onDifficultyChange,
 
     // Validação também vem do pai, porque depende da regra da app.
-    canStartBattle,
+    canStartGame,
 
     // Callback chamado quando o jogador tenta começar.
-    onStartBattle,
+    onStartGame,
 }) {
     return (
         <section className="quiz-card">
-            <h2>Preparar batalha</h2>
+            <h2>Preparar jogo</h2>
 
             <label className="form-row">
                 Nome do jogador
@@ -1347,9 +1476,7 @@ function StartScreen({
                 */}
                 <select
                     value={difficulty}
-                    onChange={(event) =>
-                        onDifficultyChange(event.target.value)
-                    }
+                    onChange={(event) => onDifficultyChange(event.target.value)}
                 >
                     <option value="easy">Fácil</option>
                     <option value="medium">Média</option>
@@ -1357,7 +1484,7 @@ function StartScreen({
                 </select>
             </label>
 
-            {!canStartBattle && (
+            {!canStartGame && (
                 // A mensagem usa a validação calculada no pai.
                 <p className="error-text">
                     Escreve pelo menos 2 caracteres no nome.
@@ -1367,15 +1494,15 @@ function StartScreen({
             <div className="button-row">
                 {/*
                   O clique sobe para o pai. O componente filho não decide
-                  sozinho quando a batalha começa.
+                  sozinho quando o jogo começa.
                 */}
                 <button
                     type="button"
                     className="button-primary"
-                    onClick={onStartBattle}
-                    disabled={!canStartBattle}
+                    onClick={onStartGame}
+                    disabled={!canStartGame}
                 >
-                    Começar batalha
+                    Começar jogo
                 </button>
             </div>
         </section>
@@ -1386,6 +1513,8 @@ export default StartScreen;
 ```
 
 ### 16.2) `TimerBar.jsx`
+
+Cria o ficheiro `src/components/TimerBar.jsx`:
 
 ```jsx
 const QUESTION_TIME_LIMIT = 15;
@@ -1421,6 +1550,8 @@ export default TimerBar;
 ```
 
 ### 16.3) `QuestionCard.jsx`
+
+Cria o ficheiro `src/components/QuestionCard.jsx`:
 
 ```jsx
 import TimerBar from "./TimerBar.jsx";
@@ -1505,9 +1636,11 @@ export default QuestionCard;
 
 ### 16.4) `ResultScreen.jsx`
 
+Cria o ficheiro `src/components/ResultScreen.jsx`:
+
 ```jsx
 /**
- * Ecrã final da batalha.
+ * Ecrã final do jogo.
  * @param {object} props - Props do componente.
  * @param {string} props.playerName - Nome do jogador.
  * @param {object} props.stats - Estatísticas finais.
@@ -1518,7 +1651,7 @@ function ResultScreen({ playerName, stats, onReset }) {
     return (
         <section className="quiz-card">
             {/* A frase depende de stats.victory, calculado no App com useMemo. */}
-            <h2>{stats.victory ? "Vitória!" : "Derrota!"}</h2>
+            <h2>{stats.victory ? "Objetivo atingido!" : "Tenta novamente!"}</h2>
             <p>Jogador: {playerName}</p>
             <p>Pontuação: {stats.score}</p>
             <p>
@@ -1526,11 +1659,7 @@ function ResultScreen({ playerName, stats, onReset }) {
             </p>
             <p>Percentagem: {stats.percentage}%</p>
 
-            <button
-                type="button"
-                className="button-primary"
-                onClick={onReset}
-            >
+            <button type="button" className="button-primary" onClick={onReset}>
                 Voltar ao início
             </button>
         </section>
@@ -1557,8 +1686,8 @@ Substitui os blocos principais do JSX por:
         onPlayerNameChange={setPlayerName}
         difficulty={difficulty}
         onDifficultyChange={setDifficulty}
-        canStartBattle={canStartBattle}
-        onStartBattle={startBattle}
+        canStartGame={canStartGame}
+        onStartGame={startGame}
     />
 )}
 
@@ -1577,8 +1706,8 @@ Substitui os blocos principais do JSX por:
 {gameStatus === "finished" && (
     <ResultScreen
         playerName={cleanPlayerName}
-        stats={battleStats}
-        onReset={resetBattle}
+        stats={gameStats}
+        onReset={resetGame}
     />
 )}
 ```
@@ -1598,6 +1727,11 @@ Ideia nova desta fase:
 
 - preparar estados visuais antes de chamar a API.
 
+Ficheiros a criar nesta fase:
+
+- criar `src/components/LoadingState.jsx`;
+- criar `src/components/ErrorState.jsx`.
+
 Cria `src/components/LoadingState.jsx`:
 
 ```jsx
@@ -1610,7 +1744,7 @@ function LoadingState() {
         <section className="quiz-card">
             {/* Este componente não precisa de state: só mostra feedback fixo. */}
             <h2>A carregar perguntas...</h2>
-            <p className="muted">A batalha vai começar dentro de instantes.</p>
+            <p className="muted">O jogo vai começar dentro de instantes.</p>
         </section>
     );
 }
@@ -1631,7 +1765,7 @@ Cria `src/components/ErrorState.jsx`:
 function ErrorState({ message, onReset }) {
     return (
         <section className="quiz-card">
-            <h2>Não foi possível começar a batalha</h2>
+            <h2>Não foi possível começar o jogo</h2>
 
             {/* A mensagem vem do App, porque o erro nasce no pedido à API. */}
             <p className="error-text">{message}</p>
@@ -1640,11 +1774,7 @@ function ErrorState({ message, onReset }) {
               O filho não sabe como reiniciar a app.
               Chama o callback recebido do pai.
             */}
-            <button
-                type="button"
-                className="button-primary"
-                onClick={onReset}
-            >
+            <button type="button" className="button-primary" onClick={onReset}>
                 Voltar ao início
             </button>
         </section>
@@ -1668,17 +1798,110 @@ Ideia nova desta fase:
 
 - separar a comunicação com a API da interface.
 
+Ficheiro a criar nesta fase: `src/services/triviaApi.js`.
+
 Vamos usar a **Open Trivia DB**:
 
 ```text
 https://opentdb.com/api.php?amount=5&type=multiple&difficulty=easy&encode=url3986
 ```
 
-Porque usamos `encode=url3986`?
+### 18.1) O que é a Open Trivia DB?
 
-- A API pode devolver caracteres especiais codificados.
-- Com `encode=url3986`, podemos usar `decodeURIComponent`.
-- Isto evita aparecerem textos estranhos no ecrã.
+A **Open Trivia DB** é uma API pública de perguntas de trivia. Em vez de escrevermos todas as perguntas manualmente, podemos pedir perguntas a este serviço e receber uma resposta em JSON.
+
+Documentação: `https://opentdb.com/api_config.php`
+
+Nesta ficha, ela serve para praticar:
+
+- pedidos HTTP com `fetch`;
+- leitura de JSON;
+- estados de `loading` e `error`;
+- transformação de dados externos para o formato interno da app;
+- cuidados com APIs públicas.
+
+Segundo a documentação da Open Trivia DB:
+
+- não é necessária API key para usar o endpoint principal;
+- o endpoint devolve um objeto com `response_code` e `results`;
+- `response_code` indica se a resposta foi bem-sucedida;
+- cada pergunta pode vir com caracteres especiais codificados;
+- o parâmetro `encode` controla o formato dessa codificação;
+- existe limite de pedidos, por isso não devemos chamar a API sem necessidade.
+
+### 18.2) Que parâmetros vamos usar?
+
+O nosso pedido usa estes parâmetros:
+
+| Parâmetro | Valor | Significado |
+|---|---|---|
+| `amount` | `5` | Queremos 5 perguntas. |
+| `type` | `multiple` | Queremos perguntas de escolha múltipla. |
+| `difficulty` | `easy`, `medium` ou `hard` | Vem do estado escolhido pelo jogador. |
+| `encode` | `url3986` | Faz a API devolver texto em URL encoding RFC 3986. |
+
+Exemplo:
+
+```text
+https://opentdb.com/api.php?amount=5&type=multiple&difficulty=easy&encode=url3986
+```
+
+### 18.3) Como é a resposta da API?
+
+A resposta vem num formato parecido com este:
+
+```json
+{
+    "response_code": 0,
+    "results": [
+        {
+            "type": "multiple",
+            "difficulty": "easy",
+            "category": "Science & Nature",
+            "question": "What%20is%20H2O%3F",
+            "correct_answer": "Water",
+            "incorrect_answers": ["Oxygen", "Hydrogen", "Salt"]
+        }
+    ]
+}
+```
+
+Repara em dois detalhes importantes:
+
+1. A API usa nomes como `correct_answer` e `incorrect_answers`.
+2. A nossa app usa nomes como `correctAnswer` e `incorrectAnswers`.
+
+Por isso vamos criar uma função de normalização. A UI não deve depender diretamente do formato da API.
+
+### 18.4) Porque usamos `encode=url3986`?
+
+Algumas perguntas têm acentos, símbolos ou aspas. A API pode devolver esses caracteres codificados.
+
+Com `encode=url3986`, uma pergunta pode vir assim:
+
+```text
+What%20is%20H2O%3F
+```
+
+Depois usamos:
+
+```js
+decodeURIComponent("What%20is%20H2O%3F");
+```
+
+Resultado:
+
+```text
+What is H2O?
+```
+
+Isto torna o tratamento mais previsível para esta ficha.
+
+### 18.5) Limitação importante
+
+A Open Trivia DB devolve perguntas em inglês. Mais à frente, antes dos desafios finais, vamos adicionar uma camada de tradução com a **MyMemory Translation API**.
+
+Por agora, o objetivo é só carregar perguntas externas corretamente.
 
 Cria `src/services/triviaApi.js`:
 
@@ -1743,7 +1966,7 @@ export async function fetchTriviaQuestions(difficulty, signal) {
         encode: "url3986",
     });
 
-    // O signal permite cancelar o pedido se a batalha for reiniciada rapidamente.
+    // O signal permite cancelar o pedido se o jogo for reiniciado rapidamente.
     const response = await fetch(`${TRIVIA_API_URL}?${params}`, { signal });
 
     // response.ok valida erros HTTP, por exemplo 500 ou 404.
@@ -1779,9 +2002,11 @@ export async function fetchTriviaQuestions(difficulty, signal) {
 
 Ideia nova desta fase:
 
-- carregar perguntas externas quando começa uma batalha.
+- carregar perguntas externas quando começa um jogo.
 
 Agora a versão local já está estável. Vamos substituir o fluxo principal por API.
+
+Ficheiro a editar nesta fase: `src/App.jsx`.
 
 Atualiza os imports do `App.jsx`:
 
@@ -1798,7 +2023,7 @@ Adiciona estados:
 ```jsx
 const [questions, setQuestions] = useState(localQuestions);
 const [errorMessage, setErrorMessage] = useState("");
-const [battleId, setBattleId] = useState(0);
+const [gameId, setGameId] = useState(0);
 ```
 
 Substitui estas linhas:
@@ -1816,12 +2041,12 @@ const currentQuestion = questions[currentQuestionIndex];
 const totalQuestions = questions.length;
 ```
 
-Atualiza `startBattle`:
+Atualiza `startGame`:
 
 ```jsx
-const startBattle = () => {
-    if (!canStartBattle) return;
-    setBattleId((previousId) => previousId + 1);
+const startGame = () => {
+    if (!canStartGame) return;
+    setGameId((previousId) => previousId + 1);
 };
 ```
 
@@ -1829,8 +2054,8 @@ Adiciona o efeito da API:
 
 ```jsx
 useEffect(() => {
-    // battleId começa em 0. Enquanto for 0, nenhuma batalha foi pedida.
-    if (battleId === 0) return;
+    // gameId começa em 0. Enquanto for 0, nenhum jogo foi pedido.
+    if (gameId === 0) return;
 
     // AbortController permite cancelar este fetch no cleanup.
     const controller = new AbortController();
@@ -1843,7 +2068,7 @@ useEffect(() => {
             // Limpamos erros antigos para não mostrar mensagens desatualizadas.
             setErrorMessage("");
 
-            // Uma nova batalha recomeça sempre do início.
+            // Um novo jogo recomeça sempre do início.
             setCurrentQuestionIndex(0);
             setAnswerResults([]);
             setTimeLeft(QUESTION_TIME_LIMIT);
@@ -1851,7 +2076,7 @@ useEffect(() => {
             // Pedido real à API. A dificuldade vem do state/context.
             const apiQuestions = await fetchTriviaQuestions(
                 difficulty,
-                controller.signal
+                controller.signal,
             );
 
             // Guardamos as perguntas recebidas no state.
@@ -1880,8 +2105,8 @@ useEffect(() => {
     return () => {
         controller.abort();
     };
-// O pedido deve correr quando começa uma nova batalha ou muda a dificuldade.
-}, [battleId, difficulty]);
+    // O pedido deve correr quando começa um novo jogo ou muda a dificuldade.
+}, [gameId, difficulty]);
 ```
 
 Adiciona renderização para `loading` e `error`:
@@ -1890,14 +2115,14 @@ Adiciona renderização para `loading` e `error`:
 {gameStatus === "loading" && <LoadingState />}
 
 {gameStatus === "error" && (
-    <ErrorState message={errorMessage} onReset={resetBattle} />
+    <ErrorState message={errorMessage} onReset={resetGame} />
 )}
 ```
 
-Atualiza `resetBattle`:
+Atualiza `resetGame`:
 
 ```jsx
-const resetBattle = () => {
+const resetGame = () => {
     // Volta ao ecrã inicial.
     setGameStatus("idle");
 
@@ -1917,6 +2142,8 @@ const resetBattle = () => {
 ---
 
 ## 20) Fase 15 - Quando as props são boas
+
+Esta fase é conceptual. Não precisas de criar nem editar ficheiros.
 
 Antes de avançar para Context, fixa esta regra:
 
@@ -1947,6 +2174,8 @@ Não uses Context só para evitar escrever props. Usa Context quando o dado é r
 Ideia nova desta fase:
 
 - identificar um caso em que as props começam a ser transportadas por componentes que não precisam delas diretamente.
+
+Esta fase é conceptual. Não precisas de criar nem editar ficheiros.
 
 Imagina que queres usar estes dados em vários sítios:
 
@@ -2001,6 +2230,12 @@ Ideia nova desta fase:
 
 - criar um contexto para dados globais simples.
 
+Ficheiros a criar/editar nesta fase:
+
+- criar `src/context/GameSettingsContext.jsx`;
+- editar `src/main.jsx`;
+- editar `src/App.jsx`.
+
 Vamos colocar em Context:
 
 - `playerName`;
@@ -2031,7 +2266,7 @@ export function GameSettingsProvider({ children }) {
     const toggleTheme = () => {
         // Atualização funcional para depender sempre do tema atual mais recente.
         setTheme((currentTheme) =>
-            currentTheme === "light" ? "dark" : "light"
+            currentTheme === "light" ? "dark" : "light",
         );
     };
 
@@ -2045,8 +2280,8 @@ export function GameSettingsProvider({ children }) {
             theme,
             toggleTheme,
         };
-    // O objeto só é recriado quando alguma preferência muda.
-    // Isto evita criar uma referência nova em todos os renders.
+        // O objeto só é recriado quando alguma preferência muda.
+        // Isto evita criar uma referência nova em todos os renders.
     }, [playerName, difficulty, theme]);
 
     return (
@@ -2067,7 +2302,7 @@ export function useGameSettings() {
     if (!context) {
         // Erro intencional: ajuda a detetar uso do hook fora do Provider.
         throw new Error(
-            "useGameSettings deve ser usado dentro de GameSettingsProvider."
+            "useGameSettings deve ser usado dentro de GameSettingsProvider.",
         );
     }
 
@@ -2090,7 +2325,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <GameSettingsProvider>
             <App />
         </GameSettingsProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
 );
 ```
 
@@ -2129,11 +2364,7 @@ Atualiza o `main`:
 Adiciona botão de tema no topo:
 
 ```jsx
-<button
-    type="button"
-    className="button-secondary"
-    onClick={toggleTheme}
->
+<button type="button" className="button-secondary" onClick={toggleTheme}>
     Alternar tema
 </button>
 ```
@@ -2148,9 +2379,250 @@ Adiciona botão de tema no topo:
 
 ---
 
-## 23) Versão final sugerida - `App.jsx`
+## 23) Fase 18 - Tradução automática com MyMemory (Paragem K)
+
+Ideia nova desta fase:
+
+- usar uma segunda API para melhorar a experiência do utilizador;
+- traduzir as perguntas da Open Trivia DB de inglês para português;
+- manter fallback para inglês se a tradução falhar.
+
+Ficheiros a criar/editar nesta fase:
+
+- criar `src/services/translationApi.js`;
+- editar `src/services/triviaApi.js`;
+- editar `src/components/LoadingState.jsx`.
+
+Esta fase aparece no fim porque a app principal já está funcional. Assim, se a tradução falhar, a ficha continua válida.
+
+### 23.1) O que é a MyMemory?
+
+A **MyMemory** é uma API de tradução baseada numa grande memória de tradução. Uma memória de tradução é uma coleção de frases já traduzidas. Quando não existe uma tradução humana adequada, o serviço pode recorrer a tradução automática.
+
+Documentação técnica: `https://mymemory.translated.net/doc/spec.php`
+
+Limites de utilização: `https://mymemory.translated.net/doc/usagelimits.php`
+
+Nesta ficha, a MyMemory serve para traduzir:
+
+- o texto da pergunta;
+- a resposta certa;
+- as respostas erradas.
+
+Vamos usar o endpoint público:
+
+```text
+https://api.mymemory.translated.net/get
+```
+
+Segundo a documentação da MyMemory:
+
+- o endpoint `get` recebe o texto no parâmetro `q`;
+- o parâmetro `langpair` indica o par de línguas, por exemplo `en|pt-PT`;
+- sem API key, é possível consultar memórias públicas;
+- existe limite de utilização para pedidos gratuitos/anónimos;
+- cada segmento em `q` deve ser curto;
+- a resposta inclui normalmente `responseData.translatedText`.
+- em projetos reais ou uso mais intensivo, é recomendado identificar o pedido com `de`, um email de contacto, para limites mais altos e suporte.
+
+### 23.2) Porque esta fase deve ter fallback?
+
+Agora a app passa a depender de duas APIs:
+
+1. Open Trivia DB para perguntas;
+2. MyMemory para tradução.
+
+Isto aumenta a possibilidade de falha:
+
+- a tradução pode atingir limite diário;
+- a rede pode falhar;
+- o serviço pode devolver uma tradução fraca;
+- o texto pode não ter tradução encontrada;
+- a tradução pode demorar mais do que o pedido inicial.
+
+Por isso, a regra desta fase é:
+
+> Se a tradução falhar, a app mostra a pergunta original em inglês.
+
+Isto é uma decisão importante de UX: é melhor ter um quiz em inglês do que não ter quiz nenhum.
+
+### 23.3) Criar `src/services/translationApi.js`
+
+Cria o ficheiro `src/services/translationApi.js`:
+
+```jsx
+const MYMEMORY_API_URL = "https://api.mymemory.translated.net/get";
+const SOURCE_LANGUAGE = "en";
+const TARGET_LANGUAGE = "pt-PT";
+
+/**
+ * Traduz um segmento de texto de inglês para português.
+ * @param {string} text - Texto original em inglês.
+ * @param {AbortSignal} signal - Sinal para cancelar o pedido.
+ * @returns {Promise<string>} Texto traduzido ou texto original.
+ */
+async function translateTextToPortuguese(text, signal) {
+    // Proteção simples: se o texto estiver vazio, não vale a pena chamar a API.
+    if (!text.trim()) return text;
+
+    // A MyMemory usa query string, por isso URLSearchParams ajuda a codificar o texto.
+    const params = new URLSearchParams({
+        q: text,
+        langpair: `${SOURCE_LANGUAGE}|${TARGET_LANGUAGE}`,
+    });
+
+    // Cada tradução é um pedido GET.
+    const response = await fetch(`${MYMEMORY_API_URL}?${params}`, { signal });
+
+    if (!response.ok) {
+        throw new Error("Não foi possível traduzir o texto.");
+    }
+
+    const data = await response.json();
+
+    // responseData.translatedText é o campo principal usado pela API.
+    // Se ele não existir, devolvemos o texto original como fallback local.
+    return data.responseData?.translatedText || text;
+}
+
+/**
+ * Traduz uma pergunta completa: enunciado, resposta certa e respostas erradas.
+ * @param {object} question - Pergunta normalizada da app.
+ * @param {AbortSignal} signal - Sinal para cancelar pedidos.
+ * @returns {Promise<object>} Pergunta traduzida ou pergunta original.
+ */
+export async function translateQuestionToPortuguese(question, signal) {
+    try {
+        // Juntamos todos os textos da pergunta numa lista.
+        const textsToTranslate = [
+            question.question,
+            question.correctAnswer,
+            ...question.incorrectAnswers,
+        ];
+
+        // Traduzimos os textos da mesma pergunta em paralelo.
+        const translatedTexts = await Promise.all(
+            textsToTranslate.map((text) => translateTextToPortuguese(text, signal)),
+        );
+
+        const [translatedQuestion, translatedCorrectAnswer, ...translatedIncorrectAnswers] =
+            translatedTexts;
+
+        return {
+            ...question,
+            question: translatedQuestion,
+            correctAnswer: translatedCorrectAnswer,
+            incorrectAnswers: translatedIncorrectAnswers,
+        };
+    } catch (error) {
+        // AbortError deve continuar a subir para o useEffect cancelar corretamente.
+        if (error.name === "AbortError") throw error;
+
+        // Se a tradução falhar, mantemos a pergunta original em inglês.
+        return question;
+    }
+}
+
+/**
+ * Traduz uma lista de perguntas.
+ * @param {object[]} questions - Perguntas normalizadas.
+ * @param {AbortSignal} signal - Sinal para cancelar pedidos.
+ * @returns {Promise<object[]>} Perguntas traduzidas sempre que possível.
+ */
+export async function translateQuestionsToPortuguese(questions, signal) {
+    const translatedQuestions = [];
+
+    // Usamos ciclo sequencial para ser mais simpático com a API gratuita.
+    // Dentro de cada pergunta, os 5 textos continuam a ser traduzidos em paralelo.
+    for (const question of questions) {
+        const translatedQuestion = await translateQuestionToPortuguese(
+            question,
+            signal,
+        );
+
+        translatedQuestions.push(translatedQuestion);
+    }
+
+    return translatedQuestions;
+}
+```
+
+### 23.4) Atualizar `src/services/triviaApi.js`
+
+Agora vamos ligar a camada de tradução à camada de perguntas.
+
+No topo de `src/services/triviaApi.js`, adiciona:
+
+```jsx
+import { translateQuestionsToPortuguese } from "./translationApi";
+```
+
+Depois, no fim de `fetchTriviaQuestions`, substitui:
+
+```jsx
+return data.results.map(normalizeQuestion);
+```
+
+por:
+
+```jsx
+const normalizedQuestions = data.results.map(normalizeQuestion);
+
+return translateQuestionsToPortuguese(normalizedQuestions, signal);
+```
+
+**O que mudou?**
+
+- `triviaApi.js` continua responsável por carregar perguntas.
+- `translationApi.js` fica responsável por traduzir textos.
+- `App.jsx` não precisa de saber que existem duas APIs.
+- Se a tradução falhar, a pergunta original continua disponível.
+
+### 23.5) Ajustar o loading
+
+Agora o loading pode demorar um pouco mais, porque a app faz:
+
+1. pedido à Open Trivia DB;
+2. normalização das perguntas;
+3. pedidos de tradução à MyMemory.
+
+Atualiza `LoadingState.jsx` para explicar melhor:
+
+```jsx
+/**
+ * Mostra feedback enquanto a app carrega e traduz perguntas.
+ * @returns {JSX.Element}
+ */
+function LoadingState() {
+    return (
+        <section className="quiz-card">
+            <h2>A preparar perguntas...</h2>
+            <p className="muted">
+                A carregar perguntas e a tentar traduzir para português.
+            </p>
+        </section>
+    );
+}
+
+export default LoadingState;
+```
+
+**Checkpoint K**
+
+- O jogo continua a carregar perguntas.
+- Sempre que a tradução funcionar, as perguntas aparecem em português.
+- Se a tradução falhar, a app continua a mostrar perguntas em inglês.
+- O `App.jsx` não ficou cheio de lógica de tradução.
+
+---
+
+## 24) Versão final sugerida - `App.jsx`
 
 Esta versão junta as fases principais depois da componentização e do Context.
+
+Ficheiro de referência desta secção: `src/App.jsx`.
+
+Nota importante: nesta fase, `fetchTriviaQuestions` já carrega perguntas da Open Trivia DB e tenta traduzi-las através da MyMemory. O `App.jsx` não precisa de conhecer os detalhes da tradução.
 
 ```jsx
 import { useEffect, useMemo, useState } from "react";
@@ -2175,7 +2647,7 @@ function shuffleItems(items) {
 }
 
 /**
- * Componente principal da app Quiz Battle.
+ * Componente principal da app Quiz Game.
  * @returns {JSX.Element}
  */
 function App() {
@@ -2194,7 +2666,7 @@ function App() {
     // Decide que ecrã é renderizado: idle, loading, error, playing ou finished.
     const [gameStatus, setGameStatus] = useState("idle");
 
-    // Lista de perguntas atualmente usada pela batalha.
+    // Lista de perguntas atualmente usada pelo jogo.
     // Começa com perguntas locais para a app ter uma base segura.
     const [questions, setQuestions] = useState(localQuestions);
 
@@ -2210,15 +2682,15 @@ function App() {
     // Mensagem mostrada quando o pedido à API falha.
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Identificador incremental para disparar uma nova batalha via useEffect.
+    // Identificador incremental para disparar um novo jogo via useEffect.
     // Isto evita fazer fetch diretamente dentro do handler do botão.
-    const [battleId, setBattleId] = useState(0);
+    const [gameId, setGameId] = useState(0);
 
     // Valor limpo usado na validação e no ecrã final.
     const cleanPlayerName = playerName.trim();
 
     // Regra mínima para poder começar.
-    const canStartBattle = cleanPlayerName.length >= 2;
+    const canStartGame = cleanPlayerName.length >= 2;
 
     // Pergunta atual derivada do array e do índice.
     const currentQuestion = questions[currentQuestionIndex];
@@ -2235,7 +2707,7 @@ function App() {
         ]);
     }, [currentQuestion]);
 
-    const battleStats = useMemo(() => {
+    const gameStats = useMemo(() => {
         const correctAnswers = answerResults.filter(Boolean).length;
         const score = correctAnswers * 100;
         const percentage =
@@ -2269,7 +2741,7 @@ function App() {
 
     useEffect(() => {
         // Este efeito é externo: comunica com a API.
-        if (battleId === 0) return;
+        if (gameId === 0) return;
 
         const controller = new AbortController();
 
@@ -2283,7 +2755,7 @@ function App() {
 
                 const apiQuestions = await fetchTriviaQuestions(
                     difficulty,
-                    controller.signal
+                    controller.signal,
                 );
 
                 setQuestions(apiQuestions);
@@ -2302,18 +2774,18 @@ function App() {
         return () => {
             controller.abort();
         };
-    }, [battleId, difficulty]);
+    }, [gameId, difficulty]);
 
-    const startBattle = () => {
+    const startGame = () => {
         // Mantém a validação no handler para proteger a lógica,
         // mesmo que o botão já esteja disabled.
-        if (!canStartBattle) return;
+        if (!canStartGame) return;
 
-        // Incrementar battleId é o "sinal" para o useEffect carregar perguntas.
-        setBattleId((previousId) => previousId + 1);
+        // Incrementar gameId é o "sinal" para o useEffect carregar perguntas.
+        setGameId((previousId) => previousId + 1);
     };
 
-    const resetBattle = () => {
+    const resetGame = () => {
         // Volta ao ecrã inicial sem apagar nome/dificuldade.
         setGameStatus("idle");
         setErrorMessage("");
@@ -2328,7 +2800,7 @@ function App() {
 
         setAnswerResults(updatedResults);
 
-        // Se esta era a última pergunta, termina a batalha.
+        // Se esta era a última pergunta, termina o jogo.
         const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
         if (isLastQuestion) {
@@ -2349,8 +2821,8 @@ function App() {
     return (
         <main className={`app ${theme === "dark" ? "app--dark" : ""}`}>
             <div className="quiz-shell">
-                <h1>Quiz Battle</h1>
-                <p>Responde a perguntas para derrotar o boss.</p>
+                <h1>Quiz Game</h1>
+                <p>Responde a perguntas para testar conhecimentos.</p>
 
                 {/* toggleTheme vem do Context. */}
                 <button
@@ -2369,8 +2841,8 @@ function App() {
                         onPlayerNameChange={setPlayerName}
                         difficulty={difficulty}
                         onDifficultyChange={setDifficulty}
-                        canStartBattle={canStartBattle}
-                        onStartBattle={startBattle}
+                        canStartGame={canStartGame}
+                        onStartGame={startGame}
                     />
                 )}
 
@@ -2378,11 +2850,11 @@ function App() {
 
                 {gameStatus === "error" && (
                     // O ecrã de erro recebe só a mensagem e a ação de voltar.
-                    <ErrorState message={errorMessage} onReset={resetBattle} />
+                    <ErrorState message={errorMessage} onReset={resetGame} />
                 )}
 
                 {gameStatus === "playing" && currentQuestion && (
-                    // A pergunta recebe dados e callbacks específicos da batalha.
+                    // A pergunta recebe dados e callbacks específicos do jogo.
                     // Isto continua a ser props, não Context.
                     <QuestionCard
                         question={currentQuestion}
@@ -2399,8 +2871,8 @@ function App() {
                     // O ecrã final recebe estatísticas já calculadas.
                     <ResultScreen
                         playerName={cleanPlayerName}
-                        stats={battleStats}
-                        onReset={resetBattle}
+                        stats={gameStats}
+                        onReset={resetGame}
                     />
                 )}
             </div>
@@ -2413,15 +2885,17 @@ export default App;
 
 ---
 
-## 24) Critérios de aceitação obrigatórios
+## 25) Critérios de aceitação obrigatórios
 
 No fim da ficha, a app deve cumprir:
 
 - O projeto arranca com `npm run dev`.
 - O nome do jogador é obrigatório e tem validação mínima.
 - A dificuldade é controlada por React.
-- A batalha começa com loading.
+- O jogo começa com loading.
 - As perguntas vêm da Open Trivia DB.
+- A app tenta traduzir as perguntas com a MyMemory.
+- Se a tradução falhar, as perguntas continuam a aparecer em inglês.
 - Se a API falhar, aparece ecrã de erro.
 - O temporizador desce de segundo em segundo.
 - Quando o tempo chega a 0, as respostas ficam bloqueadas.
@@ -2432,7 +2906,7 @@ No fim da ficha, a app deve cumprir:
 
 ---
 
-## 25) Erros comuns e correções
+## 26) Erros comuns e correções
 
 ### O projeto não encontra os ficheiros CSS
 
@@ -2449,7 +2923,7 @@ E confirma se a pasta se chama mesmo `styles`.
 
 Confirma se usaste `1000` no `setTimeout`, não `100`.
 
-### O temporizador continua após terminar a batalha
+### O temporizador continua após terminar o jogo
 
 Confirma se o `useEffect` tem esta guarda:
 
@@ -2493,6 +2967,28 @@ Verifica:
 4. Estás a verificar `response.ok`?
 5. Estás a tratar `data.response_code`?
 
+### A tradução não aparece em português
+
+Verifica:
+
+1. A função `translateQuestionsToPortuguese` está importada no `triviaApi.js`?
+2. Estás a chamar `translateQuestionsToPortuguese(normalizedQuestions, signal)`?
+3. A consola mostra erro da MyMemory?
+4. Atingiste o limite gratuito/anónimo?
+5. A pergunta pode simplesmente não ter tradução boa disponível.
+
+Lembra-te: nesta ficha, tradução é melhoria. Se falhar, o fallback para inglês é comportamento esperado.
+
+### A tradução fica lenta
+
+É normal ficar mais lenta do que antes. Agora a app faz pedidos à Open Trivia DB e depois vários pedidos à MyMemory.
+
+Para reduzir pedidos:
+
+- mantém `amount` em `5`;
+- não chames a API a cada render;
+- só começa novo jogo quando o utilizador carrega no botão.
+
 ### A app mostra resultado com 0 perguntas
 
 Confirma se `totalQuestions` vem de `questions.length` e se a API carregou dados antes de entrar em `playing`.
@@ -2515,23 +3011,23 @@ Exemplo: `onAnswer` deve continuar a ser prop, porque é uma ação específica 
 
 ---
 
-## 26) Desafios finais
+## 27) Desafios finais
 
 Escolhe 2 ou 3:
 
 1. Adicionar botão “Jogar outra vez” no ecrã final.
 2. Permitir escolher 5 ou 10 perguntas.
 3. Guardar melhor pontuação no `localStorage`.
-4. Mostrar uma barra de vida do boss.
-5. Mostrar feedback diferente para vitória e derrota.
+4. Mostrar uma medalha diferente conforme a percentagem final.
+5. Mostrar feedback diferente para objetivo atingido e objetivo por atingir.
 6. Impedir duplo clique numa resposta.
-7. Criar componente `BossHealthBar`.
+7. Criar componente `ScoreBadge`.
 8. Mostrar a dificuldade no ecrã final.
 9. Criar um botão “Usar perguntas locais” se a API falhar.
 
 ---
 
-## 27) Checklist de validação
+## 28) Checklist de validação
 
 Antes de entregar, confirma:
 
@@ -2540,8 +3036,10 @@ Antes de entregar, confirma:
 - [ ] O nome do jogador é controlado por React.
 - [ ] O botão de começar fica bloqueado sem nome válido.
 - [ ] A dificuldade altera o pedido à API.
-- [ ] A batalha mostra loading.
+- [ ] O jogo mostra loading.
 - [ ] As perguntas externas aparecem.
+- [ ] A app tenta traduzir perguntas para português.
+- [ ] Se a tradução falhar, a app mantém perguntas em inglês.
 - [ ] Existe ecrã de erro se a API falhar.
 - [ ] O temporizador funciona.
 - [ ] O temporizador bloqueia respostas aos 0 segundos.
@@ -2556,7 +3054,7 @@ Antes de entregar, confirma:
 
 ---
 
-## 28) Perguntas de revisão
+## 29) Perguntas de revisão
 
 1. Porque começámos com perguntas locais antes da API?
 2. Qual é a diferença entre estado e estado derivado?
@@ -2567,11 +3065,12 @@ Antes de entregar, confirma:
 7. Porque precisamos de estados `loading` e `error`?
 8. O que é prop drilling?
 9. Quando é melhor usar props em vez de Context?
-10. Porque o `value` do Context foi criado com `useMemo`?
+10. Porque a tradução deve ter fallback para inglês?
+11. Porque o `value` do Context foi criado com `useMemo`?
 
 ---
 
-## 29) Resumo final
+## 30) Resumo final
 
 Nesta ficha construíste uma app React pequena, mas completa:
 
@@ -2583,6 +3082,7 @@ Nesta ficha construíste uma app React pequena, mas completa:
 - criaste um temporizador com `useEffect`;
 - separaste a app em componentes;
 - carregaste perguntas de uma API com outro `useEffect`;
+- adicionaste uma camada de tradução com uma segunda API;
 - trataste loading e erro;
 - identificaste prop drilling;
 - usaste `useContext` para preferências globais.
