@@ -1017,17 +1017,19 @@ const totalQuestions = questions.length;
 Substitui temporariamente o bloco `playing`:
 
 ```jsx
-{gameStatus === "playing" && currentQuestion && (
-    <section className="quiz-card">
-        <p>
-            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-        </p>
-        <h2>{currentQuestion.question}</h2>
-        <p className="muted">
-            Resposta certa nesta fase: {currentQuestion.correctAnswer}
-        </p>
-    </section>
-)}
+{
+    gameStatus === "playing" && currentQuestion && (
+        <section className="quiz-card">
+            <p>
+                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+            </p>
+            <h2>{currentQuestion.question}</h2>
+            <p className="muted">
+                Resposta certa nesta fase: {currentQuestion.correctAnswer}
+            </p>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C1**
@@ -1132,31 +1134,33 @@ const currentAnswers = currentQuestion
 Substitui o bloco `playing`:
 
 ```jsx
-{gameStatus === "playing" && currentQuestion && (
-    <section className="quiz-card">
-        <p>
-            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-        </p>
-        <h2>{currentQuestion.question}</h2>
+{
+    gameStatus === "playing" && currentQuestion && (
+        <section className="quiz-card">
+            <p>
+                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+            </p>
+            <h2>{currentQuestion.question}</h2>
 
-        <div className="answer-grid">
-            {currentAnswers.map((answer) => (
-                /*
+            <div className="answer-grid">
+                {currentAnswers.map((answer) => (
+                    /*
                   Cada resposta gera um botão.
                   A key ajuda o React a identificar cada item.
                 */
-                <button
-                    key={answer}
-                    type="button"
-                    className="answer-button"
-                    onClick={() => handleAnswer(answer)}
-                >
-                    {answer}
-                </button>
-            ))}
-        </div>
-    </section>
-)}
+                    <button
+                        key={answer}
+                        type="button"
+                        className="answer-button"
+                        onClick={() => handleAnswer(answer)}
+                    >
+                        {answer}
+                    </button>
+                ))}
+            </div>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C2**
@@ -1178,24 +1182,26 @@ Ficheiro a editar nesta fase: `src/App.jsx`.
 Substitui o bloco `finished`:
 
 ```jsx
-{gameStatus === "finished" && (
-    <section className="quiz-card">
-        <h2>Fim do jogo</h2>
-        <p>Jogador: {cleanPlayerName}</p>
-        <p>
-            Respostas certas: {answerResults.filter(Boolean).length} de{" "}
-            {totalQuestions}
-        </p>
+{
+    gameStatus === "finished" && (
+        <section className="quiz-card">
+            <h2>Fim do jogo</h2>
+            <p>Jogador: {cleanPlayerName}</p>
+            <p>
+                Respostas certas: {answerResults.filter(Boolean).length} de{" "}
+                {totalQuestions}
+            </p>
 
-        <button
-            type="button"
-            className="button-primary"
-            onClick={resetGame}
-        >
-            Voltar ao início
-        </button>
-    </section>
-)}
+            <button
+                type="button"
+                className="button-primary"
+                onClick={resetGame}
+            >
+                Voltar ao início
+            </button>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C3**
@@ -1265,28 +1271,29 @@ const gameStats = useMemo(() => {
 Atualiza o bloco `finished`:
 
 ```jsx
-{gameStatus === "finished" && (
-    <section className="quiz-card">
-        <h2>
-            {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
-        </h2>
-        <p>Jogador: {cleanPlayerName}</p>
-        <p>Pontuação: {gameStats.score}</p>
-        <p>
-            Certas: {gameStats.correctAnswers} de{" "}
-            {gameStats.totalQuestions}
-        </p>
-        <p>Percentagem: {gameStats.percentage}%</p>
+{
+    gameStatus === "finished" && (
+        <section className="quiz-card">
+            <h2>
+                {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
+            </h2>
+            <p>Jogador: {cleanPlayerName}</p>
+            <p>Pontuação: {gameStats.score}</p>
+            <p>
+                Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
+            </p>
+            <p>Percentagem: {gameStats.percentage}%</p>
 
-        <button
-            type="button"
-            className="button-primary"
-            onClick={resetGame}
-        >
-            Voltar ao início
-        </button>
-    </section>
-)}
+            <button
+                type="button"
+                className="button-primary"
+                onClick={resetGame}
+            >
+                Voltar ao início
+            </button>
+        </section>
+    );
+}
 ```
 
 **Checkpoint D1**
@@ -1826,36 +1833,42 @@ import StartScreen from "./components/StartScreen.jsx";
 Substitui os blocos principais do JSX por:
 
 ```jsx
-{gameStatus === "idle" && (
-    <StartScreen
-        playerName={playerName}
-        onPlayerNameChange={setPlayerName}
-        difficulty={difficulty}
-        onDifficultyChange={setDifficulty}
-        canStartGame={canStartGame}
-        onStartGame={startGame}
-    />
-)}
+{
+    gameStatus === "idle" && (
+        <StartScreen
+            playerName={playerName}
+            onPlayerNameChange={setPlayerName}
+            difficulty={difficulty}
+            onDifficultyChange={setDifficulty}
+            canStartGame={canStartGame}
+            onStartGame={startGame}
+        />
+    );
+}
 
-{gameStatus === "playing" && currentQuestion && (
-    <QuestionCard
-        question={currentQuestion}
-        answers={currentAnswers}
-        questionNumber={currentQuestionIndex + 1}
-        totalQuestions={totalQuestions}
-        timeLeft={timeLeft}
-        onAnswer={handleAnswer}
-        onTimeout={handleTimeout}
-    />
-)}
+{
+    gameStatus === "playing" && currentQuestion && (
+        <QuestionCard
+            question={currentQuestion}
+            answers={currentAnswers}
+            questionNumber={currentQuestionIndex + 1}
+            totalQuestions={totalQuestions}
+            timeLeft={timeLeft}
+            onAnswer={handleAnswer}
+            onTimeout={handleTimeout}
+        />
+    );
+}
 
-{gameStatus === "finished" && (
-    <ResultScreen
-        playerName={cleanPlayerName}
-        stats={gameStats}
-        onReset={resetGame}
-    />
-)}
+{
+    gameStatus === "finished" && (
+        <ResultScreen
+            playerName={cleanPlayerName}
+            stats={gameStats}
+            onReset={resetGame}
+        />
+    );
+}
 ```
 
 **Checkpoint F**
@@ -1921,7 +1934,8 @@ function ErrorState({ message, onUseLocalQuestions, onReset }) {
                 O componente de erro não deve inventar a causa da falha. */}
             <p className="error-text">{message}</p>
             <p className="muted">
-                Podes voltar ao início ou continuar com as perguntas locais da ficha.
+                Podes voltar ao início ou continuar com as perguntas locais da
+                ficha.
             </p>
 
             {/*
@@ -2002,12 +2016,12 @@ Segundo a documentação da Open Trivia DB:
 
 O nosso pedido usa estes parâmetros:
 
-| Parâmetro | Valor | Significado |
-|---|---|---|
-| `amount` | `5` | Queremos 5 perguntas. |
-| `type` | `multiple` | Queremos perguntas de escolha múltipla. |
-| `difficulty` | `easy`, `medium` ou `hard` | Vem do estado escolhido pelo jogador. |
-| `encode` | `url3986` | Faz a API devolver texto em URL encoding RFC 3986. |
+| Parâmetro    | Valor                      | Significado                                        |
+| ------------ | -------------------------- | -------------------------------------------------- |
+| `amount`     | `5`                        | Queremos 5 perguntas.                              |
+| `type`       | `multiple`                 | Queremos perguntas de escolha múltipla.            |
+| `difficulty` | `easy`, `medium` ou `hard` | Vem do estado escolhido pelo jogador.              |
+| `encode`     | `url3986`                  | Faz a API devolver texto em URL encoding RFC 3986. |
 
 Exemplo:
 
@@ -2349,15 +2363,19 @@ const startLocalGame = () => {
 Adiciona renderização para `loading` e `error`:
 
 ```jsx
-{gameStatus === "loading" && <LoadingState />}
+{
+    gameStatus === "loading" && <LoadingState />;
+}
 
-{gameStatus === "error" && (
-    <ErrorState
-        message={errorMessage}
-        onUseLocalQuestions={startLocalGame}
-        onReset={resetGame}
-    />
-)}
+{
+    gameStatus === "error" && (
+        <ErrorState
+            message={errorMessage}
+            onUseLocalQuestions={startLocalGame}
+            onReset={resetGame}
+        />
+    );
+}
 ```
 
 **Checkpoint H**
@@ -2761,11 +2779,16 @@ export async function translateQuestionToPortuguese(question, signal) {
         // Traduzimos os textos da mesma pergunta em paralelo.
         // Isto torna cada pergunta mais rápida do que traduzir pergunta, certa e erradas uma a uma.
         const translatedTexts = await Promise.all(
-            textsToTranslate.map((text) => translateTextToPortuguese(text, signal)),
+            textsToTranslate.map((text) =>
+                translateTextToPortuguese(text, signal),
+            ),
         );
 
-        const [translatedQuestion, translatedCorrectAnswer, ...translatedIncorrectAnswers] =
-            translatedTexts;
+        const [
+            translatedQuestion,
+            translatedCorrectAnswer,
+            ...translatedIncorrectAnswers
+        ] = translatedTexts;
 
         return {
             ...question,
