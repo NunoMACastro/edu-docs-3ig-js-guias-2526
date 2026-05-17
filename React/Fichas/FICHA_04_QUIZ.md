@@ -933,7 +933,7 @@ Ficheiros a criar/editar nesta fase:
 
 Cria `src/data/localQuestions.js`:
 
-```jsx
+```js
 /**
  * Propósito: [Completa: explica porque começamos com perguntas locais antes de usar API.]
  * Produz/Devolve: [Completa: descreve o array exportado e a estrutura de cada pergunta.]
@@ -1017,19 +1017,17 @@ const totalQuestions = questions.length;
 Substitui temporariamente o bloco `playing`:
 
 ```jsx
-{
-    gameStatus === "playing" && currentQuestion && (
-        <section className="quiz-card">
-            <p>
-                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-            </p>
-            <h2>{currentQuestion.question}</h2>
-            <p className="muted">
-                Resposta certa nesta fase: {currentQuestion.correctAnswer}
-            </p>
-        </section>
-    );
-}
+{gameStatus === "playing" && currentQuestion && (
+    <section className="quiz-card">
+        <p>
+            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+        </p>
+        <h2>{currentQuestion.question}</h2>
+        <p className="muted">
+            Resposta certa nesta fase: {currentQuestion.correctAnswer}
+        </p>
+    </section>
+)}
 ```
 
 **Checkpoint C1**
@@ -1049,16 +1047,29 @@ Ideia nova desta fase:
 
 Ficheiro a editar nesta fase: `src/App.jsx`.
 
-Adiciona estado:
+Atualiza o import do React:
+
+```jsx
+import { useRef, useState } from "react";
+```
+
+Este snippet substitui apenas a linha de import do React.
+
+Adiciona estado e uma ref:
 
 ```jsx
 // Guarda um boolean por cada resposta:
 // true = certa, false = errada.
 // Este formato é simples de contar com filter(Boolean) e evita guardar texto desnecessário.
 const [answerResults, setAnswerResults] = useState([]);
+
+// Guarda o índice da pergunta já respondida.
+// useRef é usado aqui porque muda imediatamente e não precisa de esperar por novo render.
+// Isto ajuda a impedir um duplo clique muito rápido na mesma resposta.
+const answeredQuestionRef = useRef(-1);
 ```
 
-Este snippet é incremental: adiciona o estado junto dos outros `useState`.
+Este snippet é incremental: adiciona o estado junto dos outros `useState` e a ref dentro do componente.
 
 Adiciona esta função antes do `return`:
 
@@ -1069,6 +1080,12 @@ Adiciona esta função antes do `return`:
  * @param {string} selectedAnswer - [Completa: explica de onde vem esta resposta e como é usada.]
  */
 const handleAnswer = (selectedAnswer) => {
+    // Se esta pergunta já recebeu resposta, ignoramos cliques repetidos.
+    // A ref bloqueia imediatamente, antes de o React fazer o próximo render.
+    if (answeredQuestionRef.current === currentQuestionIndex) return;
+
+    answeredQuestionRef.current = currentQuestionIndex;
+
     // Compara a resposta escolhida com a resposta certa da pergunta atual.
     // A comparação é direta porque cada botão envia exatamente o texto da resposta.
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
@@ -1114,6 +1131,9 @@ const startGame = () => {
     // Caso contrário, os resultados do jogo anterior contaminariam a pontuação.
     setAnswerResults([]);
 
+    // Também libertamos o bloqueio de resposta para o novo jogo.
+    answeredQuestionRef.current = -1;
+
     // Só depois de reiniciar o progresso mudamos para o ecrã de jogo.
     // A ordem ajuda a garantir que o ecrã playing já recebe estado limpo.
     setGameStatus("playing");
@@ -1134,33 +1154,33 @@ const currentAnswers = currentQuestion
 Substitui o bloco `playing`:
 
 ```jsx
-{
-    gameStatus === "playing" && currentQuestion && (
-        <section className="quiz-card">
-            <p>
-                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-            </p>
-            <h2>{currentQuestion.question}</h2>
+{gameStatus === "playing" && currentQuestion && (
+    <section className="quiz-card">
+        <p>
+            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+        </p>
+        <h2>{currentQuestion.question}</h2>
 
-            <div className="answer-grid">
-                {currentAnswers.map((answer) => (
-                    /*
-                  Cada resposta gera um botão.
-                  A key ajuda o React a identificar cada item.
-                */
-                    <button
-                        key={answer}
-                        type="button"
-                        className="answer-button"
-                        onClick={() => handleAnswer(answer)}
-                    >
-                        {answer}
-                    </button>
-                ))}
-            </div>
-        </section>
-    );
-}
+        <div className="answer-grid">
+            {currentAnswers.map((answer, index) => (
+                /*
+              Cada resposta gera um botão.
+              A key ajuda o React a identificar cada item.
+              Aqui o index é aceitável porque a lista é pequena, fixa por pergunta
+              e não é editada pelo utilizador.
+            */
+                <button
+                    key={`${currentQuestion.id}-${index}-${answer}`}
+                    type="button"
+                    className="answer-button"
+                    onClick={() => handleAnswer(answer)}
+                >
+                    {answer}
+                </button>
+            ))}
+        </div>
+    </section>
+)}
 ```
 
 **Checkpoint C2**
@@ -1182,26 +1202,24 @@ Ficheiro a editar nesta fase: `src/App.jsx`.
 Substitui o bloco `finished`:
 
 ```jsx
-{
-    gameStatus === "finished" && (
-        <section className="quiz-card">
-            <h2>Fim do jogo</h2>
-            <p>Jogador: {cleanPlayerName}</p>
-            <p>
-                Respostas certas: {answerResults.filter(Boolean).length} de{" "}
-                {totalQuestions}
-            </p>
+{gameStatus === "finished" && (
+    <section className="quiz-card">
+        <h2>Fim do jogo</h2>
+        <p>Jogador: {cleanPlayerName}</p>
+        <p>
+            Respostas certas: {answerResults.filter(Boolean).length} de{" "}
+            {totalQuestions}
+        </p>
 
-            <button
-                type="button"
-                className="button-primary"
-                onClick={resetGame}
-            >
-                Voltar ao início
-            </button>
-        </section>
-    );
-}
+        <button
+            type="button"
+            className="button-primary"
+            onClick={resetGame}
+        >
+            Voltar ao início
+        </button>
+    </section>
+)}
 ```
 
 **Checkpoint C3**
@@ -1225,7 +1243,7 @@ Ficheiro a editar nesta fase: `src/App.jsx`.
 Atualiza o import:
 
 ```jsx
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 ```
 
 Este snippet substitui apenas a linha de import do React. O resto do ficheiro mantém-se.
@@ -1271,29 +1289,27 @@ const gameStats = useMemo(() => {
 Atualiza o bloco `finished`:
 
 ```jsx
-{
-    gameStatus === "finished" && (
-        <section className="quiz-card">
-            <h2>
-                {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
-            </h2>
-            <p>Jogador: {cleanPlayerName}</p>
-            <p>Pontuação: {gameStats.score}</p>
-            <p>
-                Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
-            </p>
-            <p>Percentagem: {gameStats.percentage}%</p>
+{gameStatus === "finished" && (
+    <section className="quiz-card">
+        <h2>
+            {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
+        </h2>
+        <p>Jogador: {cleanPlayerName}</p>
+        <p>Pontuação: {gameStats.score}</p>
+        <p>
+            Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
+        </p>
+        <p>Percentagem: {gameStats.percentage}%</p>
 
-            <button
-                type="button"
-                className="button-primary"
-                onClick={resetGame}
-            >
-                Voltar ao início
-            </button>
-        </section>
-    );
-}
+        <button
+            type="button"
+            className="button-primary"
+            onClick={resetGame}
+        >
+            Voltar ao início
+        </button>
+    </section>
+)}
 ```
 
 **Checkpoint D1**
@@ -1374,7 +1390,7 @@ Ficheiro a editar nesta fase: `src/App.jsx`.
 Atualiza o import:
 
 ```jsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 ```
 
 Este snippet substitui novamente apenas a linha de import do React.
@@ -1404,6 +1420,7 @@ const startGame = () => {
 
     setCurrentQuestionIndex(0);
     setAnswerResults([]);
+    answeredQuestionRef.current = -1;
 
     // Cada jogo começa com o tempo completo.
     // Isto evita herdar o tempo que sobrou da tentativa anterior.
@@ -1494,38 +1511,34 @@ const handleTimeout = () => {
 Atualiza os botões de resposta:
 
 ```jsx
-{
-    currentAnswers.map((answer) => (
-        <button
-            key={answer}
-            type="button"
-            className="answer-button"
-            onClick={() => handleAnswer(answer)}
-            disabled={timeLeft === 0}
-        >
-            {answer}
-        </button>
-    ));
-}
+{currentAnswers.map((answer, index) => (
+    <button
+        key={`${currentQuestion.id}-${index}-${answer}`}
+        type="button"
+        className="answer-button"
+        onClick={() => handleAnswer(answer)}
+        disabled={timeLeft === 0}
+    >
+        {answer}
+    </button>
+))}
 ```
 
 Depois da grelha de respostas, adiciona:
 
 ```jsx
-{
-    timeLeft === 0 && (
-        <div className="button-row">
-            <p className="error-text">Tempo esgotado.</p>
-            <button
-                type="button"
-                className="button-secondary"
-                onClick={handleTimeout}
-            >
-                Avançar
-            </button>
-        </div>
-    );
-}
+{timeLeft === 0 && (
+    <div className="button-row">
+        <p className="error-text">Tempo esgotado.</p>
+        <button
+            type="button"
+            className="button-secondary"
+            onClick={handleTimeout}
+        >
+            Avançar
+        </button>
+    </div>
+)}
 ```
 
 **Checkpoint E2**
@@ -1658,19 +1671,18 @@ export default StartScreen;
 Cria o ficheiro `src/components/TimerBar.jsx`:
 
 ```jsx
-const QUESTION_TIME_LIMIT = 15;
-
 /**
  * Propósito: [Completa: explica como este componente representa visualmente o tempo.]
  * Produz/Devolve: [Completa: descreve o texto e a barra de progresso gerados.]
  * @param {object} props - [Completa: descreve as props necessárias para calcular a barra.]
  * @param {number} props.timeLeft - [Completa: explica que unidade representa e como afeta a UI.]
+ * @param {number} props.timeLimit - [Completa: explica qual é o tempo total da pergunta.]
  * @returns {JSX.Element} [Completa: descreve o JSX do temporizador.]
  */
-function TimerBar({ timeLeft }) {
+function TimerBar({ timeLeft, timeLimit }) {
     // Converte segundos restantes em percentagem para controlar a largura da barra.
-    // O cálculo fica no componente porque é uma representação visual direta do timeLeft.
-    const percentage = (timeLeft / QUESTION_TIME_LIMIT) * 100;
+    // timeLimit vem do App para existir uma única fonte de verdade para a regra dos segundos.
+    const percentage = (timeLeft / timeLimit) * 100;
 
     return (
         <div className="timer">
@@ -1709,6 +1721,7 @@ import TimerBar from "./TimerBar.jsx";
  * @param {number} props.questionNumber - [Completa: explica como este número aparece na interface.]
  * @param {number} props.totalQuestions - [Completa: explica porque o total é necessário.]
  * @param {number} props.timeLeft - [Completa: explica como o tempo altera os botões.]
+ * @param {number} props.timeLimit - [Completa: explica porque o limite é necessário para o temporizador.]
  * @param {(answer: string) => void} props.onAnswer - [Completa: explica que valor é enviado ao pai.]
  * @param {() => void} props.onTimeout - [Completa: explica quando esta ação é usada.]
  * @returns {JSX.Element} [Completa: descreve o JSX da pergunta atual.]
@@ -1723,7 +1736,9 @@ function QuestionCard({
 
     // Estado visual/controlado pelo pai.
     // timeLeft decide se os botões ainda estão ativos e que feedback aparece.
+    // timeLimit permite que TimerBar calcule a percentagem sem duplicar constantes.
     timeLeft,
+    timeLimit,
 
     // Callbacks para comunicar ações ao pai.
     // O componente não sabe calcular pontuação; apenas informa o que aconteceu.
@@ -1736,19 +1751,20 @@ function QuestionCard({
                 Pergunta {questionNumber} de {totalQuestions}
             </p>
 
-            <TimerBar timeLeft={timeLeft} />
+            <TimerBar timeLeft={timeLeft} timeLimit={timeLimit} />
 
             <h2>{question.question}</h2>
 
             <div className="answer-grid">
-                {answers.map((answer) => (
+                {answers.map((answer, index) => (
                     /*
                       Cada resposta gera um botão independente.
                       O clique envia a resposta escolhida para o App.
-                      A key usa o texto da resposta porque, nesta pergunta, cada opção deve ser única.
+                      A key junta id, posição e texto para evitar colisões se duas traduções ficarem iguais.
+                      O index é aceitável aqui porque as respostas são pequenas, fixas e não editáveis.
                     */
                     <button
-                        key={answer}
+                        key={`${question.id}-${index}-${answer}`}
                         type="button"
                         className="answer-button"
                         onClick={() => onAnswer(answer)}
@@ -1833,42 +1849,37 @@ import StartScreen from "./components/StartScreen.jsx";
 Substitui os blocos principais do JSX por:
 
 ```jsx
-{
-    gameStatus === "idle" && (
-        <StartScreen
-            playerName={playerName}
-            onPlayerNameChange={setPlayerName}
-            difficulty={difficulty}
-            onDifficultyChange={setDifficulty}
-            canStartGame={canStartGame}
-            onStartGame={startGame}
-        />
-    );
-}
+{gameStatus === "idle" && (
+    <StartScreen
+        playerName={playerName}
+        onPlayerNameChange={setPlayerName}
+        difficulty={difficulty}
+        onDifficultyChange={setDifficulty}
+        canStartGame={canStartGame}
+        onStartGame={startGame}
+    />
+)}
 
-{
-    gameStatus === "playing" && currentQuestion && (
-        <QuestionCard
-            question={currentQuestion}
-            answers={currentAnswers}
-            questionNumber={currentQuestionIndex + 1}
-            totalQuestions={totalQuestions}
-            timeLeft={timeLeft}
-            onAnswer={handleAnswer}
-            onTimeout={handleTimeout}
-        />
-    );
-}
+{gameStatus === "playing" && currentQuestion && (
+    <QuestionCard
+        question={currentQuestion}
+        answers={currentAnswers}
+        questionNumber={currentQuestionIndex + 1}
+        totalQuestions={totalQuestions}
+        timeLeft={timeLeft}
+        timeLimit={QUESTION_TIME_LIMIT}
+        onAnswer={handleAnswer}
+        onTimeout={handleTimeout}
+    />
+)}
 
-{
-    gameStatus === "finished" && (
-        <ResultScreen
-            playerName={cleanPlayerName}
-            stats={gameStats}
-            onReset={resetGame}
-        />
-    );
-}
+{gameStatus === "finished" && (
+    <ResultScreen
+        playerName={cleanPlayerName}
+        stats={gameStats}
+        onReset={resetGame}
+    />
+)}
 ```
 
 **Checkpoint F**
@@ -2088,7 +2099,7 @@ Por agora, o objetivo é só carregar perguntas externas corretamente.
 
 Cria `src/services/triviaApi.js`:
 
-```jsx
+```js
 const TRIVIA_API_URL = "https://opentdb.com/api.php";
 
 /**
@@ -2184,6 +2195,12 @@ export async function fetchTriviaQuestions(difficulty, signal) {
         throw new Error("A API não devolveu perguntas para esta configuração.");
     }
 
+    // Mesmo com response_code 0, validamos se existe uma lista utilizável.
+    // Assim evitamos entrar no jogo sem perguntas ou com uma resposta inesperada.
+    if (!Array.isArray(data.results) || data.results.length === 0) {
+        throw new Error("A API não devolveu perguntas válidas.");
+    }
+
     // A UI recebe sempre perguntas no nosso formato interno.
     // Esta linha é a fronteira entre "dados externos" e "dados prontos para React".
     return data.results.map(normalizeQuestion);
@@ -2195,8 +2212,9 @@ export async function fetchTriviaQuestions(difficulty, signal) {
 1. `fetchTriviaQuestions` faz o pedido.
 2. `response.ok` valida se o pedido HTTP correu bem.
 3. `response_code` valida a resposta específica da Open Trivia DB.
-4. `normalizeQuestion` adapta os dados ao formato que a app já usava.
-5. `AbortSignal` permite cancelar o pedido se ele deixar de ser necessário.
+4. `Array.isArray(data.results)` confirma que há uma lista de perguntas utilizável.
+5. `normalizeQuestion` adapta os dados ao formato que a app já usava.
+6. `AbortSignal` permite cancelar o pedido se ele deixar de ser necessário.
 
 ---
 
@@ -2225,7 +2243,7 @@ Adiciona estados:
 ```jsx
 const [questions, setQuestions] = useState(localQuestions);
 const [errorMessage, setErrorMessage] = useState("");
-const [gameId, setGameId] = useState(0);
+const [gameRequest, setGameRequest] = useState(null);
 ```
 
 Substitui estas linhas:
@@ -2248,7 +2266,17 @@ Atualiza `startGame`:
 ```jsx
 const startGame = () => {
     if (!canStartGame) return;
-    setGameId((previousId) => previousId + 1);
+
+    // Libertamos qualquer bloqueio de resposta antes de pedir um novo jogo.
+    answeredQuestionRef.current = -1;
+
+    // gameRequest representa a intenção explícita de iniciar um jogo.
+    // Guardamos a dificuldade neste momento para mudanças posteriores no select
+    // não dispararem outro pedido sem novo clique em "Começar jogo".
+    setGameRequest({
+        id: Date.now(),
+        difficulty,
+    });
 };
 ```
 
@@ -2256,9 +2284,9 @@ Adiciona o efeito da API:
 
 ```jsx
 useEffect(() => {
-    // gameId começa em 0. Enquanto for 0, nenhum jogo foi pedido.
+    // Enquanto gameRequest for null, nenhum jogo foi pedido.
     // Esta guarda impede que a API seja chamada automaticamente no primeiro render.
-    if (gameId === 0) return;
+    if (!gameRequest) return;
 
     // AbortController permite cancelar este fetch no cleanup.
     // É uma proteção contra respostas atrasadas quando o utilizador muda de fluxo rapidamente.
@@ -2278,12 +2306,14 @@ useEffect(() => {
             // A API pode devolver uma lista nova, por isso o índice e os resultados antigos deixam de fazer sentido.
             setCurrentQuestionIndex(0);
             setAnswerResults([]);
+            answeredQuestionRef.current = -1;
             setTimeLeft(QUESTION_TIME_LIMIT);
 
-            // Pedido real à API. A dificuldade vem do state/context.
+            // Pedido real à API. A dificuldade vem do pedido criado no clique.
+            // Assim, alterar difficulty depois do jogo começar não dispara novo fetch.
             // O App coordena quando pedir dados; o serviço sabe como fazer o pedido.
             const apiQuestions = await fetchTriviaQuestions(
-                difficulty,
+                gameRequest.difficulty,
                 controller.signal,
             );
 
@@ -2320,9 +2350,9 @@ useEffect(() => {
     return () => {
         controller.abort();
     };
-    // O pedido deve correr quando começa um novo jogo ou muda a dificuldade.
-    // Estas dependências descrevem exatamente os valores usados dentro do efeito.
-}, [gameId, difficulty]);
+    // O pedido deve correr apenas quando existe um novo pedido explícito de jogo.
+    // A dificuldade usada já ficou guardada dentro de gameRequest.
+}, [gameRequest]);
 ```
 
 Atualiza `resetGame`:
@@ -2351,6 +2381,7 @@ const startLocalGame = () => {
     // Ao mudar de fonte de dados, índice, respostas e tempo têm de voltar ao estado inicial.
     setCurrentQuestionIndex(0);
     setAnswerResults([]);
+    answeredQuestionRef.current = -1;
     setTimeLeft(QUESTION_TIME_LIMIT);
 
     // Limpa o erro antigo e entra diretamente no jogo.
@@ -2363,19 +2394,15 @@ const startLocalGame = () => {
 Adiciona renderização para `loading` e `error`:
 
 ```jsx
-{
-    gameStatus === "loading" && <LoadingState />;
-}
+{gameStatus === "loading" && <LoadingState />}
 
-{
-    gameStatus === "error" && (
-        <ErrorState
-            message={errorMessage}
-            onUseLocalQuestions={startLocalGame}
-            onReset={resetGame}
-        />
-    );
-}
+{gameStatus === "error" && (
+    <ErrorState
+        message={errorMessage}
+        onUseLocalQuestions={startLocalGame}
+        onReset={resetGame}
+    />
+)}
 ```
 
 **Checkpoint H**
@@ -2457,7 +2484,7 @@ Sem Context, poderias começar a fazer isto:
 Pior: `QuestionCard` podia receber `theme` só para o passar para `TimerBar`:
 
 ```jsx
-<TimerBar timeLeft={timeLeft} theme={theme} />
+<TimerBar timeLeft={timeLeft} timeLimit={QUESTION_TIME_LIMIT} theme={theme} />
 ```
 
 Aqui, `QuestionCard` torna-se apenas um “transportador” de props. Isto é **prop drilling**.
@@ -2525,16 +2552,8 @@ export function GameSettingsProvider({ children }) {
     const [difficulty, setDifficulty] = useState("easy");
     const [theme, setTheme] = useState("light");
 
-    const toggleTheme = () => {
-        // Atualização funcional para depender sempre do tema atual mais recente.
-        // Isto é mais seguro do que calcular o próximo tema a partir de uma variável possivelmente antiga.
-        setTheme((currentTheme) =>
-            currentTheme === "light" ? "dark" : "light",
-        );
-    };
-
     const value = useMemo(() => {
-        // Este objeto é o que todos os consumidores do contexto vão receber.
+        // Este objeto agrupa as preferências globais e as funções que as alteram.
         // Por isso deve conter apenas dados realmente globais e não ações específicas de um componente.
         return {
             playerName,
@@ -2542,7 +2561,13 @@ export function GameSettingsProvider({ children }) {
             difficulty,
             setDifficulty,
             theme,
-            toggleTheme,
+            toggleTheme: () => {
+                // Atualização funcional para depender sempre do tema atual mais recente.
+                // Isto é mais seguro do que calcular o próximo tema a partir de uma variável possivelmente antiga.
+                setTheme((currentTheme) =>
+                    currentTheme === "light" ? "dark" : "light",
+                );
+            },
         };
         // O objeto só é recriado quando alguma preferência muda.
         // Isto evita criar uma referência nova em todos os renders e reduz re-renders desnecessários dos consumidores.
@@ -2719,7 +2744,7 @@ Também é normal o loading ficar mais lento nesta fase. O pedido às perguntas 
 
 Cria o ficheiro `src/services/translationApi.js`:
 
-```jsx
+```js
 const MYMEMORY_API_URL = "https://api.mymemory.translated.net/get";
 const SOURCE_LANGUAGE = "en";
 const TARGET_LANGUAGE = "pt-PT";
@@ -2839,23 +2864,25 @@ Agora vamos ligar a camada de tradução à camada de perguntas.
 
 No topo de `src/services/triviaApi.js`, adiciona:
 
-```jsx
+```js
 import { translateQuestionsToPortuguese } from "./translationApi";
 ```
 
 Depois, no fim de `fetchTriviaQuestions`, substitui:
 
-```jsx
+```js
 return data.results.map(normalizeQuestion);
 ```
 
 por:
 
-```jsx
+```js
 const normalizedQuestions = data.results.map(normalizeQuestion);
 
 return translateQuestionsToPortuguese(normalizedQuestions, signal);
 ```
+
+Mantém a validação de `data.results` antes deste bloco. A tradução só deve receber uma lista de perguntas já validada e normalizada.
 
 **O que mudou?**
 
@@ -2912,7 +2939,7 @@ Ficheiro de referência desta secção: `src/App.jsx`.
 Nota importante: nesta fase, `fetchTriviaQuestions` já carrega perguntas da Open Trivia DB e tenta traduzi-las através da MyMemory. O `App.jsx` não precisa de conhecer os detalhes da tradução.
 
 ```jsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ErrorState from "./components/ErrorState.jsx";
 import LoadingState from "./components/LoadingState.jsx";
 import QuestionCard from "./components/QuestionCard.jsx";
@@ -2974,14 +3001,18 @@ function App() {
     // É reiniciado sempre que o jogo começa ou avança para outra pergunta.
     const [timeLeft, setTimeLeft] = useState(QUESTION_TIME_LIMIT);
 
+    // Bloqueia respostas repetidas na mesma pergunta.
+    // useRef muda imediatamente e evita duplo clique antes do próximo render.
+    const answeredQuestionRef = useRef(-1);
+
     // Mensagem mostrada quando o pedido à API falha.
     // Guardamos a mensagem separada para o ErrorState poder apresentar feedback específico.
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Identificador incremental para disparar um novo jogo via useEffect.
-    // Isto evita fazer fetch diretamente dentro do handler do botão.
-    // O handler muda estado; o efeito reage a essa mudança e trata do trabalho assíncrono.
-    const [gameId, setGameId] = useState(0);
+    // Pedido explícito para iniciar um novo jogo via useEffect.
+    // Guardamos a dificuldade escolhida no momento do clique em "Começar jogo".
+    // Assim, mudar a dificuldade depois não dispara outro pedido automaticamente.
+    const [gameRequest, setGameRequest] = useState(null);
 
     // Valor limpo usado na validação e no ecrã final.
     // trim evita que espaços extra contem como nome real.
@@ -3044,7 +3075,7 @@ function App() {
     useEffect(() => {
         // Este efeito é externo: comunica com a API.
         // Está separado do temporizador para os alunos distinguirem bem os dois usos de useEffect.
-        if (gameId === 0) return;
+        if (!gameRequest) return;
 
         const controller = new AbortController();
 
@@ -3054,10 +3085,11 @@ function App() {
                 setErrorMessage("");
                 setCurrentQuestionIndex(0);
                 setAnswerResults([]);
+                answeredQuestionRef.current = -1;
                 setTimeLeft(QUESTION_TIME_LIMIT);
 
                 const apiQuestions = await fetchTriviaQuestions(
-                    difficulty,
+                    gameRequest.difficulty,
                     controller.signal,
                 );
 
@@ -3077,7 +3109,7 @@ function App() {
         return () => {
             controller.abort();
         };
-    }, [gameId, difficulty]);
+    }, [gameRequest]);
 
     const startGame = () => {
         // Mantém a validação no handler para proteger a lógica,
@@ -3085,9 +3117,13 @@ function App() {
         // A interface ajuda o utilizador, mas a função continua responsável por validar.
         if (!canStartGame) return;
 
-        // Incrementar gameId é o "sinal" para o useEffect carregar perguntas.
-        // Não precisamos de saber aqui se a fonte será local, API ou traduzida.
-        setGameId((previousId) => previousId + 1);
+        // Criar um novo gameRequest é o "sinal" para o useEffect carregar perguntas.
+        // A dificuldade fica congelada neste pedido concreto.
+        answeredQuestionRef.current = -1;
+        setGameRequest({
+            id: Date.now(),
+            difficulty,
+        });
     };
 
     const resetGame = () => {
@@ -3103,12 +3139,19 @@ function App() {
         setQuestions(localQuestions);
         setCurrentQuestionIndex(0);
         setAnswerResults([]);
+        answeredQuestionRef.current = -1;
         setTimeLeft(QUESTION_TIME_LIMIT);
         setErrorMessage("");
         setGameStatus("playing");
     };
 
     const handleAnswer = (selectedAnswer) => {
+        // Evita que a mesma pergunta seja respondida duas vezes por duplo clique.
+        // A ref é atualizada imediatamente, sem esperar por nova renderização.
+        if (answeredQuestionRef.current === currentQuestionIndex) return;
+
+        answeredQuestionRef.current = currentQuestionIndex;
+
         // Compara com a resposta certa da pergunta atual.
         // Toda a lógica de pontuação nasce desta comparação simples.
         const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
@@ -3191,6 +3234,7 @@ function App() {
                         questionNumber={currentQuestionIndex + 1}
                         totalQuestions={totalQuestions}
                         timeLeft={timeLeft}
+                        timeLimit={QUESTION_TIME_LIMIT}
                         onAnswer={handleAnswer}
                         onTimeout={handleTimeout}
                     />
@@ -3386,21 +3430,18 @@ useEffect(() => {
 Melhor opção para esta ficha:
 
 ```jsx
-const [answeredQuestionIndex, setAnsweredQuestionIndex] = useState(-1);
 const answeredQuestionRef = useRef(-1);
-const isAnswerLocked = answeredQuestionIndex === currentQuestionIndex;
 
 const handleAnswer = (selectedAnswer) => {
     if (answeredQuestionRef.current === currentQuestionIndex) return;
 
     answeredQuestionRef.current = currentQuestionIndex;
-    setAnsweredQuestionIndex(currentQuestionIndex);
     // continua aqui a mesma lógica de avaliar a resposta, guardar o resultado,
     // avançar para a próxima pergunta ou terminar o jogo.
 };
 ```
 
-Neste exemplo, `useRef` evita um duplo clique muito rápido antes de o React conseguir renderizar outra vez. Se usares este padrão, lembra-te de importar `useRef`.
+Este padrão já foi usado no fluxo principal da ficha. `useRef` evita um duplo clique muito rápido antes de o React conseguir renderizar outra vez.
 
 O mesmo cuidado vale para o desafio do `localStorage`: guarda a melhor pontuação quando o jogo termina dentro da função que trata a última resposta, em vez de criar um `useEffect` só para reagir a `gameStatus === "finished"`.
 
@@ -3415,7 +3456,7 @@ Escolhe 2 ou 3:
 3. Guardar melhor pontuação no `localStorage`.
 4. Mostrar uma medalha diferente conforme a percentagem final.
 5. Mostrar feedback diferente para objetivo atingido e objetivo por atingir.
-6. Impedir duplo clique numa resposta.
+6. Mostrar uma mensagem curta de incentivo durante o jogo.
 7. Criar componente `ScoreBadge`.
 8. Mostrar a dificuldade no ecrã final.
 9. Criar um botão “Usar perguntas locais” se a API falhar.
@@ -3424,7 +3465,6 @@ Notas para resolver os desafios sem criar problemas novos:
 
 - No desafio do `localStorage`, guarda apenas dados simples: nome, pontuação, percentagem, dificuldade e data.
 - Não guardes a melhor pontuação num `useEffect` que depende de muitos estados. É mais simples guardar quando detetas a última resposta em `handleAnswer`.
-- No desafio do duplo clique, bloqueia a pergunta assim que a primeira resposta for registada.
 - No desafio “Usar perguntas locais”, reaproveita `localQuestions`; não faças novo pedido à API.
 - Se adicionares escolha de 5 ou 10 perguntas, passa esse valor para `fetchTriviaQuestions` e para o fallback local.
 
