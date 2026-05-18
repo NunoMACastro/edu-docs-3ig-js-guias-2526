@@ -663,9 +663,7 @@ Ideia nova desta fase:
 
 Ficheiro a editar nesta fase: `src/App.jsx`.
 
-Nesta fase, o snippet seguinte é uma versão completa do componente.
-
-Substitui o conteúdo completo de `src/App.jsx` por:
+Atualiza `src/App.jsx`:
 
 ```jsx
 import { useState } from "react";
@@ -766,9 +764,7 @@ Estados do jogo:
 - `finished`: resultado final;
 - mais tarde vamos adicionar `loading`.
 
-Nesta fase, o snippet seguinte volta a ser uma versão completa do componente.
-
-Substitui o conteúdo completo de `src/App.jsx` por:
+Atualiza `src/App.jsx`:
 
 ```jsx
 import { useState } from "react";
@@ -1025,19 +1021,17 @@ No `return`, dentro de `<div className="quiz-shell">`, encontra o bloco condicio
 Substitui temporariamente **apenas esse bloco `playing`** por:
 
 ```jsx
-{
-    gameStatus === "playing" && currentQuestion && (
-        <section className="quiz-card">
-            <p>
-                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-            </p>
-            <h2>{currentQuestion.question}</h2>
-            <p className="muted">
-                Resposta certa nesta fase: {currentQuestion.correctAnswer}
-            </p>
-        </section>
-    );
-}
+{gameStatus === "playing" && currentQuestion && (
+    <section className="quiz-card">
+        <p>
+            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+        </p>
+        <h2>{currentQuestion.question}</h2>
+        <p className="muted">
+            Resposta certa nesta fase: {currentQuestion.correctAnswer}
+        </p>
+    </section>
+)}
 ```
 
 **Checkpoint C1**
@@ -1166,35 +1160,33 @@ No `return`, substitui novamente **apenas o bloco `playing`**. Mantém o bloco `
 O bloco `playing` deve ficar assim:
 
 ```jsx
-{
-    gameStatus === "playing" && currentQuestion && (
-        <section className="quiz-card">
-            <p>
-                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-            </p>
-            <h2>{currentQuestion.question}</h2>
+{gameStatus === "playing" && currentQuestion && (
+    <section className="quiz-card">
+        <p>
+            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+        </p>
+        <h2>{currentQuestion.question}</h2>
 
-            <div className="answer-grid">
-                {currentAnswers.map((answer, index) => (
-                    /*
+        <div className="answer-grid">
+            {currentAnswers.map((answer, index) => (
+                /*
               Cada resposta gera um botão.
               A key ajuda o React a identificar cada item.
               Aqui o index é aceitável porque a lista é pequena, fixa por pergunta
               e não é editada pelo utilizador.
             */
-                    <button
-                        key={`${currentQuestion.id}-${index}-${answer}`}
-                        type="button"
-                        className="answer-button"
-                        onClick={() => handleAnswer(answer)}
-                    >
-                        {answer}
-                    </button>
-                ))}
-            </div>
-        </section>
-    );
-}
+                <button
+                    key={`${currentQuestion.id}-${index}-${answer}`}
+                    type="button"
+                    className="answer-button"
+                    onClick={() => handleAnswer(answer)}
+                >
+                    {answer}
+                </button>
+            ))}
+        </div>
+    </section>
+)}
 ```
 
 **Checkpoint C2**
@@ -1218,26 +1210,24 @@ No `return`, encontra o bloco que começa por `{gameStatus === "finished" && (..
 Substitui **apenas esse bloco `finished`** por:
 
 ```jsx
-{
-    gameStatus === "finished" && (
-        <section className="quiz-card">
-            <h2>Fim do jogo</h2>
-            <p>Jogador: {cleanPlayerName}</p>
-            <p>
-                Respostas certas: {answerResults.filter(Boolean).length} de{" "}
-                {totalQuestions}
-            </p>
+{gameStatus === "finished" && (
+    <section className="quiz-card">
+        <h2>Fim do jogo</h2>
+        <p>Jogador: {cleanPlayerName}</p>
+        <p>
+            Respostas certas: {answerResults.filter(Boolean).length} de{" "}
+            {totalQuestions}
+        </p>
 
-            <button
-                type="button"
-                className="button-primary"
-                onClick={resetGame}
-            >
-                Voltar ao início
-            </button>
-        </section>
-    );
-}
+        <button
+            type="button"
+            className="button-primary"
+            onClick={resetGame}
+        >
+            Voltar ao início
+        </button>
+    </section>
+)}
 ```
 
 **Checkpoint C3**
@@ -1309,29 +1299,27 @@ No `return`, volta ao bloco `{gameStatus === "finished" && (...)}` que criaste n
 Substitui **apenas esse bloco `finished`** por:
 
 ```jsx
-{
-    gameStatus === "finished" && (
-        <section className="quiz-card">
-            <h2>
-                {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
-            </h2>
-            <p>Jogador: {cleanPlayerName}</p>
-            <p>Pontuação: {gameStats.score}</p>
-            <p>
-                Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
-            </p>
-            <p>Percentagem: {gameStats.percentage}%</p>
+{gameStatus === "finished" && (
+    <section className="quiz-card">
+        <h2>
+            {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
+        </h2>
+        <p>Jogador: {cleanPlayerName}</p>
+        <p>Pontuação: {gameStats.score}</p>
+        <p>
+            Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
+        </p>
+        <p>Percentagem: {gameStats.percentage}%</p>
 
-            <button
-                type="button"
-                className="button-primary"
-                onClick={resetGame}
-            >
-                Voltar ao início
-            </button>
-        </section>
-    );
-}
+        <button
+            type="button"
+            className="button-primary"
+            onClick={resetGame}
+        >
+            Voltar ao início
+        </button>
+    </section>
+)}
 ```
 
 **Checkpoint D1**
@@ -1539,38 +1527,34 @@ Dentro do bloco `playing`, procura a grelha de respostas:
 Dentro dessa grelha, substitui **apenas o `.map()` das respostas** por:
 
 ```jsx
-{
-    currentAnswers.map((answer, index) => (
-        <button
-            key={`${currentQuestion.id}-${index}-${answer}`}
-            type="button"
-            className="answer-button"
-            onClick={() => handleAnswer(answer)}
-            disabled={timeLeft === 0}
-        >
-            {answer}
-        </button>
-    ));
-}
+{currentAnswers.map((answer, index) => (
+    <button
+        key={`${currentQuestion.id}-${index}-${answer}`}
+        type="button"
+        className="answer-button"
+        onClick={() => handleAnswer(answer)}
+        disabled={timeLeft === 0}
+    >
+        {answer}
+    </button>
+))}
 ```
 
 Depois da grelha de respostas, adiciona:
 
 ```jsx
-{
-    timeLeft === 0 && (
-        <div className="button-row">
-            <p className="error-text">Tempo esgotado.</p>
-            <button
-                type="button"
-                className="button-secondary"
-                onClick={handleTimeout}
-            >
-                Avançar
-            </button>
-        </div>
-    );
-}
+{timeLeft === 0 && (
+    <div className="button-row">
+        <p className="error-text">Tempo esgotado.</p>
+        <button
+            type="button"
+            className="button-secondary"
+            onClick={handleTimeout}
+        >
+            Avançar
+        </button>
+    </div>
+)}
 ```
 
 **Checkpoint E2**
@@ -1899,43 +1883,37 @@ Dentro de `<div className="quiz-shell">`, substitui **apenas os três blocos con
 Não substituas o ficheiro inteiro nesta etapa. Os três blocos condicionais devem ficar assim:
 
 ```jsx
-{
-    gameStatus === "idle" && (
-        <StartScreen
-            playerName={playerName}
-            onPlayerNameChange={setPlayerName}
-            difficulty={difficulty}
-            onDifficultyChange={setDifficulty}
-            canStartGame={canStartGame}
-            onStartGame={startGame}
-        />
-    );
-}
+{gameStatus === "idle" && (
+    <StartScreen
+        playerName={playerName}
+        onPlayerNameChange={setPlayerName}
+        difficulty={difficulty}
+        onDifficultyChange={setDifficulty}
+        canStartGame={canStartGame}
+        onStartGame={startGame}
+    />
+)}
 
-{
-    gameStatus === "playing" && currentQuestion && (
-        <QuestionCard
-            question={currentQuestion}
-            answers={currentAnswers}
-            questionNumber={currentQuestionIndex + 1}
-            totalQuestions={totalQuestions}
-            timeLeft={timeLeft}
-            timeLimit={QUESTION_TIME_LIMIT}
-            onAnswer={handleAnswer}
-            onTimeout={handleTimeout}
-        />
-    );
-}
+{gameStatus === "playing" && currentQuestion && (
+    <QuestionCard
+        question={currentQuestion}
+        answers={currentAnswers}
+        questionNumber={currentQuestionIndex + 1}
+        totalQuestions={totalQuestions}
+        timeLeft={timeLeft}
+        timeLimit={QUESTION_TIME_LIMIT}
+        onAnswer={handleAnswer}
+        onTimeout={handleTimeout}
+    />
+)}
 
-{
-    gameStatus === "finished" && (
-        <ResultScreen
-            playerName={cleanPlayerName}
-            stats={gameStats}
-            onReset={resetGame}
-        />
-    );
-}
+{gameStatus === "finished" && (
+    <ResultScreen
+        playerName={cleanPlayerName}
+        stats={gameStats}
+        onReset={resetGame}
+    />
+)}
 ```
 
 **Checkpoint F**
@@ -2452,19 +2430,15 @@ No `return`, dentro de `<div className="quiz-shell">`, adiciona estes dois bloco
 Não substituas os blocos `idle`, `playing` ou `finished` nesta etapa. Apenas acrescenta:
 
 ```jsx
-{
-    gameStatus === "loading" && <LoadingState />;
-}
+{gameStatus === "loading" && <LoadingState />}
 
-{
-    gameStatus === "error" && (
-        <ErrorState
-            message={errorMessage}
-            onUseLocalQuestions={startLocalGame}
-            onReset={resetGame}
-        />
-    );
-}
+{gameStatus === "error" && (
+    <ErrorState
+        message={errorMessage}
+        onUseLocalQuestions={startLocalGame}
+        onReset={resetGame}
+    />
+)}
 ```
 
 **Checkpoint H**
@@ -2709,10 +2683,22 @@ Importa o hook:
 import { useGameSettings } from "./context/GameSettingsContext.jsx";
 ```
 
-Atualiza o `main`:
+No `return`, substitui apenas a abertura do `<main>`.
+
+Antes tinhas algo deste género:
+
+```jsx
+<main className="app">
+    {/* mantém aqui o conteúdo que já existia dentro do main */}
+</main>
+```
+
+Depois deve ficar assim:
 
 ```jsx
 <main className={`app ${theme === "dark" ? "app--dark" : ""}`}>
+    {/* mantém aqui o conteúdo que já existia dentro do main */}
+</main>
 ```
 
 Adiciona botão de tema no topo:
