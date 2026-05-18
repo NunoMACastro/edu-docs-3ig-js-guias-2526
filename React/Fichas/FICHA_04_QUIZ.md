@@ -91,6 +91,8 @@ Regra prática:
 
 - Se o snippet começa com imports e termina com `export default`, normalmente é uma versão completa do ficheiro.
 - Se o snippet mostra só uma função, uma constante ou um pedaço de JSX, é uma alteração incremental.
+- Quando a ficha manda substituir um bloco condicional, procura o bloco que começa com a condição indicada, por exemplo `{gameStatus === "playing" && (...)}`, e substitui apenas esse bloco completo.
+- Não apagues o `return`, o `<main>`, o `<div className="quiz-shell">` nem outros blocos condicionais, a menos que a ficha diga explicitamente para substituir o ficheiro completo.
 - Depois de cada snippet incremental, relê o ficheiro completo para garantir que não criaste variáveis duplicadas.
 
 ### Como preencher os JSDoc
@@ -661,7 +663,9 @@ Ideia nova desta fase:
 
 Ficheiro a editar nesta fase: `src/App.jsx`.
 
-Atualiza `src/App.jsx`:
+Nesta fase, o snippet seguinte é uma versão completa do componente.
+
+Substitui o conteúdo completo de `src/App.jsx` por:
 
 ```jsx
 import { useState } from "react";
@@ -762,7 +766,9 @@ Estados do jogo:
 - `finished`: resultado final;
 - mais tarde vamos adicionar `loading`.
 
-Atualiza `src/App.jsx`:
+Nesta fase, o snippet seguinte volta a ser uma versão completa do componente.
+
+Substitui o conteúdo completo de `src/App.jsx` por:
 
 ```jsx
 import { useState } from "react";
@@ -1014,20 +1020,24 @@ const currentQuestion = questions[currentQuestionIndex];
 const totalQuestions = questions.length;
 ```
 
-Substitui temporariamente o bloco `playing`:
+No `return`, dentro de `<div className="quiz-shell">`, encontra o bloco condicional do jogo que começa por `{gameStatus === "playing" && (...)}`.
+
+Substitui temporariamente **apenas esse bloco `playing`** por:
 
 ```jsx
-{gameStatus === "playing" && currentQuestion && (
-    <section className="quiz-card">
-        <p>
-            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-        </p>
-        <h2>{currentQuestion.question}</h2>
-        <p className="muted">
-            Resposta certa nesta fase: {currentQuestion.correctAnswer}
-        </p>
-    </section>
-)}
+{
+    gameStatus === "playing" && currentQuestion && (
+        <section className="quiz-card">
+            <p>
+                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+            </p>
+            <h2>{currentQuestion.question}</h2>
+            <p className="muted">
+                Resposta certa nesta fase: {currentQuestion.correctAnswer}
+            </p>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C1**
@@ -1151,36 +1161,40 @@ const currentAnswers = currentQuestion
     : [];
 ```
 
-Substitui o bloco `playing`:
+No `return`, substitui novamente **apenas o bloco `playing`**. Mantém o bloco `idle`, o bloco `finished`, o `<main>` e o `<div className="quiz-shell">` como estavam.
+
+O bloco `playing` deve ficar assim:
 
 ```jsx
-{gameStatus === "playing" && currentQuestion && (
-    <section className="quiz-card">
-        <p>
-            Pergunta {currentQuestionIndex + 1} de {totalQuestions}
-        </p>
-        <h2>{currentQuestion.question}</h2>
+{
+    gameStatus === "playing" && currentQuestion && (
+        <section className="quiz-card">
+            <p>
+                Pergunta {currentQuestionIndex + 1} de {totalQuestions}
+            </p>
+            <h2>{currentQuestion.question}</h2>
 
-        <div className="answer-grid">
-            {currentAnswers.map((answer, index) => (
-                /*
+            <div className="answer-grid">
+                {currentAnswers.map((answer, index) => (
+                    /*
               Cada resposta gera um botão.
               A key ajuda o React a identificar cada item.
               Aqui o index é aceitável porque a lista é pequena, fixa por pergunta
               e não é editada pelo utilizador.
             */
-                <button
-                    key={`${currentQuestion.id}-${index}-${answer}`}
-                    type="button"
-                    className="answer-button"
-                    onClick={() => handleAnswer(answer)}
-                >
-                    {answer}
-                </button>
-            ))}
-        </div>
-    </section>
-)}
+                    <button
+                        key={`${currentQuestion.id}-${index}-${answer}`}
+                        type="button"
+                        className="answer-button"
+                        onClick={() => handleAnswer(answer)}
+                    >
+                        {answer}
+                    </button>
+                ))}
+            </div>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C2**
@@ -1199,27 +1213,31 @@ Ideia nova desta fase:
 
 Ficheiro a editar nesta fase: `src/App.jsx`.
 
-Substitui o bloco `finished`:
+No `return`, encontra o bloco que começa por `{gameStatus === "finished" && (...)}`.
+
+Substitui **apenas esse bloco `finished`** por:
 
 ```jsx
-{gameStatus === "finished" && (
-    <section className="quiz-card">
-        <h2>Fim do jogo</h2>
-        <p>Jogador: {cleanPlayerName}</p>
-        <p>
-            Respostas certas: {answerResults.filter(Boolean).length} de{" "}
-            {totalQuestions}
-        </p>
+{
+    gameStatus === "finished" && (
+        <section className="quiz-card">
+            <h2>Fim do jogo</h2>
+            <p>Jogador: {cleanPlayerName}</p>
+            <p>
+                Respostas certas: {answerResults.filter(Boolean).length} de{" "}
+                {totalQuestions}
+            </p>
 
-        <button
-            type="button"
-            className="button-primary"
-            onClick={resetGame}
-        >
-            Voltar ao início
-        </button>
-    </section>
-)}
+            <button
+                type="button"
+                className="button-primary"
+                onClick={resetGame}
+            >
+                Voltar ao início
+            </button>
+        </section>
+    );
+}
 ```
 
 **Checkpoint C3**
@@ -1286,30 +1304,34 @@ const gameStats = useMemo(() => {
 }, [answerResults, totalQuestions]);
 ```
 
-Atualiza o bloco `finished`:
+No `return`, volta ao bloco `{gameStatus === "finished" && (...)}` que criaste na fase anterior.
+
+Substitui **apenas esse bloco `finished`** por:
 
 ```jsx
-{gameStatus === "finished" && (
-    <section className="quiz-card">
-        <h2>
-            {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
-        </h2>
-        <p>Jogador: {cleanPlayerName}</p>
-        <p>Pontuação: {gameStats.score}</p>
-        <p>
-            Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
-        </p>
-        <p>Percentagem: {gameStats.percentage}%</p>
+{
+    gameStatus === "finished" && (
+        <section className="quiz-card">
+            <h2>
+                {gameStats.victory ? "Objetivo atingido!" : "Tenta novamente!"}
+            </h2>
+            <p>Jogador: {cleanPlayerName}</p>
+            <p>Pontuação: {gameStats.score}</p>
+            <p>
+                Certas: {gameStats.correctAnswers} de {gameStats.totalQuestions}
+            </p>
+            <p>Percentagem: {gameStats.percentage}%</p>
 
-        <button
-            type="button"
-            className="button-primary"
-            onClick={resetGame}
-        >
-            Voltar ao início
-        </button>
-    </section>
-)}
+            <button
+                type="button"
+                className="button-primary"
+                onClick={resetGame}
+            >
+                Voltar ao início
+            </button>
+        </section>
+    );
+}
 ```
 
 **Checkpoint D1**
@@ -1508,37 +1530,47 @@ const handleTimeout = () => {
 };
 ```
 
-Atualiza os botões de resposta:
+Dentro do bloco `playing`, procura a grelha de respostas:
 
 ```jsx
-{currentAnswers.map((answer, index) => (
-    <button
-        key={`${currentQuestion.id}-${index}-${answer}`}
-        type="button"
-        className="answer-button"
-        onClick={() => handleAnswer(answer)}
-        disabled={timeLeft === 0}
-    >
-        {answer}
-    </button>
-))}
+<div className="answer-grid">{/* ... */}</div>
+```
+
+Dentro dessa grelha, substitui **apenas o `.map()` das respostas** por:
+
+```jsx
+{
+    currentAnswers.map((answer, index) => (
+        <button
+            key={`${currentQuestion.id}-${index}-${answer}`}
+            type="button"
+            className="answer-button"
+            onClick={() => handleAnswer(answer)}
+            disabled={timeLeft === 0}
+        >
+            {answer}
+        </button>
+    ));
+}
 ```
 
 Depois da grelha de respostas, adiciona:
 
 ```jsx
-{timeLeft === 0 && (
-    <div className="button-row">
-        <p className="error-text">Tempo esgotado.</p>
-        <button
-            type="button"
-            className="button-secondary"
-            onClick={handleTimeout}
-        >
-            Avançar
-        </button>
-    </div>
-)}
+{
+    timeLeft === 0 && (
+        <div className="button-row">
+            <p className="error-text">Tempo esgotado.</p>
+            <button
+                type="button"
+                className="button-secondary"
+                onClick={handleTimeout}
+            >
+                Avançar
+            </button>
+        </div>
+    );
+}
 ```
 
 **Checkpoint E2**
@@ -1846,40 +1878,64 @@ import ResultScreen from "./components/ResultScreen.jsx";
 import StartScreen from "./components/StartScreen.jsx";
 ```
 
-Substitui os blocos principais do JSX por:
+No `return` do `App.jsx`, mantém a estrutura exterior:
 
 ```jsx
-{gameStatus === "idle" && (
-    <StartScreen
-        playerName={playerName}
-        onPlayerNameChange={setPlayerName}
-        difficulty={difficulty}
-        onDifficultyChange={setDifficulty}
-        canStartGame={canStartGame}
-        onStartGame={startGame}
-    />
-)}
+<main className="app">
+    <div className="quiz-shell">
+        <h1>Quiz Game</h1>
+        <p>Responde a perguntas para testar conhecimentos.</p>
+        {/* blocos condicionais aqui */}
+    </div>
+</main>
+```
 
-{gameStatus === "playing" && currentQuestion && (
-    <QuestionCard
-        question={currentQuestion}
-        answers={currentAnswers}
-        questionNumber={currentQuestionIndex + 1}
-        totalQuestions={totalQuestions}
-        timeLeft={timeLeft}
-        timeLimit={QUESTION_TIME_LIMIT}
-        onAnswer={handleAnswer}
-        onTimeout={handleTimeout}
-    />
-)}
+Dentro de `<div className="quiz-shell">`, substitui **apenas os três blocos condicionais** que mostram:
 
-{gameStatus === "finished" && (
-    <ResultScreen
-        playerName={cleanPlayerName}
-        stats={gameStats}
-        onReset={resetGame}
-    />
-)}
+- o ecrã inicial (`gameStatus === "idle"`);
+- o ecrã de pergunta (`gameStatus === "playing"`);
+- o ecrã final (`gameStatus === "finished"`).
+
+Não substituas o ficheiro inteiro nesta etapa. Os três blocos condicionais devem ficar assim:
+
+```jsx
+{
+    gameStatus === "idle" && (
+        <StartScreen
+            playerName={playerName}
+            onPlayerNameChange={setPlayerName}
+            difficulty={difficulty}
+            onDifficultyChange={setDifficulty}
+            canStartGame={canStartGame}
+            onStartGame={startGame}
+        />
+    );
+}
+
+{
+    gameStatus === "playing" && currentQuestion && (
+        <QuestionCard
+            question={currentQuestion}
+            answers={currentAnswers}
+            questionNumber={currentQuestionIndex + 1}
+            totalQuestions={totalQuestions}
+            timeLeft={timeLeft}
+            timeLimit={QUESTION_TIME_LIMIT}
+            onAnswer={handleAnswer}
+            onTimeout={handleTimeout}
+        />
+    );
+}
+
+{
+    gameStatus === "finished" && (
+        <ResultScreen
+            playerName={cleanPlayerName}
+            stats={gameStats}
+            onReset={resetGame}
+        />
+    );
+}
 ```
 
 **Checkpoint F**
@@ -2391,18 +2447,24 @@ const startLocalGame = () => {
 };
 ```
 
-Adiciona renderização para `loading` e `error`:
+No `return`, dentro de `<div className="quiz-shell">`, adiciona estes dois blocos condicionais **entre o bloco `idle` e o bloco `playing`**.
+
+Não substituas os blocos `idle`, `playing` ou `finished` nesta etapa. Apenas acrescenta:
 
 ```jsx
-{gameStatus === "loading" && <LoadingState />}
+{
+    gameStatus === "loading" && <LoadingState />;
+}
 
-{gameStatus === "error" && (
-    <ErrorState
-        message={errorMessage}
-        onUseLocalQuestions={startLocalGame}
-        onReset={resetGame}
-    />
-)}
+{
+    gameStatus === "error" && (
+        <ErrorState
+            message={errorMessage}
+            onUseLocalQuestions={startLocalGame}
+            onReset={resetGame}
+        />
+    );
+}
 ```
 
 **Checkpoint H**
