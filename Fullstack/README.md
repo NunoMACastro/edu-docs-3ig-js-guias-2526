@@ -32,7 +32,9 @@ Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
 -   [01 - Fluxo React → Express → MongoDB](01_fluxo_front_back_db.md)
 -   [02 - Contrato de API e erros](02_contrato_api_e_erros.md)
 -   [03 - Setup e correr os 3 juntos](03_setup_fullstack.md)
+-   [Ficha 01 - Task Tracker Fullstack](FICHA_01_TASK_TRACKER_FULLSTACK.md)
 
 ## Changelog
 
+-   2026-05-18: adicionada ficha prática `Task Tracker Fullstack`.
 -   2026-01-14: links revistos e contrato de GET com envelope destacado.
