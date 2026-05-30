@@ -3,159 +3,459 @@
 # MongoDB (12.º Ano) - 08 · Validação e erros
 
 > **Objetivo deste ficheiro**
-> Fechar o ciclo técnico com validação e tratamento de erros.
-> Uniformizar respostas de erro em APIs com MongoDB.
-> Aplicar regra didática: `INVALID_ID` vs `NOT_FOUND`.
+>
+> - Validar input antes de chegar à base de dados.
+> - Distinguir `INVALID_ID`, `NOT_FOUND`, `VALIDATION_ERROR` e `DUPLICATE_KEY`.
+> - Mapear erros do MongoDB e do Mongoose para respostas HTTP consistentes.
+> - Fechar o módulo com uma checklist de robustez para APIs com MongoDB.
 
 ---
 
 ## Índice
 
 - [0. Enquadramento do material](#sec-0)
-- [1. [ESSENCIAL] Validação de input antes da BD](#sec-1)
-- [2. [ESSENCIAL] Regra de IDs: 400 vs 404](#sec-2)
-- [3. [ESSENCIAL] Erros frequentes no Mongo/Mongoose](#sec-3)
-- [4. [ESSENCIAL] Middleware de erro consistente](#sec-4)
-- [5. [EXTRA] Checklist de robustez para entrega](#sec-5)
+- [1. [ESSENCIAL] Validação antes da base de dados](#sec-1)
+- [2. [ESSENCIAL] Regra de IDs: `400` vs `404`](#sec-2)
+- [3. [ESSENCIAL] Erros frequentes no MongoDB e Mongoose](#sec-3)
+- [4. [ESSENCIAL+] Middleware de erro consistente](#sec-4)
+- [5. [EXTRA] Checklist de robustez](#sec-5)
 - [Exercícios - Validação e erros](#exercicios)
 - [Changelog](#changelog)
+
+---
 
 <a id="sec-0"></a>
 
 ## 0. Enquadramento do material
 
-Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+Este capítulo fecha o percurso técnico de MongoDB. Uma API não fica completa só porque consegue gravar dados: também precisa de validar entradas, distinguir causas de erro e responder num formato previsível.
 
-- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
-- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
-- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
+- **Núcleo do tema:** as secções [ESSENCIAL] cobrem validação, IDs e erros frequentes.
+- **Aprofundamento:** as secções [ESSENCIAL+] integram estes erros no middleware global.
+- **Contexto adicional:** as secções [EXTRA] funcionam como revisão final de robustez.
 
 <a id="sec-1"></a>
 
-## 1. [ESSENCIAL] Validação de input antes da BD
+## 1. [ESSENCIAL] Validação antes da base de dados
 
-Exemplo para `POST /api/tarefas`:
+### 1.1 Modelo mental
+
+Validação deve acontecer antes de tentares gravar dados.
+
+```text
+request body
+  ↓
+validação
+  ↓
+service
+  ↓
+repository
+  ↓
+MongoDB
+```
+
+MongoDB e Mongoose podem rejeitar dados inválidos, mas a API deve conseguir responder com mensagens claras e controladas.
+
+---
+
+### 1.2 Validação manual para criar tarefa
 
 ```js
-function validateCreateTarefa(body) {
-    const errors = [];
+export function validateCreateTarefa(body) {
+    const details = [];
 
-    if (!body || typeof body.titulo !== "string" || body.titulo.trim().length < 3) {
-        errors.push({ field: "titulo", message: "Título obrigatório (mínimo 3 chars)" });
+    if (typeof body?.titulo !== "string" || body.titulo.trim().length < 3) {
+        details.push({
+            field: "titulo",
+            message: "Título deve ter pelo menos 3 caracteres",
+        });
+    }
+
+    if (
+        body?.prioridade !== undefined &&
+        !["baixa", "normal", "alta"].includes(body.prioridade)
+    ) {
+        details.push({
+            field: "prioridade",
+            message: "Prioridade inválida",
+        });
     }
 
     if (body?.feito !== undefined && typeof body.feito !== "boolean") {
-        errors.push({ field: "feito", message: "feito deve ser boolean" });
+        details.push({
+            field: "feito",
+            message: "Feito deve ser boolean",
+        });
     }
 
-    return errors;
+    return details;
 }
 ```
 
-Se `errors.length > 0`:
-
-```json
-{ "error": { "code": "VALIDATION_ERROR", "message": "Dados inválidos", "details": [] } }
-```
-
-<a id="sec-2"></a>
-
-## 2. [ESSENCIAL] Regra de IDs: 400 vs 404
-
-Regra do curso:
-
-- ID malformado (`abc`) -> `400 INVALID_ID`
-- ID válido mas inexistente -> `404 NOT_FOUND`
-
-### Com Node driver
+Uso:
 
 ```js
-import { ObjectId } from "mongodb";
+const details = validateCreateTarefa(req.body);
 
-if (!ObjectId.isValid(id)) {
-    return res.status(400).json({ error: { code: "INVALID_ID", message: "ID inválido", details: [] } });
-}
-```
-
-### Com Mongoose
-
-```js
-import mongoose from "mongoose";
-
-if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ error: { code: "INVALID_ID", message: "ID inválido", details: [] } });
-}
-```
-
-<a id="sec-3"></a>
-
-## 3. [ESSENCIAL] Erros frequentes no Mongo/Mongoose
-
-- `11000 duplicate key` -> `409 DUPLICATE_KEY`
-- `ValidationError` (Mongoose) -> `422 VALIDATION_ERROR`
-- cast inválido de id -> `400 INVALID_ID`
-
-Mapeamento útil:
-
-```js
-function mapDbError(err) {
-    if (err?.code === 11000) {
-        return { status: 409, code: "DUPLICATE_KEY", message: "Valor já existente" };
-    }
-    if (err?.name === "ValidationError") {
-        return { status: 422, code: "VALIDATION_ERROR", message: "Dados inválidos" };
-    }
-    return { status: 500, code: "INTERNAL_ERROR", message: "Erro interno" };
-}
-```
-
-<a id="sec-4"></a>
-
-## 4. [ESSENCIAL] Middleware de erro consistente
-
-```js
-export function errorHandler(err, req, res, next) {
-    const mapped = mapDbError(err);
-
-    res.status(mapped.status).json({
+if (details.length > 0) {
+    return res.status(422).json({
         error: {
-            code: mapped.code,
-            message: mapped.message,
-            details: err?.details ?? [],
+            code: "VALIDATION_ERROR",
+            message: "Dados inválidos",
+            details,
         },
     });
 }
 ```
 
-Objetivo: frontend nunca ter de adivinhar formato de erro.
+---
+
+### 1.3 Validação de campos permitidos no `PATCH`
+
+```js
+const allowed = ["titulo", "feito", "prioridade"];
+const received = Object.keys(req.body);
+const unknown = received.filter((field) => !allowed.includes(field));
+
+if (unknown.length > 0) {
+    return res.status(422).json({
+        error: {
+            code: "VALIDATION_ERROR",
+            message: "Campos não permitidos",
+            details: unknown.map((field) => ({
+                field,
+                message: "Campo não pode ser atualizado",
+            })),
+        },
+    });
+}
+```
+
+Isto evita updates acidentais em `_id`, `createdAt`, `deletedAt` ou campos internos.
+
+---
+
+### 1.4 Erros comuns
+
+- Confiar apenas na validação do frontend.
+- Deixar o MongoDB receber qualquer body.
+- Permitir campos inesperados no `PATCH`.
+
+### 1.5 Checkpoint
+
+- Porque é que o backend valida mesmo quando o frontend já validou?
+- Que status usamos para validação semântica inválida?
+- Porque é importante validar campos permitidos no `PATCH`?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Regra de IDs: `400` vs `404`
+
+### 2.1 A regra
+
+Usa esta distinção:
+
+- ID malformado: `400 INVALID_ID`;
+- ID válido, mas sem documento correspondente: `404 NOT_FOUND`.
+
+Exemplos:
+
+```text
+/api/v1/tarefas/abc
+  -> 400 INVALID_ID
+
+/api/v1/tarefas/665f1f7a0c4b5a7e4f123456
+  -> 404 NOT_FOUND se não existir
+```
+
+---
+
+### 2.2 Com Node driver
+
+```js
+import { ObjectId } from "mongodb";
+
+export function parseObjectId(id) {
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+        return null;
+    }
+
+    return new ObjectId(id);
+}
+```
+
+---
+
+### 2.3 Com Mongoose
+
+```js
+import mongoose from "mongoose";
+
+if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).json({
+        error: {
+            code: "INVALID_ID",
+            message: "ID inválido",
+            details: [],
+        },
+    });
+}
+```
+
+---
+
+### 2.4 Erros comuns
+
+- Devolver `404` para qualquer ID inválido.
+- Deixar `new ObjectId(id)` lançar erro inesperado.
+- Tratar ID válido mas inexistente como erro interno.
+
+### 2.5 Checkpoint
+
+- Quando devolves `INVALID_ID`?
+- Quando devolves `NOT_FOUND`?
+- Porque é que estas duas situações não são iguais?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Erros frequentes no MongoDB e Mongoose
+
+### 3.1 Duplicado
+
+Erro típico:
+
+```text
+E11000 duplicate key error
+```
+
+Mapeamento:
+
+```text
+409 DUPLICATE_KEY
+```
+
+Acontece quando um índice `unique` é violado.
+
+---
+
+### 3.2 ValidationError do Mongoose
+
+Mongoose pode lançar:
+
+```text
+ValidationError
+```
+
+Mapeamento:
+
+```text
+422 VALIDATION_ERROR
+```
+
+---
+
+### 3.3 CastError do Mongoose
+
+Quando Mongoose tenta converter um ID inválido:
+
+```text
+CastError
+```
+
+Mapeamento:
+
+```text
+400 INVALID_ID
+```
+
+Mesmo assim, é melhor validar IDs antes de chegar ao model.
+
+---
+
+### 3.4 Função de mapeamento
+
+```js
+export function mapDbError(err) {
+    if (err?.code === 11000) {
+        return {
+            status: 409,
+            code: "DUPLICATE_KEY",
+            message: "Valor já existente",
+            details: [],
+        };
+    }
+
+    if (err?.name === "ValidationError") {
+        return {
+            status: 422,
+            code: "VALIDATION_ERROR",
+            message: "Dados inválidos",
+            details: Object.values(err.errors || {}).map((error) => ({
+                field: error.path,
+                message: error.message,
+            })),
+        };
+    }
+
+    if (err?.name === "CastError") {
+        return {
+            status: 400,
+            code: "INVALID_ID",
+            message: "ID inválido",
+            details: [],
+        };
+    }
+
+    return {
+        status: 500,
+        code: "INTERNAL_ERROR",
+        message: "Erro interno",
+        details: [],
+    };
+}
+```
+
+---
+
+### 3.5 Checkpoint
+
+- Que erro aparece quando violas um índice único?
+- Que status usamos para duplicados?
+- Que erro do Mongoose indica validação do schema?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Middleware de erro consistente
+
+### 4.1 Formato de erro
+
+Todas as respostas de erro devem seguir:
+
+```json
+{
+    "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Dados inválidos",
+        "details": []
+    }
+}
+```
+
+Isto ajuda React a tratar erros de forma previsível.
+
+---
+
+### 4.2 Middleware
+
+```js
+// src/middlewares/errorHandler.js
+import { mapDbError } from "../utils/mapDbError.js";
+
+export function errorHandler(err, _req, res, _next) {
+    const mapped = err.statusCode
+        ? {
+              status: err.statusCode,
+              code: err.code || "HTTP_ERROR",
+              message: err.message,
+              details: err.details || [],
+          }
+        : mapDbError(err);
+
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const payload = {
+        error: {
+            code: mapped.code,
+            message:
+                mapped.status >= 500 && isProduction
+                    ? "Erro interno"
+                    : mapped.message,
+            details: mapped.details,
+        },
+    };
+
+    if (!isProduction && err.stack) {
+        payload.error.stack = err.stack;
+    }
+
+    res.status(mapped.status).json(payload);
+}
+```
+
+---
+
+### 4.3 `HttpError`
+
+```js
+export class HttpError extends Error {
+    constructor(message, statusCode = 500, options = {}) {
+        super(message);
+        this.statusCode = statusCode;
+        this.code = options.code || "HTTP_ERROR";
+        this.details = options.details || [];
+    }
+}
+```
+
+Uso:
+
+```js
+throw new HttpError("Tarefa não encontrada", 404, {
+    code: "NOT_FOUND",
+});
+```
+
+---
+
+### 4.4 Erros comuns
+
+- Devolver formatos diferentes em cada controller.
+- Mostrar stack trace em produção.
+- Transformar erro de validação em `500`.
+
+### 4.5 Checkpoint
+
+- Que formato de erro deve ser sempre usado?
+- Porque escondemos stack trace em produção?
+- Qual é a vantagem de `HttpError`?
 
 <a id="sec-5"></a>
 
-## 5. [EXTRA] Checklist de robustez para entrega
+## 5. [EXTRA] Checklist de robustez
 
-- Todas as rotas devolvem erro no mesmo formato.
-- `INVALID_ID` e `NOT_FOUND` estão distintos.
-- `PATCH` usa validação de campos permitidos.
-- Erros de duplicado mapeados para `409`.
+Antes de considerar a API pronta, confirma:
+
+- `.env` está fora do Git.
+- `MONGODB_URI` não aparece no frontend.
+- IDs inválidos devolvem `400 INVALID_ID`.
+- IDs válidos inexistentes devolvem `404 NOT_FOUND`.
+- Validação devolve `422 VALIDATION_ERROR`.
+- Duplicados devolvem `409 DUPLICATE_KEY`.
+- `PATCH` aceita apenas campos permitidos.
+- Listagens usam paginação.
+- Queries frequentes têm índices adequados.
+- Erros internos não expõem detalhes em produção.
 
 <a id="exercicios"></a>
 
 ## Exercícios - Validação e erros
 
-1. **POST inválido**
-   - Envia `titulo` vazio.
-   - Critério: `422 VALIDATION_ERROR` com `details`.
-2. **GET por id**
-   - Testa id malformado e id inexistente.
-   - Critério: `400` e `404` corretos.
-3. **Duplicado com índice unique**
-   - Cria duas categorias com mesmo `nome`.
-   - Critério: `409 DUPLICATE_KEY`.
+1. Cria `validateCreateTarefa`.
+2. Testa `POST` com `titulo` vazio e confirma `422 VALIDATION_ERROR`.
+3. Cria validação de campos permitidos no `PATCH`.
+4. Testa `PATCH` com campo `_id` e confirma erro de validação.
+5. Cria `parseObjectId`.
+6. Testa `GET /api/v1/tarefas/abc` e confirma `400 INVALID_ID`.
+7. Testa um ObjectId válido mas inexistente e confirma `404 NOT_FOUND`.
+8. Cria índice único em `categorias.nome`.
+9. Insere duas categorias com o mesmo nome e confirma `409 DUPLICATE_KEY`.
+10. Confirma que o formato `{ error: { code, message, details } }` é sempre respeitado.
 
 <a id="changelog"></a>
 
 ## Changelog
 
-- 2026-04-17: capítulo criado (validação, mapeamento de erros e contrato de erro).
+- 2026-05-30: reestruturação do capítulo com validação, códigos de erro, middleware consistente, checkpoints e exercícios.
+- 2026-04-17: capítulo criado com validação, mapeamento de erros e contrato de erro.
 
 ![Footer](../Images/Footer.png)

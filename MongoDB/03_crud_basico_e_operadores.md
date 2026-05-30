@@ -3,9 +3,11 @@
 # MongoDB (12.º Ano) - 03 · CRUD básico e operadores
 
 > **Objetivo deste ficheiro**
-> Dominar operações CRUD base em MongoDB.
-> Usar filtros, projeções e operadores de forma segura.
-> Preparar a API para paginação e pesquisa.
+>
+> - Dominar operações CRUD base em MongoDB.
+> - Usar filtros, projeções e operadores de atualização com segurança.
+> - Implementar paginação, pesquisa simples e contagem total.
+> - Evitar updates perigosos e queries demasiado abertas.
 
 ---
 
@@ -14,147 +16,381 @@
 - [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Criar e ler documentos](#sec-1)
 - [2. [ESSENCIAL] Atualizar com segurança](#sec-2)
-- [3. [ESSENCIAL] Remover (hard delete e soft delete)](#sec-3)
-- [4. [ESSENCIAL] Filtros e projeções úteis](#sec-4)
+- [3. [ESSENCIAL] Remover: hard delete e soft delete](#sec-3)
+- [4. [ESSENCIAL+] Filtros, projeções e paginação](#sec-4)
 - [5. [EXTRA] Operadores frequentes](#sec-5)
-- [Exercícios - CRUD](#exercicios)
+- [Exercícios - CRUD básico e operadores](#exercicios)
 - [Changelog](#changelog)
+
+---
 
 <a id="sec-0"></a>
 
 ## 0. Enquadramento do material
 
-Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+Este capítulo usa operações diretas sobre coleções. A prioridade é perceber o comportamento de MongoDB antes de integrar tudo num repository Express.
 
-- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
-- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
-- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
+- **Núcleo do tema:** as secções [ESSENCIAL] cobrem criar, ler, atualizar e remover.
+- **Aprofundamento:** as secções [ESSENCIAL+] juntam filtros, projeções e paginação.
+- **Contexto adicional:** as secções [EXTRA] apresentam operadores que aparecem em APIs reais.
 
 <a id="sec-1"></a>
 
 ## 1. [ESSENCIAL] Criar e ler documentos
 
+### 1.1 Modelo mental
+
+CRUD significa:
+
+- **Create:** criar documentos;
+- **Read:** ler documentos;
+- **Update:** atualizar documentos;
+- **Delete:** remover documentos.
+
+Em MongoDB, estas operações acontecem numa coleção:
+
 ```js
 const col = db.collection("tarefas");
+```
 
-await col.insertOne({ titulo: "Estudar Node", feito: false, tags: ["backend"] });
+---
 
+### 1.2 Criar um documento
+
+```js
+const now = new Date();
+
+const result = await col.insertOne({
+    titulo: "Estudar CRUD",
+    feito: false,
+    prioridade: "normal",
+    tags: ["mongodb"],
+    createdAt: now,
+    updatedAt: now,
+});
+
+console.log(result.insertedId);
+```
+
+`insertedId` é o `_id` criado pelo MongoDB.
+
+---
+
+### 1.3 Ler vários documentos
+
+```js
 const items = await col
     .find({ feito: false })
-    .project({ titulo: 1, feito: 1 })
+    .sort({ createdAt: -1 })
     .toArray();
 ```
 
-Boas práticas:
+`find()` devolve um cursor. `toArray()` transforma o resultado numa lista.
 
-- Inserir sempre estrutura mínima válida.
-- Na leitura, projetar apenas campos necessários para a UI.
+---
+
+### 1.4 Ler um documento por filtro
+
+```js
+const tarefa = await col.findOne({ titulo: "Estudar CRUD" });
+```
+
+Se não encontrar nada, devolve `null`.
+
+---
+
+### 1.5 Projeção
+
+Projeção escolhe que campos vêm na resposta:
+
+```js
+const items = await col
+    .find({ feito: false })
+    .project({ titulo: 1, feito: 1, prioridade: 1 })
+    .toArray();
+```
+
+Isto reduz dados desnecessários enviados para a API.
+
+---
+
+### 1.6 Erros comuns
+
+- Inserir documentos sem campos mínimos, como `createdAt`.
+- Fazer `find({})` sem limite numa coleção grande.
+- Enviar para o frontend campos que não são necessários.
+
+### 1.7 Checkpoint
+
+- O que devolve `insertOne`?
+- Qual é a diferença entre `find` e `findOne`?
+- Para que serve `project`?
 
 <a id="sec-2"></a>
 
 ## 2. [ESSENCIAL] Atualizar com segurança
 
-Evita substituir documentos completos sem necessidade.
+### 2.1 Atualização parcial com `$set`
 
 ```js
 await col.updateOne(
     { _id: tarefaId },
     {
-        $set: { feito: true, updatedAt: new Date() },
-        $currentDate: { atualizadoEm: true },
+        $set: {
+            feito: true,
+            updatedAt: new Date(),
+        },
     }
 );
 ```
 
-Para vários documentos:
+`$set` altera apenas os campos indicados.
+
+---
+
+### 2.2 Evitar substituir o documento inteiro
+
+Perigoso:
 
 ```js
-await col.updateMany({ feito: false }, { $set: { prioridade: "normal" } });
+await col.replaceOne(
+    { _id: tarefaId },
+    { feito: true }
+);
 ```
+
+Isto substituiria o documento por um objeto com apenas `feito`.
+
+Mais seguro:
+
+```js
+await col.updateOne(
+    { _id: tarefaId },
+    { $set: { feito: true, updatedAt: new Date() } }
+);
+```
+
+---
+
+### 2.3 Atualizar vários documentos
+
+```js
+await col.updateMany(
+    { prioridade: { $exists: false } },
+    { $set: { prioridade: "normal", updatedAt: new Date() } }
+);
+```
+
+Usa `updateMany` com cuidado: o filtro deve ser claro.
+
+---
+
+### 2.4 Campos permitidos no `PATCH`
+
+Não faças isto:
+
+```js
+const update = { $set: req.body };
+```
+
+Permite apenas campos esperados:
+
+```js
+const allowed = {};
+
+if (typeof req.body.titulo === "string") {
+    allowed.titulo = req.body.titulo.trim();
+}
+
+if (typeof req.body.feito === "boolean") {
+    allowed.feito = req.body.feito;
+}
+
+allowed.updatedAt = new Date();
+```
+
+Assim evitas que alguém altere `_id`, `createdAt` ou campos internos.
+
+---
+
+### 2.5 Erros comuns
+
+- Usar `replaceOne` quando querias `updateOne`.
+- Passar `req.body` inteiro para `$set`.
+- Fazer `updateMany` com filtro demasiado aberto.
+
+### 2.6 Checkpoint
+
+- Porque é que `$set` é mais seguro para `PATCH`?
+- Que campos não devem poder ser alterados pelo body?
+- Quando faz sentido usar `updateMany`?
 
 <a id="sec-3"></a>
 
-## 3. [ESSENCIAL] Remover (hard delete e soft delete)
+## 3. [ESSENCIAL] Remover: hard delete e soft delete
 
-### Hard delete
+### 3.1 Hard delete
+
+Hard delete remove o documento:
 
 ```js
 await col.deleteOne({ _id: tarefaId });
 ```
 
-### Soft delete (recomendado quando precisas de histórico)
+Faz sentido quando:
+
+- não precisas de histórico;
+- o dado pode desaparecer mesmo;
+- não há dependências importantes.
+
+---
+
+### 3.2 Soft delete
+
+Soft delete marca o documento como removido:
 
 ```js
 await col.updateOne(
     { _id: tarefaId },
-    { $set: { deletedAt: new Date(), ativo: false } }
+    {
+        $set: {
+            deletedAt: new Date(),
+            updatedAt: new Date(),
+        },
+    }
 );
 ```
 
-<a id="sec-4"></a>
-
-## 4. [ESSENCIAL] Filtros e projeções úteis
+Depois, as listas filtram documentos ativos:
 
 ```js
-const page = 1;
-const limit = 20;
-const q = "react";
+const filter = { deletedAt: { $exists: false } };
+```
+
+---
+
+### 3.3 Erros comuns
+
+- Fazer hard delete quando precisavas de histórico.
+- Esquecer de filtrar `deletedAt` nas listagens.
+- Misturar `ativo: false` e `deletedAt` sem uma regra consistente.
+
+### 3.4 Checkpoint
+
+- Qual é a diferença entre hard delete e soft delete?
+- Que filtro remove documentos apagados logicamente da lista?
+- Quando `deleteOne` pode ser suficiente?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Filtros, projeções e paginação
+
+### 4.1 Query com filtros
+
+```js
+const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+const feito = req.query.feito;
 
 const filter = {
     deletedAt: { $exists: false },
-    titulo: { $regex: q, $options: "i" },
 };
 
-const items = await col
-    .find(filter)
-    .sort({ createdAt: -1 })
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .project({ titulo: 1, feito: 1, createdAt: 1 })
-    .toArray();
+if (q) {
+    filter.titulo = { $regex: q, $options: "i" };
+}
 
-const total = await col.countDocuments(filter);
+if (feito === "true" || feito === "false") {
+    filter.feito = feito === "true";
+}
 ```
+
+Pesquisa com `$regex` é simples, mas deve ser usada com limites e índices quando os dados crescem.
+
+---
+
+### 4.2 Paginação
+
+```js
+const page = Math.max(1, Number(req.query.page || 1));
+const limit = Math.min(100, Math.max(1, Number(req.query.limit || 20)));
+const skip = (page - 1) * limit;
+
+const [items, total] = await Promise.all([
+    col
+        .find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .project({ titulo: 1, feito: 1, prioridade: 1, createdAt: 1 })
+        .toArray(),
+    col.countDocuments(filter),
+]);
+
+res.json({ items, page, limit, total });
+```
+
+O contrato `{ items, page, limit, total }` ajuda o frontend a desenhar paginação.
+
+---
+
+### 4.3 Erros comuns
+
+- Aceitar `limit=100000`.
+- Fazer pesquisa sem limite de resultados.
+- Esquecer `total`, obrigando o frontend a adivinhar se há mais páginas.
+
+### 4.4 Checkpoint
+
+- Porque limitamos `limit` a um máximo?
+- Para que serve `skip`?
+- Porque é útil devolver `total`?
 
 <a id="sec-5"></a>
 
 ## 5. [EXTRA] Operadores frequentes
 
-- `$in` / `$nin`: listas de valores.
-- `$gte` / `$lte`: intervalos numéricos ou datas.
-- `$regex`: pesquisa textual simples.
-- `$exists`: campo existe/não existe.
-- `$or` / `$and`: condições compostas.
+| Operador | Uso |
+| --- | --- |
+| `$in` | campo dentro de uma lista de valores |
+| `$nin` | campo fora de uma lista |
+| `$gte` / `$lte` | intervalos de datas ou números |
+| `$exists` | campo existe ou não |
+| `$or` | pelo menos uma condição verdadeira |
+| `$and` | todas as condições verdadeiras |
+| `$regex` | pesquisa textual simples |
 
 Exemplo:
 
 ```js
-await col.find({
+const filter = {
+    deletedAt: { $exists: false },
     $or: [
         { prioridade: "alta" },
-        { prazo: { $lte: new Date("2026-05-01") } },
+        { prazo: { $lte: new Date("2026-06-01") } },
     ],
-});
+};
 ```
 
 <a id="exercicios"></a>
 
-## Exercícios - CRUD
+## Exercícios - CRUD básico e operadores
 
-1. **API base de tarefas**
-   - Implementa `GET` e `POST` com coleção `tarefas`.
-   - Critério: contrato JSON coerente.
-2. **PATCH parcial**
-   - Permite atualizar `titulo` e `feito` sem substituir documento inteiro.
-   - Critério: usa `$set`.
-3. **Paginação + total**
-   - Implementa `page`, `limit`, `total`.
-   - Critério: frontend consegue paginar.
+1. Insere três tarefas na coleção `tarefas`.
+2. Lista apenas tarefas com `feito: false`.
+3. Usa projeção para devolver apenas `titulo`, `feito` e `prioridade`.
+4. Atualiza uma tarefa com `$set`.
+5. Faz um erro de propósito: usa `replaceOne` com um documento incompleto e observa o risco num ambiente de teste.
+6. Implementa soft delete com `deletedAt`.
+7. Cria uma query com `q`, `feito`, `page` e `limit`.
+8. Devolve `{ items, page, limit, total }`.
+9. Usa `$in` para filtrar tarefas por prioridades permitidas.
+10. Explica por escrito por que motivo não deves passar `req.body` inteiro para `$set`.
 
 <a id="changelog"></a>
 
 ## Changelog
 
-- 2026-04-17: capítulo criado (CRUD, filtros e operadores essenciais).
+- 2026-05-30: reestruturação do capítulo com exemplos incrementais, segurança em updates, paginação, checkpoints e exercícios.
+- 2026-04-17: capítulo criado com CRUD, filtros e operadores essenciais.
 
 ![Footer](../Images/Footer.png)
