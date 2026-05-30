@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Pensar por documentos](#sec-1)
 - [2. [ESSENCIAL] Embutir vs referenciar](#sec-2)
 - [3. [ESSENCIAL] Exemplo: tarefas e categorias](#sec-3)
@@ -22,11 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** domina o modelo antes de escrever controllers.
-- **Como estudar:** desenha 2 versões do mesmo domínio e compara trade-offs.
-- **Ligação útil:** `../Node/05_estrutura_mvc.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

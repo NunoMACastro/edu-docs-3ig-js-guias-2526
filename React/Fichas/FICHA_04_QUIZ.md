@@ -2,7 +2,7 @@
 
 # Tutorial passo a passo - Quiz Game: Jogo de Perguntas (Ficha React 12.º ano)
 
-Esta ficha guia-te na construção de uma pequena app React em formato de jogo.
+Esta ficha apresenta a construção de uma pequena app React em formato de jogo.
 
 O objetivo é consolidar hooks e fluxo de dados em React com uma app divertida, mas controlada. A ficha começa com perguntas locais e só depois passa para perguntas vindas de uma API pública.
 
@@ -31,9 +31,9 @@ Competências trabalhadas:
 
 O repositório final deve ser entregue até ao dia **18/05 às 23:55**.
 
-Além da app funcionar, tens uma responsabilidade extra: **preencher o melhor possível todos os JSDoc dos snippets**.
+Além da app funcionar, a entrega inclui uma responsabilidade extra: **JSDoc dos snippets preenchidos da melhor forma possível**.
 
-Nesta ficha, vários JSDoc aparecem como template. Não os deixes vazios. Em cada função ou componente, deves explicar:
+Nesta ficha, vários JSDoc aparecem como template. Em cada função ou componente, a explicação deve indicar:
 
 - o **propósito** da função/componente;
 - o que ela **produz/devolve**;
@@ -72,36 +72,34 @@ A app permite:
 - **Prop drilling**: passar props por vários componentes que não precisam delas diretamente.
 - **Context**: forma de disponibilizar dados a vários componentes sem passar props por todos os níveis.
 
-### Estratégia de estudo
+### Organização da ficha
 
-1. Implementa fase a fase, sem saltar.
-2. Testa no browser no fim de cada fase.
-3. Só avança quando o checkpoint estiver estável.
-4. Lê os comentários do código.
-5. Explica em voz alta o que cada hook está a fazer.
-6. Preenche os JSDoc com cuidado: não escrevas frases genéricas como “faz coisas”.
-7. Quando algo falhar, consulta primeiro a secção de erros comuns.
+- A progressão está dividida em fases curtas e incrementais.
+- Cada fase acrescenta uma parte do jogo ou uma decisão de arquitetura.
+- Os checkpoints assinalam estados intermédios esperados da aplicação.
+- Os comentários do código e os JSDoc destacam o raciocínio por trás de hooks, componentes e serviços.
+- A secção de erros comuns reúne sintomas frequentes e pistas de diagnóstico.
 
-### Como usar os snippets desta ficha
+### Tipos de snippets desta ficha
 
-Esta ficha usa snippets de duas formas:
+Esta ficha inclui snippets de duas formas:
 
-1. **Substitui o ficheiro**: quando o enunciado disser “Substitui `src/App.jsx` por”, deves trocar o conteúdo completo desse ficheiro.
-2. **Adiciona / atualiza / substitui um bloco**: quando o enunciado disser “Adiciona estado”, “Atualiza `startGame`” ou “Substitui o bloco `playing`”, deves manter o resto do ficheiro igual e alterar apenas a parte indicada.
+1. **Versão completa de ficheiro**: aparece quando o enunciado identifica um ficheiro inteiro, por exemplo `src/App.jsx`.
+2. **Alteração incremental**: aparece quando o enunciado identifica uma função, constante, bloco de JSX ou estado específico.
 
-Regra prática:
+Critérios de leitura:
 
 - Se o snippet começa com imports e termina com `export default`, normalmente é uma versão completa do ficheiro.
 - Se o snippet mostra só uma função, uma constante ou um pedaço de JSX, é uma alteração incremental.
-- Quando a ficha manda substituir um bloco condicional, procura o bloco que começa com a condição indicada, por exemplo `{gameStatus === "playing" && (...)}`, e substitui apenas esse bloco completo.
-- Não apagues o `return`, o `<main>`, o `<div className="quiz-shell">` nem outros blocos condicionais, a menos que a ficha diga explicitamente para substituir o ficheiro completo.
-- Depois de cada snippet incremental, relê o ficheiro completo para garantir que não criaste variáveis duplicadas.
+- Blocos condicionais são identificados pela condição de entrada, por exemplo `{gameStatus === "playing" && (...)}`.
+- Alterações incrementais mantêm o restante ficheiro igual, salvo indicação explícita de substituição completa.
+- A releitura do ficheiro completo ajuda a detetar variáveis duplicadas ou blocos fora do sítio.
 
-### Como preencher os JSDoc
+### Critérios dos JSDoc
 
-Sempre que encontrares um bloco JSDoc com `[Completa: ...]`, deves substituir esse texto pela tua explicação.
+Os blocos JSDoc com `[Completa: ...]` reservam espaço para uma explicação própria.
 
-Um bom JSDoc nesta ficha deve responder a duas perguntas:
+Um bom JSDoc nesta ficha responde a duas perguntas:
 
 1. **Qual é o propósito desta função/componente?**
 2. **O que esta função/componente produz ou devolve?**

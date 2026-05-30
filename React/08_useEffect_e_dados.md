@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que é useEffect](#sec-1)
 - [2. [ESSENCIAL] Render, commit e quando o efeito corre](#sec-2)
 - [3. [ESSENCIAL] Dependências e ciclo de vida](#sec-3)
@@ -28,16 +28,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** domina `useEffect` com `[]` e com dependências antes de entrares em _cleanup_, abort e padrões mais avançados.
-- **Como estudar:** cria exemplos pequenos e observa:
-    - quantas vezes o componente renderiza,
-    - quando o `useEffect` corre,
-    - e o que muda quando mexes nas dependências.
-- **Ligações:** se precisares, revê estado e eventos em `04_estado_e_eventos.md` e consumo de APIs em `11_consumo_api_e_backend_node.md`.
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

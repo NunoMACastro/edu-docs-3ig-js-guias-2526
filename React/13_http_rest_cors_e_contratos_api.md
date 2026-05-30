@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] HTTP: a conversa entre cliente e servidor](#sec-1)
 - [2. [ESSENCIAL] REST: recursos, rotas e métodos](#sec-2)
 - [3. [ESSENCIAL] Status codes: como ler “o que aconteceu”](#sec-3)
@@ -23,7 +23,7 @@
 - [6. [ESSENCIAL] Query params: filtros, pesquisa e paginação](#sec-6)
 - [7. [ESSENCIAL] CORS: porque dá erro e como se resolve](#sec-7)
 - [8. [EXTRA] Preflight (OPTIONS): o pedido “antes do pedido”](#sec-8)
-- [9. [EXTRA] Axios: quando faz sentido e como usar](#sec-9)
+- [9. [EXTRA] Axios: contexto e boas práticas](#sec-9)
 - [10. [EXTRA] Diagnóstico rápido: erros comuns e o que verificar](#sec-10)
 - [Exercícios - HTTP, REST, CORS e contratos](#exercicios)
 - [Changelog](#changelog)
@@ -32,20 +32,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Se estás a começar:** lê 1 → 2 → 3 → 4. Isto dá-te o “mapa mental” para todo o resto.
-- **Se já usas `fetch` em React:** foca-te em 4 (contratos) e 7 (CORS). É onde acontecem mais bugs.
-- **Como estudar (prático):**
-    1. Cria uma rota simples no backend (ex.: `GET /api/alunos`).
-    2. Consome-a no frontend.
-    3. Muda uma coisa no backend (nome de campo, status, erro) e vê como isso “parte” o frontend.
-    4. Depois faz o contrário: define o contrato primeiro e implementa a seguir.
-- **Ligações úteis:**
-    - `08_useEffect_e_dados.md` (porque é que o `fetch` fica no `useEffect`)
-    - `11_consumo_api_e_backend_node.md` (onde vais praticar consumo de API no frontend e no backend)
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 
@@ -723,7 +716,7 @@ Se estiveres a configurar “à mão”, tens de garantir que respondes a `OPTIO
 
 <a id="sec-9"></a>
 
-## 9. [EXTRA] Axios: quando faz sentido e como usar
+## 9. [EXTRA] Axios: contexto e boas práticas
 
 > Onde é que isto deve aparecer no curso?
 >

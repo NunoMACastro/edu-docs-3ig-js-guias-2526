@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que é estado e como funciona o useState](#sec-1)
 - [2. [ESSENCIAL] Eventos e handlers (onClick, onChange, onSubmit)](#sec-2)
 - [3. [ESSENCIAL] Atualização correta de estado (prevState, imutabilidade)](#sec-3)
@@ -28,16 +28,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Ordem recomendada:** faz as experiências pequenas logo a seguir a cada secção.
-- **O que observar:** sempre que muda o estado, o componente **volta a renderizar**.
-- **Ligações úteis:**
-    - Props e composição (para passares dados e callbacks): `03_props_e_composicao.md`
-    - Formulários controlados (para inputs a sério): `06_formularios_controlados.md`
-    - useEffect (para tarefas externas e dados): `08_useEffect_e_dados.md`
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

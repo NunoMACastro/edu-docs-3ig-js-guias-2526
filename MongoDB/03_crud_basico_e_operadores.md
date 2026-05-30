@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Criar e ler documentos](#sec-1)
 - [2. [ESSENCIAL] Atualizar com segurança](#sec-2)
 - [3. [ESSENCIAL] Remover (hard delete e soft delete)](#sec-3)
@@ -22,11 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** começa por `insert/find/update/delete` antes de operadores avançados.
-- **Como estudar:** executa cada operação e observa o resultado no Atlas.
-- **Ligação útil:** `../Fullstack/02_contrato_api_e_erros.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

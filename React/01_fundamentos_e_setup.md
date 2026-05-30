@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que é React e como funciona](#sec-1)
 - [2. [ESSENCIAL] Criar um projeto com Vite](#sec-2)
 - [3. [ESSENCIAL] Estrutura base e primeiro componente](#sec-3)
@@ -23,30 +23,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** domina tudo o que está marcado como [ESSENCIAL]. O [EXTRA] ajuda a consolidar e a trabalhar “como em projetos reais”.
-- **Como estudar (método simples):**
-    1. Lê a teoria (modelo mental).
-    2. Copia os exemplos.
-    3. Muda uma coisa pequena e observa o resultado (no browser e na consola).
-    4. Faz os exercícios no fim.
-- **Pré‑requisitos rápidos (antes de começar):**
-    - **Node.js + npm:** precisas de Node **18+** (ou mais recente) e npm. Sem isto não consegues instalar dependências.
-    - **Editor de código:** VS Code (recomendado) ou similar com suporte para JavaScript/JSX.
-    - **Terminal:** para correr comandos (`npm`, `node`, etc.).
-    - **Browser atualizado:** Chrome/Edge/Firefox para testar.
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
-### 0.1 Confirmação rápida (2 comandos)
-
-No terminal:
-
-```bash
-node -v
-npm -v
-```
-
-Se aparecerem versões (ex.: `v20.x` e `10.x`), está tudo ok.
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

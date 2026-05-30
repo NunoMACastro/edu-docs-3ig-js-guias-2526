@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Query string: o que é e porque usar](#sec-1)
 - [2. [ESSENCIAL] Paginação + pesquisa (server-side)](#sec-2)
 - [3. [ESSENCIAL] Upload com `FormData` (multipart)](#sec-3)
@@ -29,23 +29,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Pré-requisitos (mínimos):**
-    - `useState` / `useEffect` (ver ficheiro **08**).
-    - listas e condicionais (ver ficheiro **05**).
-    - React Router (`useSearchParams`) (ver ficheiros **09** e **10**).
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
-- **Como estudar (boa sequência):**
-    1. lê a secção **1** e faz os mini-exemplos de query string;
-    2. passa para a secção **2** e monta a paginação com uma API de teste;
-    3. só depois avança para **upload** (secção 3) e extras (5–7).
-
-- **Ideia-chave:**  
-  Neste ficheiro estamos a treinar um padrão muito comum em apps:
-  **a UI controla parâmetros** (page, filtro, pesquisa) → **esses parâmetros vão para a URL** → **a URL dispara o pedido** → **a resposta volta para a UI**.
-
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

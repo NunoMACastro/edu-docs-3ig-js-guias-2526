@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Endpoints base de tarefas](#sec-1)
 -   [2. [ESSENCIAL] Formato de erro e status codes](#sec-2)
 -   [3. [ESSENCIAL] Paginação e filtros](#sec-3)
@@ -21,14 +21,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
--   **ESSENCIAL vs EXTRA:** define o contrato antes de escrever código.
--   **Como estudar:** testa cada endpoint e confirma o JSON.
--   **Ligações úteis:**
-    -   React: `../React/11_consumo_api_e_backend_node.md`
-    -   Node: `../Node/06_rotas_controladores_validacao.md`
-    -   MongoDB: `../MongoDB/08_validacao_e_erros.md`
+Esta secção situa o ficheiro dentro do percurso fullstack e destaca a ligação entre frontend, backend e base de dados.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam o fluxo principal e os contratos que mantêm as partes alinhadas.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto para cenários mais completos ou próximas evoluções.
+- **Ligação ao percurso:** os exemplos e exercícios articulam conteúdos de React, Node/Express e MongoDB.
 
 <a id="sec-1"></a>
 

@@ -16,13 +16,13 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Modelo cliente-servidor (o que acontece “na vida real”)](#sec-1)
 - [2. [ESSENCIAL] Contrato de API (o acordo entre as duas partes)](#sec-2)
 - [3. [ESSENCIAL] Criar uma API simples em Node.js (Express)](#sec-3)
 - [4. [ESSENCIAL] Consumir a API no React (GET + POST com fetch)](#sec-4)
 - [5. [ESSENCIAL] CORS e erros comuns (diagnóstico rápido)](#sec-5)
-- [6. [ESSENCIAL+] Axios (porque existe e como usar bem)](#sec-6)
+- [6. [ESSENCIAL+] Axios: contexto e boas práticas](#sec-6)
 - [7. [EXTRA] Proxy no Vite e variáveis de ambiente](#sec-7)
 - [Exercícios - Consumo de API com backend Node.js](#exercicios)
 - [Changelog](#changelog)
@@ -31,19 +31,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- Este ficheiro liga **React** e **Node**. É normal parecer “muita coisa”, porque agora já tens duas aplicações a falar uma com a outra.
-- Vai pela ordem:
-    1. Entende o modelo cliente-servidor (secção 1)
-    2. Entende o contrato (secção 2)
-    3. Cria a API (secção 3)
-    4. Consome no React (secção 4)
-- Ligações úteis:
-    - `08_useEffect_e_dados.md`: quando usar `useEffect` (ex.: carregar ao montar) vs quando usar handlers (ex.: submit).
-    - `13_http_rest_cors_e_contratos_api.md`: reforça HTTP/REST/CORS (muito ligado a este ficheiro).
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 
@@ -782,7 +776,7 @@ Isto é desenvolvido com mais detalhe na secção 6 (Axios) e no ficheiro de aut
 
 <a id="sec-6"></a>
 
-## 6. [ESSENCIAL+] Axios (porque existe e como usar bem)
+## 6. [ESSENCIAL+] Axios: contexto e boas práticas
 
 ### 6.1 Onde é que faz sentido falar de Axios?
 

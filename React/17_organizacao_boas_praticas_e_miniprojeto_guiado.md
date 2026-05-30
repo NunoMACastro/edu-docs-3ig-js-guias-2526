@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Porque é que a organização importa](#sec-1)
 - [2. [ESSENCIAL] Estrutura de pastas recomendada](#sec-2)
 - [3. [ESSENCIAL] Convenções de nomes (ficheiros, componentes e variáveis)](#sec-3)
@@ -27,17 +27,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Ordem sugerida:** lê primeiro as secções 1–5 e depois faz o mini-projeto (secção 6).
-- **Como estudar:** aplica as regras de organização logo desde o início do mini-projeto (não deixes para “no fim”).
-- **Ligações úteis:**
-    - Estado e eventos: `04_estado_e_eventos.md`
-    - Listas e condicionais: `05_listas_e_condicionais.md`
-    - Formulários controlados: `06_formularios_controlados.md`
-    - Efeitos e dados externos: `08_useEffect_e_dados.md`
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

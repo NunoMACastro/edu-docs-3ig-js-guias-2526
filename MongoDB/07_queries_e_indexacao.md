@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Query de paginação e filtros](#sec-1)
 - [2. [ESSENCIAL] Índices: o que são e porque importam](#sec-2)
 - [3. [ESSENCIAL] Criar índices úteis no curso](#sec-3)
@@ -22,13 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** dominar query certa antes de otimização fina.
-- **Como estudar:** medir antes/depois ao criar índices.
-- **Ligações úteis:**
-  - Fullstack: `../Fullstack/01_fluxo_front_back_db.md`
-  - Fullstack: `../Fullstack/02_contrato_api_e_erros.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

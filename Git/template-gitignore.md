@@ -2,15 +2,17 @@
 
 # .gitignore - Template abrangente (multi-stack)
 
-> Objetivo: um `.gitignore` **pronto a usar** para a maioria dos projetos (Node.js, Python, Java/C#, mobile, web). Inclui ficheiros de sistema (ex.: `.DS_Store`) e lixo de IDEs. Adapta conforme necessário - especialmente em **lockfiles** e **.vscode**.
+> Objetivo: um `.gitignore` de referência para a maioria dos projetos (Node.js, Python, Java/C#, mobile, web). Inclui ficheiros de sistema (ex.: `.DS_Store`) e lixo de IDEs. Algumas decisões dependem do contexto do projeto, especialmente em **lockfiles** e **.vscode**.
 
-## Como usar
+## Enquadramento do template
 
-1. Copia o bloco abaixo para um ficheiro chamado `.gitignore` na raiz do repositório.
-2. Revê as secções **comentadas** (lockfiles, .vscode) e ajusta ao teu contexto.
-3. Para monorepos, mantém este `.gitignore` na raiz; subpastas podem ter o seu próprio `.gitignore` extra.
+Este template reúne padrões comuns de exclusão para projetos de programação. A estrutura está organizada por tipo de ficheiro para facilitar a leitura e a adaptação em aula.
 
-> Nota sobre **lockfiles** (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Pipfile.lock`, `poetry.lock`): **por norma, deves COMMITAR** o lockfile em aplicações; **não** ignores a menos que saibas porquê. Deixo as linhas comentadas para evitar ignorar por engano.
+- **Sistema e editores:** ficheiros gerados pelo sistema operativo ou pelo IDE.
+- **Dependências e builds:** pastas recriáveis a partir do código e dos comandos do projeto.
+- **Decisões de contexto:** secções comentadas, como lockfiles e `.vscode`, que dependem das regras definidas para cada projeto.
+
+> Nota sobre **lockfiles** (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `Pipfile.lock`, `poetry.lock`): em aplicações, por norma, o lockfile faz parte do repositório. As linhas estão comentadas para evitar exclusões acidentais.
 
 ---
 
@@ -148,7 +150,7 @@ out/
 # TypeScript
 *.tsbuildinfo
 
-# Lockfiles (normalmente deves COMMITAR - mantém comentado a menos que decidas ignorar)
+# Lockfiles (normalmente fazem parte do repositório - linhas comentadas por segurança)
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml

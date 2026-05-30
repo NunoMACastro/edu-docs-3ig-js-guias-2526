@@ -16,7 +16,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Rotas dinâmicas com `:params`](#sec-1)
 - [2. [ESSENCIAL] Navegação declarativa: `Link` e `NavLink`](#sec-2)
 - [3. [ESSENCIAL] Navegação programática: `useNavigate`](#sec-3)
@@ -31,15 +31,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Como estudar:** cria mini-projetos e testa no browser a **URL** (barra de endereços). Em React Router, a URL não é “decoração”: é uma parte do estado da aplicação.
-- **Regra de ouro:** não uses `<a href="...">` dentro da app para mudar de página. Usa `Link`/`NavLink`.
-- **Ligações úteis:**
-    - `09_react_router_fundamentos.md` (setup e rotas base)
-    - `08_useEffect_e_dados.md` (buscar dados e lidar com estados de ecrã)
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

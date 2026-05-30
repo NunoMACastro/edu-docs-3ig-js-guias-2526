@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Para quem é a documentação](#sec-1)
 -   [2. [ESSENCIAL] Níveis: iniciar, manter, entregar](#sec-2)
 -   [3. [EXTRA] O mínimo aceitável vs completo](#sec-3)
@@ -23,16 +23,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender **o que é documentação** e porque é tão importante num projeto. Muita gente só escreve no fim, mas a melhor documentação nasce desde o início.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **Documentação:** conjunto de textos que explicam o projeto (o que faz, como correr, como usar).
--   **Objetivo:** permitir que outras pessoas (ou tu no futuro) entendam e mantenham o projeto.
-
--   **ESSENCIAL vs EXTRA:** foca público e níveis antes do resto.
--   **Como estudar:** pega no teu projeto e identifica o que falta documentar.
--   **Objetivo final:** saberes o que escrever e quando escrever.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 
@@ -46,7 +43,7 @@ Documentação é uma conversa escrita. Mas o leitor muda, logo o foco muda.
 
 -   **Aluno/colega:** precisa de passos claros e exemplos simples.
 -   **Professor/avaliador:** quer perceber o objetivo, coerência e autonomia.
--   **Cliente/utilizador:** quer saber o que faz, como usar, e onde pedir ajuda.
+-   **Cliente/utilizador:** quer saber o que faz, os passos de utilização e onde pedir ajuda.
 
 ### O que muda com cada leitor
 

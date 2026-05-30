@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] MongoDB no ecossistema do curso](#sec-1)
 - [2. [ESSENCIAL] Criar cluster, utilizador e network access](#sec-2)
 - [3. [ESSENCIAL] String de ligação e variáveis de ambiente](#sec-3)
@@ -22,13 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** garante ligação estável antes de avançar.
-- **Como estudar:** cria um mini projeto Node e testa ligação real.
-- **Ligações úteis:**
-  - Node: `../Node/00_setup_projeto.md`
-  - Fullstack: `../Fullstack/03_setup_fullstack.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

@@ -22,7 +22,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Autenticação vs autorização (mapa mental)](#sec-1)
 - [2. [ESSENCIAL] Como o servidor te “reconhece” (3 abordagens)](#sec-2)
 - [3. [ESSENCIAL] Cookies por dentro (HttpOnly, Secure, SameSite)](#sec-3)
@@ -39,19 +39,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Pré-requisitos recomendados:**
-    - `13_http_rest_cors_e_contratos_api.md` (HTTP, CORS, cookies, headers)
-    - `11_consumo_api_e_backend_node.md` (consumo de API; idealmente já com Axios explicado)
-- **Como estudar bem este tema:** tenta sempre responder a estas 3 perguntas:
-    1. “Como é que o backend prova quem eu sou?”
-    2. “Onde é que o login fica guardado (e quem consegue ler)?”
-    3. “Que tipo de ataque (ou bug) pode estragar isto?”
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
-> **Regra de ouro:** em autenticação, “funcionar” não chega. Tem de funcionar **sem abrir buracos**.
-
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

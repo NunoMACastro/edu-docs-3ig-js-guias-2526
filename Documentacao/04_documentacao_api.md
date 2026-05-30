@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Endpoints com request/response](#sec-1)
 -   [2. [ESSENCIAL] Autenticação e autorização](#sec-2)
 -   [3. [ESSENCIAL] Erros e status codes](#sec-3)
@@ -25,19 +25,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **documentar a API** de forma que outra pessoa consiga usar o teu backend sem te perguntar nada. Uma boa documentação da API explica **o que pedir**, **o que esperar** e **o que acontece quando há erros**.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **API:** conjunto de endpoints que o frontend usa para falar com o backend.
--   **Endpoint:** um caminho + método (ex.: `GET /api/tarefas`).
--   **Request/Response:** pedido que envias e resposta que recebes.
-
--   **ESSENCIAL vs EXTRA:** documenta primeiro GET e POST.
--   **Como estudar:** usa exemplos reais do teu backend.
--   **Objetivo final:** um colega consegue testar a API só com esta página.
-
-Este ficheiro corresponde ao `API.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

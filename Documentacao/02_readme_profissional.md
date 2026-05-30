@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] O que é o projeto + features](#sec-1)
 -   [2. [ESSENCIAL] Setup rápido + scripts](#sec-2)
 -   [3. [ESSENCIAL] Variáveis de ambiente](#sec-3)
@@ -25,18 +25,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **escrever um README que qualquer pessoa consegue usar**, mesmo sem te conhecer. Um bom README é como uma "porta de entrada" para o projeto.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **README:** documento principal que explica o que é o projeto e como o correr.
--   **Objetivo:** permitir que alguém instale, teste e entenda o projeto sozinho.
-
--   **ESSENCIAL vs EXTRA:** escreve primeiro o resumo e o setup.
--   **Como estudar:** compara o teu README com a checklist.
--   **Objetivo final:** alguém consegue correr o projeto sem te pedir ajuda.
-
-Este ficheiro corresponde ao `README.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

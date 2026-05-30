@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Síncrono vs assíncrono (o que muda mesmo?)](#sec-1)
 - [2. [ESSENCIAL] Event Loop: porque é que o código “não espera”?](#sec-2)
 - [3. [ESSENCIAL] Promises: a base do assíncrono moderno](#sec-3)
@@ -29,16 +29,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** domina as secções 1–6. A secção 7 é para quando já estás a fazer apps e “algo está estranho”.
-- **Como estudar:** corre os exemplos e observa a consola. O objetivo é conseguires **prever a ordem** em que as coisas aparecem.
-- **Ligações:**
-    - `04_estado_e_eventos.md` (estado e re-render).
-    - `06_formularios_controlados.md` (submissões e validação).
-    - `08_useEffect_e_dados.md` (onde colocar `fetch` em React).
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

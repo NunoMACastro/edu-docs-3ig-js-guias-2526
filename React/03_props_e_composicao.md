@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que são props (dados do pai para o filho)](#sec-1)
 - [2. [ESSENCIAL] Destructuring e valores por defeito](#sec-2)
 - [3. [ESSENCIAL] children e composição](#sec-3)
@@ -25,15 +25,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Ordem recomendada:** lê a teoria e faz logo as experiências pequenas (para veres o comportamento no browser).
-- **Regra de ouro:** props são **entradas** do componente (como parâmetros de uma função).
-- **Ligações:**
-    - JSX e criação de componentes: `02_jsx_e_componentes.md`
-    - Estado e eventos (onde vais usar callbacks): `04_estado_e_eventos.md`
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

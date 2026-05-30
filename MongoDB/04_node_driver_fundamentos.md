@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Estrutura mínima recomendada](#sec-1)
 - [2. [ESSENCIAL] Ligação singleton](#sec-2)
 - [3. [ESSENCIAL] Repositório de tarefas (driver)](#sec-3)
@@ -22,13 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** primeiro monta ligação + repositório + controller.
-- **Como estudar:** cria rota real e testa com Postman/Insomnia.
-- **Ligações úteis:**
-  - Node: `../Node/06_rotas_controladores_validacao.md`
-  - Fullstack: `../Fullstack/01_fluxo_front_back_db.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

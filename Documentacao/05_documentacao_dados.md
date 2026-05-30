@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Modelo base (tarefas e utilizadores)](#sec-1)
 -   [2. [ESSENCIAL] Campos, tipos e validações](#sec-2)
 -   [3. [ESSENCIAL] Índices e constraints](#sec-3)
@@ -24,19 +24,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **explicar o modelo de dados** de forma clara, para que outra pessoa entenda o que existe, que campos são obrigatórios e como tudo se liga.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **Modelo de dados:** é a fotografia de como os dados estão organizados.
--   **Entidade/coleção:** um tipo de registo (ex.: tarefas, utilizadores).
--   **Campo:** uma propriedade dentro do registo (ex.: `titulo`, `email`).
-
--   **ESSENCIAL vs EXTRA:** descreve primeiro as entidades principais.
--   **Como estudar:** faz um diagrama simples com setas.
--   **Objetivo final:** alguém consegue criar dados corretos e evitar erros só lendo esta documentação.
-
-Este ficheiro corresponde ao `DADOS.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

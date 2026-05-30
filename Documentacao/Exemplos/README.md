@@ -4,7 +4,7 @@
 
 [RESUMO_CURTO_EM_1_2_FRASES]
 
-Usa este ficheiro como modelo: substitui os placeholders pelo conteúdo real do teu projeto e remove as secções que não fizerem sentido.
+Este ficheiro funciona como modelo para um README de projeto. Os placeholders representam conteúdo que deve ser adaptado ao projeto real, e algumas secções podem não se aplicar a todos os casos.
 
 ## Funcionalidades principais
 
@@ -34,7 +34,7 @@ Usa este ficheiro como modelo: substitui os placeholders pelo conteúdo real do 
 - npm [VERSÃO]
 - [OUTROS_REQUISITOS]
 
-## Como experimentar o projeto em desenvolvimento
+## Execução em desenvolvimento
 
 ### Instalação
 

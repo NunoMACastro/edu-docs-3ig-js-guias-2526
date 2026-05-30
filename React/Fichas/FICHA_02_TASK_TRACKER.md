@@ -2,7 +2,7 @@
 
 # Tutorial passo a passo - Task Tracker da Turma (Ficha React 12.º ano)
 
-Este tutorial guia-te na construção de uma app React de tarefas com progressão **realmente incremental**.
+Esta ficha apresenta uma app React de tarefas com progressão **realmente incremental**.
 
 Objetivo desta versão da ficha:
 
@@ -43,12 +43,12 @@ Uma app chamada **Task Tracker da Turma** onde podes:
 - **Componente filho**: recebe dados e funções por props.
 - **Estado derivado**: valor calculado a partir de outro estado.
 
-### Estratégia de estudo (recomendada)
+### Organização da ficha
 
-1. Implementa fase a fase, sem saltar.
-2. Testa no browser no fim de cada fase.
-3. Só avança quando o checkpoint estiver estável.
-4. Lê os comentários do código para entender o "porquê".
+- A progressão está dividida em fases curtas e validáveis.
+- Cada fase introduz uma ideia nova ou evolui uma decisão anterior.
+- Os checkpoints assinalam o estado esperado da aplicação em momentos-chave.
+- Os comentários do código explicam o motivo das principais decisões.
 
 ### Debug rápido para toda a ficha
 

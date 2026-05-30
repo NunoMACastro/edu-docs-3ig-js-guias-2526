@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Input controlado e onChange](#sec-1)
 - [2. [ESSENCIAL] Checkbox, radio, select e textarea](#sec-2)
 - [3. [ESSENCIAL] Submissão e validação simples](#sec-3)
@@ -26,18 +26,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** domina bem as secções **1–3** antes de ires para o estado em objeto (secção 4) e armadilhas (secção 5).
-- **Como estudar:** escreve formulários pequenos e observa:
-    - se o valor do input **segue sempre o estado**,
-    - se o `onChange` atualiza o estado corretamente,
-    - e se a validação dá feedback claro ao utilizador.
-- **Ligações úteis:**
-    - estado e eventos: `04_estado_e_eventos.md`
-    - listas e condicionais: `05_listas_e_condicionais.md` (mostrar erros, listas de opções, etc.)
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O problema: várias páginas numa SPA](#sec-1)
 - [2. [ESSENCIAL] Instalar e ligar o Router](#sec-2)
 - [3. [ESSENCIAL] Rotas: `<Routes>` e `<Route>`](#sec-3)
@@ -30,16 +30,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Antes de começares:** confirma que dominas `useState` e eventos (`04_estado_e_eventos.md`) e renderização condicional/listas (`05_listas_e_condicionais.md`).
-- **Forma de estudar:**
-    1. Cria 2–3 páginas simples.
-    2. Faz navegação com `Link` e confirma que **não há refresh**.
-    3. Só depois adiciona `NavLink`, 404 e layout.
-- **Nota importante:** este ficheiro é **fundamentos**. Rotas dinâmicas (ex.: `/alunos/:id`) e parâmetros ficam no `10_navegacao_e_rotas_dinamicas.md`.
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

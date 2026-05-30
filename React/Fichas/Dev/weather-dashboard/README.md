@@ -11,7 +11,7 @@ Projeto de apoio à ficha de React sobre consumo de dados, `useEffect`, estados 
 - Como mostrar loading, erro, detalhe e listas no mesmo ecrã.
 - Uso de `useMemo` para calcular informação derivada.
 
-## Como experimentar
+## Execução local
 
 ```bash
 npm install

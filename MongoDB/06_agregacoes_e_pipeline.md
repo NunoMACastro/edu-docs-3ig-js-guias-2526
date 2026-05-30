@@ -11,7 +11,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que é um pipeline](#sec-1)
 - [2. [ESSENCIAL] Etapas mais usadas](#sec-2)
 - [3. [ESSENCIAL] Exemplos práticos (tarefas)](#sec-3)
@@ -22,11 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** primeiro acertar resultados, depois otimizar.
-- **Como estudar:** executa pipeline no Atlas e replica no Node.
-- **Ligação útil:** `../React/15_upload_paginacao_filtros_e_cliente_api.md`
+Esta secção situa o ficheiro dentro do módulo de MongoDB e clarifica a relação entre dados, API e aplicação fullstack.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os conceitos de base para trabalhar com documentos, consultas ou validação.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, optimizações ou alternativas úteis em projetos mais completos.
+- **Ligação ao percurso:** os exemplos e exercícios relacionam MongoDB com Node, Express, React e contratos de API.
 
 <a id="sec-1"></a>
 

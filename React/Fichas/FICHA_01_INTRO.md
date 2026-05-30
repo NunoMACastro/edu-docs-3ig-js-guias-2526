@@ -2,7 +2,7 @@
 
 # Tutorial passo a passo - Lista de Boas-vindas (Ficha React 12.º ano)
 
-Este tutorial leva-te do zero a uma app React simples, mas completa para uma aula introdutória.
+Esta ficha apresenta uma app React simples, mas completa para uma aula introdutória.
 
 Objetivos pedagógicos desta ficha:
 
@@ -32,12 +32,12 @@ Uma app chamada **Lista de Boas-vindas** que permite:
 - **Input controlado**: o valor do input vem do estado React.
 - **Renderização condicional**: mostrar algo apenas se certa condição for verdadeira.
 
-### Como estudar esta ficha (recomendado)
+### Organização da ficha
 
-1. Implementa fase a fase, sem saltar diretamente para o final.
-2. Testa no browser no fim de cada fase.
-3. Se houver erro, resolve antes de avançar.
-4. Lê os comentários do código e explica em voz alta o que cada bloco faz.
+- A progressão está dividida em fases curtas e incrementais.
+- Cada fase acrescenta uma ideia de React à app anterior.
+- Os checkpoints assinalam estados intermédios esperados da aplicação.
+- Os comentários do código destacam decisões importantes para discussão em aula.
 
 ### Debug rápido para toda a ficha
 

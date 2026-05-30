@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Ambientes (dev/prod)](#sec-1)
 -   [2. [ESSENCIAL] Segredos e .env](#sec-2)
 -   [3. [ESSENCIAL] Logs e monitorização](#sec-3)
@@ -24,24 +24,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **explicar como o teu projeto funciona quando sai do teu computador**. O objetivo não é fazer deploy agora, é saber **o que tens de documentar** para alguém conseguir correr e manter o projeto com segurança.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
-Antes de avançares, duas definições rápidas:
-
--   **Deploy:** colocar a app num servidor para outras pessoas usarem.
--   **Operação:** manter a app a funcionar (logs, backups, segurança, monitorização).
-
-### Checklist de operação oficial
-
--   URLs e ambientes (dev/prod).
--   Variáveis de ambiente e segredos.
--   Logs e monitorização.
--   Backups e restore.
--   Responsáveis e contactos em caso de falha.
-
-Este ficheiro corresponde ao `DEPLOY.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

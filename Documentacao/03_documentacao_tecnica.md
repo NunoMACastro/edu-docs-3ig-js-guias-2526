@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Arquitetura (MVC e camadas)](#sec-1)
 -   [2. [ESSENCIAL] Estrutura de pastas](#sec-2)
 -   [3. [ESSENCIAL] Fluxos críticos](#sec-3)
@@ -24,19 +24,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **explicar como o projeto está organizado por dentro**. Documentação técnica serve para quem vai manter o projeto: precisa de saber onde está cada parte, porque existe e como se liga.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **Arquitetura:** forma como as partes do projeto se organizam e comunicam.
--   **Camada:** grupo de ficheiros com a mesma responsabilidade (ex.: controllers).
--   **Fluxo crítico:** caminho importante que o utilizador faz (ex.: login, criar tarefa).
-
--   **ESSENCIAL vs EXTRA:** escreve primeiro arquitetura e pastas.
--   **Como estudar:** desenha o teu projeto numa folha e compara.
--   **Objetivo final:** alguém consegue navegar no projeto sem te perguntar onde estão as coisas.
-
-Este ficheiro corresponde ao `DOCUMENTACAO_TECNICA.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

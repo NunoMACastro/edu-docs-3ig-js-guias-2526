@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O problema: props “a cair” por muitos níveis](#sec-1)
 - [2. [ESSENCIAL] O que é Context (modelo mental)](#sec-2)
 - [3. [ESSENCIAL] Criar Context + Provider (passo a passo)](#sec-3)
@@ -30,16 +30,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Antes de começares:** domina `useState` e “levantar estado” (ver `04_estado_e_eventos.md`).
-- **Como estudar:** faz primeiro o **Tema** (secções 3–6), porque é simples e visual.
-- **Regra importante:** Context é para **dados partilhados** por várias partes da app, **não** para tudo.
-- **Ligações úteis:**
-    - `08_useEffect_e_dados.md` (para entender “referência vs valor” e re-renders).
-    - `09_react_router_fundamentos.md` (se quiseres usar `ProtectedRoute` mais à frente).
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

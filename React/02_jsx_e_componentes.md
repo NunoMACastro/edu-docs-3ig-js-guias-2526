@@ -13,7 +13,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] O que é JSX](#sec-1)
 - [2. [ESSENCIAL] Regras importantes do JSX](#sec-2)
 - [3. [ESSENCIAL] Componentes funcionais e exportação](#sec-3)
@@ -23,19 +23,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **ESSENCIAL vs EXTRA:** começa pelas secções [ESSENCIAL]. O [EXTRA] ajuda-te a organizar melhor e a evitar erros comuns quando o projeto cresce.
-- **Como estudar:**
-    1. Copia um exemplo para o `App.jsx`.
-    2. Guarda e vê o resultado no browser.
-    3. Muda um detalhe (texto, variável, classe, condição) e confirma o que mudou.
-    4. Se der erro, lê a mensagem do terminal e do browser (consola).
-- **Ligações:**
-    - Se ainda não tens projeto criado, volta ao `01_fundamentos_e_setup.md`.
-    - Se já estás confortável com JSX e queres passar dados entre componentes, segue depois para `03_props_e_composicao.md`.
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

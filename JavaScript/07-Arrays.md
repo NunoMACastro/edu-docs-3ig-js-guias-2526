@@ -73,7 +73,7 @@ const ordenado = base.slice().sort((a, b) => a - b); // base intacto
 const comExtra = [...base, 4];
 ```
 
-Se `toSorted` ainda não existir no ambiente dos alunos, explica como usar `slice()` antes de `sort()` para criar uma cópia.
+Se `toSorted` ainda não existir no ambiente dos alunos, a alternativa com `slice()` antes de `sort()` cria uma cópia antes da ordenação.
 
 ---
 

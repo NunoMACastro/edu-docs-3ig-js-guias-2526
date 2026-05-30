@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Qualidade em projetos reais (porquê isto existe)](#sec-1)
 - [2. [ESSENCIAL] Lint + format: evitar bugs e manter consistência](#sec-2)
 - [3. [ESSENCIAL] TypeScript mínimo para React](#sec-3)
@@ -28,17 +28,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **Se estás a começar:** faz 1 → 2 → 3 → 4. Isso cobre o essencial para um projeto real.
-- **Se já tens projeto pronto:** aplica a secção 5 (scripts) e escolhe 1 extra da secção 6.
-- **Ligações úteis:**
-    - `04_estado_e_eventos.md` (conceitos base para exemplos)
-    - `06_formularios_controlados.md` (para testar inputs)
-    - `08_useEffect_e_dados.md` (para perceber efeitos e estados de UI)
-    - `11_consumo_api_e_backend_node.md` (para testes de componentes com dados)
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 

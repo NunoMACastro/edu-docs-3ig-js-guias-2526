@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Comentários úteis (o porquê)](#sec-1)
 -   [2. [ESSENCIAL] Convenções de nomes](#sec-2)
 -   [3. [ESSENCIAL] JSDoc para funções públicas](#sec-3)
@@ -24,18 +24,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **documentar o código no próprio código**, sem confundir isto com README ou documentação da API. Esta parte serve para quem vai ler o ficheiro e precisa de entender **o porquê** de certas decisões.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **Comentário útil:** explica intenção, contexto ou decisão técnica.
--   **Comentário inútil:** repete o que o código já diz.
-
--   **ESSENCIAL vs EXTRA:** começa por comentários e nomes.
--   **Como estudar:** escolhe um ficheiro do teu projeto e melhora-o.
--   **Objetivo final:** alguém entende o teu código sem te perguntar "porquê fizeste isto?".
-
-Este ficheiro corresponde ao `DOCUMENTACAO_CODIGO.md` da estrutura completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Portas e URLs](#sec-1)
 -   [2. [ESSENCIAL] Variáveis de ambiente](#sec-2)
 -   [3. [ESSENCIAL] Correr frontend e backend](#sec-3)
@@ -22,14 +22,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
--   **ESSENCIAL vs EXTRA:** primeiro liga o backend ao Mongo, depois o React.
--   **Como estudar:** abre dois terminais e confirma a resposta do backend.
--   **Ligações úteis:**
-    -   React: `../React/11_consumo_api_e_backend_node.md`
-    -   Node: `../Node/04_express_basico.md`
-    -   MongoDB: `../MongoDB/01_introducao_e_setup_atlas.md`
+Esta secção situa o ficheiro dentro do percurso fullstack e destaca a ligação entre frontend, backend e base de dados.
+
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam o fluxo principal e os contratos que mantêm as partes alinhadas.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto para cenários mais completos ou próximas evoluções.
+- **Ligação ao percurso:** os exemplos e exercícios articulam conteúdos de React, Node/Express e MongoDB.
 
 <a id="sec-1"></a>
 

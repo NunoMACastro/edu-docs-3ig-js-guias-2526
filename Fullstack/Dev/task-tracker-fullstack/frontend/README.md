@@ -11,7 +11,7 @@ Projeto React usado na ficha **Task Tracker Fullstack**. Este frontend comunica 
 - Como guardar loading, erro e dados no estado do componente.
 - Como isolar chamadas HTTP num ficheiro de serviços.
 
-## Como experimentar
+## Execução local
 
 Antes de abrir o frontend, confirma que o backend da ficha está a correr.
 

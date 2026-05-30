@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] Como correr testes](#sec-1)
 -   [2. [ESSENCIAL] Testes críticos](#sec-2)
 -   [3. [ESSENCIAL] Output esperado](#sec-3)
@@ -24,18 +24,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **explicar o que são testes** e como alguém pode correr e confiar nos resultados. Testes ajudam a garantir que o projeto continua a funcionar mesmo depois de alterações.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **Teste automático:** código que confirma se algo funciona.
--   **Validação manual:** passos que tu fazes para confirmar um resultado.
-
--   **ESSENCIAL vs EXTRA:** documenta primeiro o comando de testes.
--   **Como estudar:** corre os testes e confirma o output.
--   **Objetivo final:** qualquer pessoa consegue correr testes e perceber se o projeto está OK.
-
-Este ficheiro corresponde ao `TESTES.md` da estrutura mínima e completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

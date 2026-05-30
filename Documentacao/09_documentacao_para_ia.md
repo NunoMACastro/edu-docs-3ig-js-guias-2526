@@ -11,7 +11,7 @@
 
 ## Índice
 
--   [0. Como usar este ficheiro](#sec-0)
+-   [0. Enquadramento do material](#sec-0)
 -   [1. [ESSENCIAL] O que é um contrato e porquê importa](#sec-1)
 -   [2. [ESSENCIAL] Ficheiros recomendados para comunicar com a IA](#sec-2)
 -   [3. [ESSENCIAL] Bloco de contexto completo (com exemplo)](#sec-3)
@@ -29,15 +29,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-Aqui vais aprender a **escrever documentação que explica o teu projeto a um agente de IA**. O foco não é programar, é **dar contexto e limites** para a IA trabalhar sem adivinhar.
+Esta secção situa o ficheiro dentro do módulo de Documentação e clarifica o tipo de informação que o tema ajuda a organizar.
 
--   **ESSENCIAL vs EXTRA:** começa por contrato, contexto e guardrails.
--   **Como estudar:** imagina que um bot vai trabalhar no teu projeto sem te perguntar nada.
--   **Objetivo final:** o agente deve conseguir ajudar **sem inventar, sem adivinhar e sem destruir**.
-
-Este ficheiro corresponde ao `DOCUMENTACAO_IA.md` da estrutura completa.
+- **Núcleo do tema:** as secções [ESSENCIAL] apresentam os elementos que tornam a documentação clara para leitores diferentes.
+- **Aprofundamento:** as secções [EXTRA] acrescentam detalhe, critérios de qualidade ou exemplos de aplicação.
+- **Ligação ao percurso:** os checkpoints e exercícios relacionam a documentação com projetos React, Node/Express, MongoDB e fullstack.
 
 <a id="sec-1"></a>
 

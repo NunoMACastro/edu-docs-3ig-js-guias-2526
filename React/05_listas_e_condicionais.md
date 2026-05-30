@@ -14,7 +14,7 @@
 
 ## Índice
 
-- [0. Como usar este ficheiro](#sec-0)
+- [0. Enquadramento do material](#sec-0)
 - [1. [ESSENCIAL] Renderizar listas com map](#sec-1)
 - [2. [ESSENCIAL] Keys: o que são e porque importam](#sec-2)
 - [3. [ESSENCIAL] Renderização condicional no JSX](#sec-3)
@@ -29,17 +29,13 @@
 
 <a id="sec-0"></a>
 
-## 0. Como usar este ficheiro
+## 0. Enquadramento do material
 
-- **O que observar:** listas e condicionais são quase sempre “UI a reagir a dados”. A regra é:
-    - dados mudam (estado/props) → React renderiza → JSX muda.
-- **Ordem recomendada:** 1 → 2 → 3 antes de ires para filtros/pesquisa.
-- **Ligações úteis:**
-    - Estado e eventos (arrays, toggles, imutabilidade): `04_estado_e_eventos.md`
-    - Props e composição (componentes e callbacks): `03_props_e_composicao.md`
-    - useEffect e dados (loading/erro): `08_useEffect_e_dados.md`
+Esta secção situa o ficheiro dentro do módulo de React e identifica o papel das partes seguintes.
 
----
+- **Núcleo do tema:** as secções [ESSENCIAL] concentram os conceitos que sustentam o assunto principal.
+- **Aprofundamento:** as secções [EXTRA] acrescentam contexto, variantes e ligações a cenários de projeto.
+- **Ligação ao percurso:** os exemplos, checkpoints e exercícios relacionam este tema com os restantes conteúdos de React e fullstack.
 
 <a id="sec-1"></a>
 
