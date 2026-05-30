@@ -4,8 +4,6 @@
 
 Este repositório reúne materiais de apoio ao estudo de Programação no 12.º ano. A organização segue uma progressão didática: primeiro as bases da linguagem e das ferramentas, depois backend, bases de dados, frontend, integração fullstack e documentação de projetos.
 
-[Índice de repositórios do 3.º IG](https://github.com/NunoMACastro/edu-3ig-indice-2526 "Índice de repositórios do 3.º IG")
-
 ---
 
 ## Mapa do repositório
