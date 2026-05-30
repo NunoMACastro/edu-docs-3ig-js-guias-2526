@@ -1,176 +1,278 @@
 ![Header](../Images/Header.png)
 
-# [6] Ciclos (12.º ano)
+# JavaScript (12.º Ano) - 06 · Ciclos
 
-> **Objetivo**: repetir ações sem escrever o mesmo código várias vezes, escolhendo o ciclo certo (`for`, `while`, `for...of`, etc.) e evitando armadilhas como loops infinitos.
-
----
-
-## 0) Qual ciclo escolher?
-
--   **`for` clássico** → precisas de um contador controlado (`i = 0; i < n; i++`).
--   **`while` / `do...while`** → tens apenas uma condição que decide se continuas.
--   **`for...of`** → percorres **valores** de arrays, strings, `Set`, `Map`…
--   **`for...in`** → percorre chaves de objetos (usa com cuidado).
+> **Objetivo deste ficheiro**
+>
+> - Repetir ações com `for`, `while`, `do...while`, `for...of` e `for...in`.
+> - Escolher o ciclo adequado ao problema.
+> - Evitar ciclos infinitos e erros de índice.
+> - Usar `break` e `continue` com intenção.
+> - Preparar a transição para arrays e métodos como `map` e `filter`.
 
 ---
 
-## 1) `for` clássico
+## Índice
+
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Repetição com `for`](#sec-1)
+- [2. [ESSENCIAL] `while` e `do...while`](#sec-2)
+- [3. [ESSENCIAL] Percorrer valores com `for...of`](#sec-3)
+- [4. [ESSENCIAL+] `break`, `continue` e padrões comuns](#sec-4)
+- [5. [EXTRA] `for...in` e diagnóstico rápido](#sec-5)
+- [Exercícios - Ciclos](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Ciclos servem para repetir ações sem copiar o mesmo código várias vezes. São essenciais para listas, strings, validações repetidas e simulações.
+
+- **Núcleo do tema:** `for`, `while`, `do...while` e `for...of`.
+- **Aprofundamento:** interrupção, salto de iteração e padrões de acumulação.
+- **Ligação ao percurso:** ciclos formam a base de `map`, `filter`, `reduce`, DOM e processamento de dados.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Repetição com `for`
+
+### 1.1 Modelo mental
+
+Um `for` clássico tem três partes:
 
 ```js
 for (let i = 0; i < 3; i++) {
-    console.log(i); // 0, 1, 2
+    console.log(i);
 }
 ```
 
-Boas práticas:
+```txt
+início -> condição -> bloco -> atualização -> condição -> ...
+```
 
--   Usa `let` para o contador (escopo só dentro do ciclo).
--   Prefere `i < limite` a `i <= limite - 1`.
--   Se o limite não mudar, podes guardá-lo numa constante. Para exercícios simples não é necessário otimizar.
+Resultado:
 
-Armadilhas: `<=` quando querias `<`, ou esquecer de atualizar `i` (loop infinito).
+```txt
+0
+1
+2
+```
 
----
+### 1.2 Percorrer por índice
 
-## 2) `while` e `do...while`
+```js
+const notas = [12, 16, 9];
+
+for (let i = 0; i < notas.length; i++) {
+    console.log(`Índice ${i}: ${notas[i]}`);
+}
+```
+
+Usa índices quando precisas da posição.
+
+### 1.3 Erros comuns
+
+- Usar `i <= array.length` e aceder a uma posição que não existe.
+- Esquecer `i++` e criar um ciclo infinito.
+- Alterar o tamanho do array enquanto o percorres sem necessidade.
+
+### 1.4 Checkpoint
+
+- Porque é que a condição costuma ser `i < array.length`?
+- Quais são as três partes de um `for` clássico?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] `while` e `do...while`
+
+### 2.1 `while`
+
+`while` repete enquanto a condição for verdadeira.
 
 ```js
 let tentativas = 0;
-while (tentativas < 3) {
-    tentativas++;
-    // faz algo enquanto a condição for verdadeira
-}
 
+while (tentativas < 3) {
+    console.log(`Tentativa ${tentativas + 1}`);
+    tentativas++;
+}
+```
+
+### 2.2 `do...while`
+
+`do...while` executa pelo menos uma vez.
+
+```js
 let numero;
+
 do {
     numero = Number(prompt("Número positivo:"));
 } while (Number.isNaN(numero) || numero <= 0);
 ```
 
--   `while` testa **antes** de entrar.
--   `do...while` executa pelo menos **uma vez** e testa no fim.
+### 2.3 Quando usar
 
-Certifica-te de que mudas a variável que participa na condição; caso contrário, o ciclo nunca termina.
+- `while`: quando não sabes à partida quantas repetições vais ter.
+- `do...while`: quando queres garantir uma primeira execução.
+- `for`: quando tens contador ou tamanho conhecido.
 
----
+### 2.4 Checkpoint
 
-## 3) `for...of` para percorrer valores
+- Qual é a diferença entre `while` e `do...while`?
+- Que variável precisa de mudar para o ciclo terminar?
 
-```js
-const notas = [10, 12, 18];
-for (const nota of notas) {
-    console.log(nota);
-}
+<a id="sec-3"></a>
 
-for (const ch of "Olá") {
-    console.log(ch); // "O", "l", "á"
-}
-```
+## 3. [ESSENCIAL] Percorrer valores com `for...of`
 
-Para ter índice e valor em arrays, usa `entries()`:
+### 3.1 Arrays e strings
 
 ```js
-for (const [indice, valor] of notas.entries()) {
-    console.log(indice, valor);
+const nomes = ["Ana", "Bruno", "Carla"];
+
+for (const nome of nomes) {
+    console.log(nome);
 }
-```
 
-Funciona também com `Map` e `Set`.
-
----
-
-## 4) `break` e `continue`
-
--   `break` sai imediatamente do ciclo.
--   `continue` salta para a próxima iteração.
-
-```js
-for (let i = 0; i < 10; i++) {
-    if (i === 3) continue; // ignora o 3
-    if (i === 6) break; // termina quando chega ao 6
-    console.log(i);
+for (const letra of "Olá") {
+    console.log(letra);
 }
 ```
 
-Usa `break` quando encontras o que procuravas e não precisas de continuar a percorrer.
+`for...of` lê valores diretamente. É excelente quando não precisas do índice.
 
----
-
-## 5) `for...in` (objetos)
-
-`for...in` percorre chaves enumeráveis **próprias e herdadas**. Usa-o apenas com objetos simples e confirma que a chave é realmente tua.
+### 3.2 Índice e valor
 
 ```js
-const aluno = { nome: "Ana", nota: 18 };
-for (const chave in aluno) {
-    if (Object.prototype.hasOwnProperty.call(aluno, chave)) {
-        console.log(chave, aluno[chave]);
-    }
+const notas = [12, 16, 9];
+
+for (const [indice, nota] of notas.entries()) {
+    console.log(indice, nota);
 }
 ```
 
-Alternativas modernas (mais seguras):
+### 3.3 Checkpoint
+
+- Quando é que `for...of` é melhor do que `for` clássico?
+- Como obténs índice e valor ao mesmo tempo?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] `break`, `continue` e padrões comuns
+
+### 4.1 `break`
+
+Sai imediatamente do ciclo.
 
 ```js
-Object.entries(aluno).forEach(([chave, valor]) => {
-    console.log(chave, valor);
-});
-```
+let encontrado = null;
 
----
-
-## 6) Padrões úteis
-
-### Somar valores
-
-```js
-let soma = 0;
-for (const nota of notas) {
-    soma += nota;
-}
-const media = soma / notas.length;
-```
-
-### Encontrar o primeiro elemento que cumpre algo
-
-```js
-let primeiroPar = null;
-for (const n of [5, 7, 8, 11]) {
-    if (n % 2 === 0) {
-        primeiroPar = n;
+for (const numero of [5, 7, 8, 11]) {
+    if (numero % 2 === 0) {
+        encontrado = numero;
         break;
     }
 }
 ```
 
-### Construir novo array manualmente
+### 4.2 `continue`
+
+Salta para a próxima iteração.
 
 ```js
-const orig = [1, 2, 3, 4, 5];
-const paresDobrados = [];
-for (const n of orig) {
-    if (n % 2 === 0) paresDobrados.push(n * 2);
+for (const numero of [1, 2, 3, 4]) {
+    if (numero % 2 !== 0) continue;
+    console.log(numero); // só pares
 }
 ```
 
-Isto ajuda a compreender o que `map`/`filter` fazem nos capítulos seguintes.
+### 4.3 Acumular valores
 
----
+```js
+const notas = [10, 14, 18];
+let soma = 0;
 
-## 7) Exercícios
+for (const nota of notas) {
+    soma += nota;
+}
 
-1. Escreve um `for` decrescente que conta de 10 até 0 e imprime apenas múltiplos de 2.
-2. Usa `while` para pedir uma palavra até o utilizador digitar "sair" (ignora maiúsculas/minúsculas com `toLowerCase`).
-3. Cria um programa que peça um numero ao utilizador e mostre a tabuada desse número de 1 a 10 usando `for`. Exemplo: para 3, imprime "3 x 1 = 3", "3 x 2 = 6", etc. Depois faz o mesmo com `while`.
-4. Cria um `do...while` que pede números até receber um valor positivo. Conta quantas tentativas foram necessárias.
-5. Pede um número ao utilizador repetidamente até que ele insira o zero. Enquanto não inserir o zero, calcula e mostra o quadrado de cada número inserido. Quando o zero for inserido, termina o programa.
-6. Simula o lançamento de um dado até sair o valor 6. Usa `while` e conta quantas jogadas foram precisas.
+const media = soma / notas.length;
+```
+
+### 4.4 Construir novo array
+
+```js
+const numeros = [1, 2, 3, 4];
+const dobradosPares = [];
+
+for (const numero of numeros) {
+    if (numero % 2 === 0) {
+        dobradosPares.push(numero * 2);
+    }
+}
+```
+
+Isto prepara a ideia de `filter` + `map`.
+
+### 4.5 Checkpoint
+
+- Qual é a diferença entre `break` e `continue`?
+- Que variável funciona como acumulador no exemplo da média?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] `for...in` e diagnóstico rápido
+
+### 5.1 `for...in` é para chaves
+
+```js
+const pessoa = { nome: "Ana", idade: 17 };
+
+for (const chave in pessoa) {
+    if (Object.prototype.hasOwnProperty.call(pessoa, chave)) {
+        console.log(chave, pessoa[chave]);
+    }
+}
+```
+
+Para objetos simples, muitas vezes é mais claro:
+
+```js
+for (const [chave, valor] of Object.entries(pessoa)) {
+    console.log(chave, valor);
+}
+```
+
+### 5.2 Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Ciclo nunca acaba | Condição nunca passa a falsa | Atualizar variável de controlo |
+| Último valor é `undefined` | Índice passou do fim | Usar `< length` |
+| Saltou valores sem querer | `continue` mal colocado | Rever condição |
+| Não encontrou valor | `break` cedo demais | Confirmar ordem da lógica |
+| Percorre chaves em vez de valores | Uso de `for...in` em array | Usar `for...of` |
+
+<a id="exercicios"></a>
+
+## Exercícios - Ciclos
+
+1. Escreve um `for` que mostre os números de 10 até 0.
+2. Mostra apenas os múltiplos de 3 entre 1 e 30.
+3. Pede números até receber `0`; mostra o quadrado de cada número antes de terminar.
+4. Usa `do...while` para pedir uma nota válida entre 0 e 20.
+5. Percorre um array de notas com `for...of` e calcula a média.
+6. Encontra o primeiro número maior que 100 num array e termina o ciclo com `break`.
+7. Cria um novo array com os números pares dobrados usando apenas ciclos.
+8. Percorre um objeto com `Object.entries` e mostra as chaves e valores.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Secção de Exercícios ampliada para sete propostas cobrindo `for`, `while`, `do...while` e padrões comuns.
-    -   Adicionado changelog para registar futuras alterações do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados padrões de acumulação, pesquisa e construção de arrays.
 
 ![Footer](../Images/Footer.png)

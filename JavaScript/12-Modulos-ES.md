@@ -1,44 +1,93 @@
 ![Header](../Images/Header.png)
 
-# [12] Módulos ES (12.º ano)
+# JavaScript (12.º Ano) - 12 · Módulos ES
 
-> **Objetivo**: dividir o código por ficheiros (`módulos`), exportar valores e importá-los noutros sítios, percebendo a diferença entre `default` e `named` exports tanto no browser como em Node.js.
-
----
-
-## 0) Porque módulos?
-
--   Separas responsabilidades (ex.: `math.js`, `alunos.js`).
--   Evitas poluir o escopo global.
--   Facilita testes e reutilização.
-
-Cada ficheiro com `import` ou `export` passa a ser um módulo com o seu próprio escopo.
+> **Objetivo deste ficheiro**
+>
+> - Dividir código por ficheiros com `import` e `export`.
+> - Distinguir named exports e default export.
+> - Usar módulos no browser e em Node.js.
+> - Perceber escopo de módulo e live bindings.
+> - Organizar responsabilidades sem criar camadas desnecessárias.
 
 ---
 
-## 1) Browser: ativar módulos
+## Índice
 
-No HTML usa `type="module"`:
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Porque existem módulos](#sec-1)
+- [2. [ESSENCIAL] Exportar e importar](#sec-2)
+- [3. [ESSENCIAL] Módulos no browser e em Node.js](#sec-3)
+- [4. [ESSENCIAL+] Live bindings e import dinâmico](#sec-4)
+- [5. [EXTRA] Organização e diagnóstico](#sec-5)
+- [Exercícios - Módulos ES](#exercicios)
+- [Changelog](#changelog)
 
-```html
-<script type="module" src="./main.js"></script>
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+À medida que o código cresce, um único ficheiro deixa de ser confortável. Módulos permitem separar responsabilidades, reutilizar funções e evitar variáveis globais.
+
+- **Núcleo do tema:** `export`, `import`, named exports e default export.
+- **Aprofundamento:** live bindings, `import()` e organização de pastas.
+- **Ligação ao percurso:** React, Node, Express e projetos fullstack usam ES Modules de forma natural.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Porque existem módulos
+
+### 1.1 Modelo mental
+
+Um módulo é um ficheiro com escopo próprio.
+
+```txt
+math.js exporta funções
+main.js importa e usa essas funções
 ```
 
-Notas importantes:
+Isto evita misturar tudo no mesmo espaço global.
 
--   Os módulos são carregados de forma assíncrona (como se tivessem `defer`).
--   Usa caminhos relativos com extensão (`./utils/math.js`).
--   Abre o projeto via servidor local (Live Server, Vite, etc.) para evitar erros de CORS ao usar `file://`.
+### 1.2 Separar responsabilidades
 
----
+```txt
+src/
+  main.js
+  math.js
+  strings.js
+  api.js
+```
 
-## 2) Exportar e importar
+Cada ficheiro deve ter uma responsabilidade clara.
 
-### Named exports
+### 1.3 Escopo de módulo
+
+```js
+// math.js
+const segredo = 42;
+
+export function soma(a, b) {
+    return a + b;
+}
+```
+
+`segredo` só existe dentro de `math.js`, a menos que seja exportado.
+
+### 1.4 Checkpoint
+
+- Que problema os módulos resolvem?
+- O que significa escopo de módulo?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Exportar e importar
+
+### 2.1 Named exports
 
 ```js
 // math.js
 export const PI = 3.14159;
+
 export function soma(a, b) {
     return a + b;
 }
@@ -47,152 +96,227 @@ export function soma(a, b) {
 ```js
 // main.js
 import { PI, soma } from "./math.js";
+
+console.log(soma(2, 3), PI);
 ```
 
-Podes renomear ao importar: `import { soma as somar } from "./math.js";`.
+Named exports obrigam a importar pelo nome exportado.
 
-### Default export
+### 2.2 Renomear imports
 
 ```js
-// cores.js
-export default function hex(r, g, b) {
-    return `#${[r, g, b].map((n) => n.toString(16).padStart(2, "0")).join("")}`;
+import { soma as somar } from "./math.js";
+```
+
+### 2.3 Default export
+
+```js
+// formatarPreco.js
+export default function formatarPreco(valor) {
+    return `${valor.toFixed(2)} €`;
 }
 ```
 
 ```js
 // main.js
-import paraHex from "./cores.js"; // nome à tua escolha
+import preco from "./formatarPreco.js";
 ```
 
-### Misturar default + named
+O nome no import pode ser escolhido por quem importa.
+
+### 2.4 Misturar com cuidado
 
 ```js
-// texto.js
-export default function title(s) {
-    return s.trim().toUpperCase();
+// strings.js
+export default function title(texto) {
+    return texto.trim().toUpperCase();
 }
-export const vogais = /[aeiouáéíóúãõ]/i;
+
+export const vogais = /[aeiouáéíóú]/i;
 ```
 
 ```js
-import title, { vogais } from "./texto.js";
+import title, { vogais } from "./strings.js";
 ```
 
-### Re-exportar (barrel)
+Funciona, mas se um ficheiro exportar muitas coisas, named exports costumam ser mais claros.
+
+### 2.5 Checkpoint
+
+- Qual é a diferença entre named export e default export?
+- Porque é que named exports ajudam o autocompletar?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Módulos no browser e em Node.js
+
+### 3.1 Browser
+
+```html
+<script type="module" src="./main.js"></script>
+```
+
+Nos módulos do browser:
+
+- usa caminhos relativos com extensão;
+- o código corre em modo estrito;
+- o carregamento é diferido;
+- evita abrir por `file://` quando houver imports; usa servidor local.
+
+### 3.2 Node.js
+
+No `package.json`:
+
+```json
+{
+    "type": "module"
+}
+```
+
+Depois:
 
 ```js
-// utils/index.js
-export * from "./math.js";
-export { default as title } from "./texto.js";
+import fs from "node:fs/promises";
+
+const texto = await fs.readFile("./dados.txt", "utf8");
 ```
 
----
+### 3.3 Caminhos explícitos
 
-## 3) Live bindings
+```js
+import { soma } from "./math.js";
+```
 
-Imports não são cópias; apontam para o valor exportado.
+Em ES Modules, escreve `./`, `../` e a extensão quando estiveres no browser.
+
+### 3.4 Erros comuns
+
+- Esquecer `type="module"` no HTML.
+- Esquecer `"type": "module"` no Node.
+- Importar `math` em vez de `./math.js`.
+- Criar imports circulares sem perceber.
+
+### 3.5 Checkpoint
+
+- Como ativas módulos no browser?
+- Como ativas módulos em Node.js?
+- Porque é importante escrever caminhos relativos?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Live bindings e import dinâmico
+
+### 4.1 Live bindings
+
+Imports não são cópias soltas; apontam para o valor exportado.
 
 ```js
 // contador.js
 export let total = 0;
-export function inc() {
+
+export function incrementar() {
     total++;
 }
 ```
 
 ```js
 // main.js
-import { total, inc } from "./contador.js";
+import { total, incrementar } from "./contador.js";
+
 console.log(total); // 0
-inc();
-console.log(total); // 1 (reflete a atualização)
+incrementar();
+console.log(total); // 1
 ```
 
-Não podes fazer `total = 5` fora do módulo original - só o ficheiro que exporta é que pode reatribuir.
+Não podes reatribuir `total` fora do módulo que o exporta.
 
----
-
-## 4) Top-level `await`
-
-Dentro de módulos podes usar `await` sem estar numa função `async`.
+### 4.2 `import()` dinâmico
 
 ```js
-// config.js
-export const cfg = await fetch("./config.json").then((resp) => resp.json());
-```
+const botao = document.querySelector("#ajuda");
 
-O módulo que importar `cfg` só corre depois de a Promise terminar, garantindo ordem correta de carregamento.
-
----
-
-## 5) `import()` dinâmico
-
-Carrega módulos apenas quando precisares (retorna uma Promise).
-
-```js
-const btn = document.querySelector("#btn-relatorio");
-btn.addEventListener("click", async () => {
-    const modulo = await import("./relatorio.js");
-    modulo.gerar();
+botao.addEventListener("click", async () => {
+    const modulo = await import("./ajuda.js");
+    modulo.mostrarAjuda();
 });
 ```
 
-Ótimo para funcionalidades pesadas que não precisas no arranque.
+Útil quando só queres carregar código depois de uma ação.
 
----
+### 4.3 Top-level `await`
 
-## 6) Node.js: ESM vs CommonJS
-
-### Ativar ESM
-
--   Define `"type": "module"` no `package.json`, **ou** usa extensão `.mjs`.
-
-```json
-{
-    "name": "aulas",
-    "type": "module"
-}
-```
-
-Depois podes escrever:
+Em módulos, podes usar `await` no topo:
 
 ```js
-import fs from "node:fs";
-export function lerFicheiro(...) { ... }
+const resposta = await fetch("./config.json");
+export const config = await resposta.json();
 ```
 
-Se precisares de importar código CommonJS (`module.exports`), usa `createRequire` ou troca o projeto inteiro para ESM para evitar mistura.
+Usa com cuidado: quem importa este módulo espera até ele terminar.
 
-### Caminhos relativos
+### 4.4 Checkpoint
 
-No Node moderno podes usar `import dados from "./dados.json" assert { type: "json" };` (opcional). Mantém caminhos explícitos (`./`, `../`).
+- O que significa live binding?
+- Quando faz sentido usar `import()`?
+- Que cuidado deves ter com top-level `await`?
 
----
+<a id="sec-5"></a>
 
-## 7) Boas práticas
+## 5. [EXTRA] Organização e diagnóstico
 
--   Cada módulo deve ter uma responsabilidade clara.
--   Evita defaults quando exportas muitas coisas do mesmo ficheiro - `named exports` tornam o autocompletar mais fácil.
--   Usa index/barrel apenas quando realmente simplifica (demasiadas camadas podem confundir).
--   Documenta no topo do ficheiro o que ele expõe (`// Exporta: getAluno, salvarAluno`).
+### 5.1 Estrutura simples
 
-## 8) Mini desafios
+```txt
+src/
+  main.js
+  utils/
+    numbers.js
+    strings.js
+  services/
+    api.js
+```
 
-1. Cria `alunos.js` com `export const alunos = [...]` e `export function media()`; em `main.js`, importa ambos e mostra a média na consola.
-2. Faz `cores.js` com um `export default function hex(r, g, b)` e usa-o noutro ficheiro para gerar `#FFA500`.
-3. Cria `strings.js` com `export function title(texto)` e `export const vogais`. Depois cria `utils/index.js` que reexporta tudo para poderes importar de um único sítio.
-4. No browser, adiciona um botão “Ajuda”. Ao clicar, carrega o módulo `./ajuda.js` com `import()` dinâmico e mostra um `alert` com a mensagem exportada.
-5. Cria `config.js` com `export const cfg = { api: "https://exemplo.test" }` e usa-o noutro módulo para montar URLs.
-6. Usa `top-level await` num módulo `dados.js` apenas para fazer `await Promise.resolve({ total: 42 })` e exporta o resultado. Importa-o em `main.js` e mostra no `console`.
-7. Reescreve um ficheiro que tinha `export default` para passar a exportar vários valores nomeados e ajusta o import respetivo.
+Começa simples. Só cria pastas quando há conteúdo suficiente para justificar.
+
+### 5.2 Barrels com moderação
+
+```js
+// utils/index.js
+export * from "./numbers.js";
+export * from "./strings.js";
+```
+
+Pode simplificar imports, mas camadas a mais tornam a origem do código menos óbvia.
+
+### 5.3 Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| `Cannot use import...` | Ficheiro não é módulo | Ativar `type="module"` |
+| `Failed to resolve module` | Caminho errado | Usar `./ficheiro.js` |
+| Export não encontrado | Nome errado | Confirmar named export |
+| Código corre antes dos dados | Top-level await mal pensado | Isolar carregamento |
+| Dependência circular | Dois módulos importam-se mutuamente | Extrair código comum |
+
+<a id="exercicios"></a>
+
+## Exercícios - Módulos ES
+
+1. Cria `math.js` com `soma` e `media`; importa em `main.js`.
+2. Cria `formatarPreco.js` com default export e usa-o noutro ficheiro.
+3. Cria `strings.js` com `title` e `slugifyPt` como named exports.
+4. Ativa módulos num ficheiro HTML com `type="module"`.
+5. Cria um pequeno projeto Node com `"type": "module"` e importa uma função local.
+6. Usa `import()` para carregar `ajuda.js` ao clicar num botão.
+7. Cria `contador.js` com live binding e confirma que o valor importado muda depois de chamar `incrementar`.
+8. Reorganiza três funções soltas em dois módulos com responsabilidades claras.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.2.0 - 2025-11-10**
-    -   Mini desafios simplificados e agora focados em cenários de browser (sem Node CLI).
--   **v1.1.0 - 2025-11-10**
-    -   Separação entre boas práticas e mini desafios, com quatro novos desafios avançados.
-    -   Changelog adicionado para registar alterações ao capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados ES Modules no browser, Node.js, live bindings e organização simples.
 
 ![Footer](../Images/Footer.png)

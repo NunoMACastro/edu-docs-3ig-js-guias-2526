@@ -1,148 +1,99 @@
 ![Header](../Images/Header.png)
 
-# [16] Fetch / AJAX - Requisições HTTP no Browser(12.º ano)
+# JavaScript (12.º Ano) - 16 · Fetch/AJAX
 
-> **Objetivo**: aprender a **pedir e enviar dados** entre a tua página e um **servidor** usando `fetch`. Vamos explicar o essencial de **HTTP**, o que é uma **API** em linguagem simples, trabalhar com **JSON**, tratar **erros**, usar **timeout/cancelamento** com `AbortController`, fazer **GET/POST**, construir **query strings**, e enviar **ficheiros** com `FormData`. No fim tens mini‑projetos e exercícios.
-
----
-
-## 0) O que é HTTP? O que é uma API? (versão simples)
-
--   **HTTP** é o “idioma” que o navegador usa para **pedir** e **receber** informação de um **servidor** (outra máquina).  
-    Exemplo: “Dá‑me a lista de alunos” → o servidor responde com texto, normalmente **JSON**.
--   **API** é um **conjunto de regras/endereços** (URLs) que dizem: “se fizeres um pedido **assim**, eu devolvo **isto**”.  
-    Pensa numa **máquina de bilhetes**: tem **botões** (endpoints) e regras claras de uso.
--   **JSON** é **texto estruturado** (chave/valor) muito usado para trocar dados:
-    ```json
-    { "nome": "Ana", "nota": 18 }
-    ```
-
-> A tua página (cliente) fala com um **servidor** através de **endpoints** (URLs). Ex.: `/api/alunos`, `/api/login`, `/api/fotos`.
+> **Objetivo deste ficheiro**
+>
+> - Fazer pedidos HTTP com `fetch`.
+> - Ler e enviar JSON.
+> - Tratar erros de rede e erros HTTP.
+> - Construir query strings com `URL` e `URLSearchParams`.
+> - Usar timeout, cancelamento e `FormData` quando fizer sentido.
 
 ---
 
-## 1) `fetch` - o pedido mais simples
+## Índice
 
-`fetch(url)` **pede** ao browser que vá buscar a URL. Ele **não bloqueia** o JS; quando a resposta chega, tu continuas.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] HTTP, APIs e JSON](#sec-1)
+- [2. [ESSENCIAL] `fetch` para ler dados](#sec-2)
+- [3. [ESSENCIAL] Enviar dados e query strings](#sec-3)
+- [4. [ESSENCIAL+] Timeout, cancelamento e estados de UI](#sec-4)
+- [5. [EXTRA] CORS, autenticação e diagnóstico](#sec-5)
+- [Exercícios - Fetch/AJAX](#exercicios)
+- [Changelog](#changelog)
 
-```js
-// GET simples (ler dados)
-async function exemploGET() {
-    const r = await fetch("/api/alunos");
-    // fetch só lança erro para falhas de rede; para 404/500 precisas de verificar:
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const dados = await r.json(); // interpreta como JSON
-    console.table(dados);
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+`fetch` permite que uma página comunique com ficheiros, APIs e servidores. É a base para carregar dados, enviar formulários, pesquisar, paginar e integrar frontend com backend.
+
+- **Núcleo do tema:** GET, POST, JSON, status codes e erros.
+- **Aprofundamento:** query strings, timeout, cancelamento, CORS e autenticação.
+- **Ligação ao percurso:** `fetch` aparece em React, Node/Express, contratos de API e projetos fullstack.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] HTTP, APIs e JSON
+
+### 1.1 Modelo mental
+
+Um pedido HTTP é uma conversa:
+
+```txt
+cliente -> pedido -> servidor
+cliente <- resposta <- servidor
+```
+
+Uma API define endereços e regras para essa conversa.
+
+### 1.2 Métodos comuns
+
+- `GET`: ler dados.
+- `POST`: criar/enviar dados.
+- `PUT`/`PATCH`: atualizar.
+- `DELETE`: remover.
+
+### 1.3 JSON
+
+JSON é texto estruturado.
+
+```json
+{
+    "nome": "Caderno",
+    "preco": 2.5
 }
 ```
 
-**Métodos mais comuns**
-
--   **GET** - ler dados
--   **POST** - criar/enviar dados
--   **PUT/PATCH** - atualizar
--   **DELETE** - remover
-
----
-
-## 2) Utilitários práticos (recomendado)
-
-Criar pequenas funções ajuda a **repetir menos** e a ter **tratamento de erros** consistente.
+Em JavaScript:
 
 ```js
-export async function getJSON(url, { signal } = {}) {
-    const r = await fetch(url, { signal }); // sinal permite cancelar
-    if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
-    return r.json();
-}
-
-export async function sendJSON(url, method, body, { signal } = {}) {
-    const r = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal,
-    });
-    if (!r.ok) throw new Error(`HTTP ${r.status} em ${url}`);
-    return r.json();
-}
-
-// Açúcar:
-export const postJSON = (url, data, opts) => sendJSON(url, "POST", data, opts);
-export const putJSON = (url, data, opts) => sendJSON(url, "PUT", data, opts);
-export const delJSON = (url, data, opts) => sendJSON(url, "DELETE", data, opts);
+const texto = JSON.stringify({ nome: "Caderno", preco: 2.5 });
+const dados = JSON.parse(texto);
 ```
 
-Uso típico:
+### 1.4 Checkpoint
+
+- Que método HTTP usas para ler dados?
+- O que é JSON?
+- Porque é que uma API precisa de regras claras?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] `fetch` para ler dados
+
+### 2.1 GET simples
 
 ```js
-try {
-    const alunos = await getJSON("/api/alunos");
-    console.table(alunos);
-} catch (e) {
-    console.warn("Falhou:", e.message);
-}
-```
+async function getJSON(url) {
+    const resposta = await fetch(url);
 
----
-
-## 3) Construir URLs com parâmetros (query string)
-
-Evita concatenar strings “à mão”. Usa `URL` e `searchParams`.
-
-```js
-function urlComParams(base, params) {
-    const u = new URL(base, location.origin);
-    Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, v));
-    return u.toString();
-}
-
-const url = urlComParams("/api/alunos", { page: 2, q: "ana" });
-// Ex.: "/api/alunos?page=2&q=ana"
-const data = await getJSON(url);
-```
-
----
-
-## 4) Tratar erros (rede vs HTTP)
-
--   **Erros de rede**: sem internet, servidor em baixo, CORS bloqueado → `fetch` lança um **TypeError**.
--   **Erros HTTP**: 404, 500, 401… `fetch` **não lança** por si; tens de verificar `response.ok` e **lançar tu**.
-
-```js
-async function carregar() {
-    try {
-        const dados = await getJSON("/api/alunos");
-        // renderizar na UI...
-    } catch (e) {
-        // Aqui apanhas tanto HTTP “!ok” como falhas de rede
-        console.error("Não consegui carregar:", e.message);
-        // Mostrar uma mensagem amigável ao utilizador
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
     }
-}
-```
 
-**Códigos úteis**
-
--   `2xx` sucesso (200 OK, 201 Created)
--   `4xx` erro do cliente (400 Bad Request, 401 Unauthorized, 404 Not Found)
--   `5xx` erro no servidor (500, 503)
-
----
-
-## 5) Timeout e cancelamento com `AbortController`
-
-O `fetch` não tem timeout nativo, mas podes **cancelar** se demorar demais.
-
-```js
-export async function getComTimeout(url, ms = 5000) {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), ms);
-    try {
-        return await getJSON(url, { signal: ctrl.signal });
-    } finally {
-        clearTimeout(t);
-    }
+    return resposta.json();
 }
 ```
 
@@ -150,147 +101,258 @@ Uso:
 
 ```js
 try {
-    const lista = await getComTimeout("/api/alunos", 3000);
-} catch (e) {
-    if (e.name === "AbortError") {
-        console.warn("Pedido cancelado por timeout");
-    } else {
-        console.warn("Falhou:", e.message);
-    }
+    const produtos = await getJSON("/api/produtos");
+    console.table(produtos);
+} catch (erro) {
+    console.error("Falhou:", erro.message);
 }
 ```
 
----
+### 2.2 Erro de rede vs erro HTTP
 
-## 6) Repetir com “espera” (retry simples, opcional)
+- Erro de rede: `fetch` rejeita a Promise.
+- Erro HTTP (`404`, `500`, etc.): `fetch` resolve, mas `resposta.ok` vem `false`.
 
-Para erros **temporários** (ex.: 503, 429), pode compensar **tentar outra vez** com **esperas crescentes**.
+Por isso verificamos sempre `resposta.ok`.
+
+### 2.3 Renderizar resultado no DOM
 
 ```js
-export async function getComRetry(url, tentativas = 3) {
-    let atraso = 300; // ms
-    for (let i = 0; i < tentativas; i++) {
-        try {
-            return await getJSON(url);
-        } catch (e) {
-            if (i === tentativas - 1) throw e; // última tentativa falhou
-            await new Promise((r) => setTimeout(r, atraso));
-            atraso *= 2; // backoff exponencial
+function renderProdutos(produtos, lista) {
+    lista.textContent = "";
+
+    const fragmento = document.createDocumentFragment();
+
+    for (const produto of produtos) {
+        const li = document.createElement("li");
+        li.textContent = `${produto.nome} - ${produto.preco} €`;
+        fragmento.append(li);
+    }
+
+    lista.append(fragmento);
+}
+```
+
+Repara no uso de `textContent`: dados vindos da API não devem ser inseridos com `innerHTML`.
+
+### 2.4 Erros comuns
+
+- Assumir que `fetch` lança erro para `404` ou `500`.
+- Tentar ler JSON duas vezes da mesma resposta.
+- Inserir dados externos com `innerHTML`.
+- Esquecer de tratar estado vazio quando a API devolve `[]`.
+
+### 2.5 Checkpoint
+
+- Porque é que `fetch` não lança erro automaticamente para `404`?
+- Para que serve `resposta.ok`?
+- Porque é que `textContent` é importante ao mostrar dados externos?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Enviar dados e query strings
+
+### 3.1 POST JSON
+
+```js
+async function enviarJSON(url, metodo, dados) {
+    const resposta = await fetch(url, {
+        method: metodo,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+    });
+
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
+    }
+
+    return resposta.json();
+}
+
+await enviarJSON("/api/produtos", "POST", {
+    nome: "Caderno",
+    preco: 2.5,
+});
+```
+
+### 3.2 Query strings
+
+Evita concatenar URLs à mão.
+
+```js
+function urlComParams(base, params) {
+    const url = new URL(base, location.origin);
+
+    for (const [chave, valor] of Object.entries(params)) {
+        if (valor !== undefined && valor !== null && valor !== "") {
+            url.searchParams.set(chave, valor);
         }
     }
+
+    return url.toString();
+}
+
+const url = urlComParams("/api/produtos", { q: "caderno", page: 2 });
+```
+
+### 3.3 `FormData`
+
+Para ficheiros ou formulários multipart:
+
+```js
+async function enviarFormulario(url, form) {
+    const dados = new FormData(form);
+    const resposta = await fetch(url, {
+        method: "POST",
+        body: dados,
+    });
+
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
+    }
+
+    return resposta.json();
 }
 ```
 
----
+Não definas manualmente `Content-Type` quando usas `FormData`; o browser trata disso.
 
-## 7) Enviar dados: JSON vs `FormData`
+### 3.4 Checkpoint
 
--   **JSON**: quando queres enviar **dados “normais”** (strings, números, objetos).
--   **`FormData`**: quando queres enviar **ficheiros** ou um formulário “como o browser faz por defeito” (multipart/form-data).
+- Que header usas ao enviar JSON?
+- Porque é que `URLSearchParams` evita erros?
+- Porque não deves definir `Content-Type` manualmente com `FormData`?
 
-**POST JSON**
+<a id="sec-4"></a>
 
-```js
-const novoAluno = { nome: "Ana", nota: 18 };
-const res = await postJSON("/api/alunos", novoAluno); // devolve JSON de resposta
-```
+## 4. [ESSENCIAL+] Timeout, cancelamento e estados de UI
 
-**Upload com `FormData`**
+### 4.1 Timeout com `AbortController`
 
 ```js
-async function uploadFoto(url, ficheiro) {
-    const fd = new FormData();
-    fd.append("foto", ficheiro, ficheiro.name);
-    const r = await fetch(url, { method: "POST", body: fd });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
+async function getComTimeout(url, ms = 5000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ms);
+
+    try {
+        return await getJSON(url, { signal: controller.signal });
+    } finally {
+        clearTimeout(timeoutId);
+    }
 }
-
-// <input type="file" id="foto">
-const file = document.querySelector("#foto").files[0];
-await uploadFoto("/api/upload", file);
 ```
 
-> Nota: `fetch` não dá **progresso** de upload/download diretamente. Para barras de progresso, terás de explorar **XMLHttpRequest** ou streams (avançado).
+Para isto funcionar, `getJSON` deve aceitar opções:
 
----
+```js
+async function getJSON(url, options = {}) {
+    const resposta = await fetch(url, options);
 
-## 8) Autenticação (nota curta, nível básico)
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
+    }
 
--   Alguns endpoints exigem **login**. Normalmente o servidor devolve um **token** (por exemplo, JWT) após `POST /login`.
--   Depois, envias o token em cada pedido, num header `Authorization: Bearer <token>`:
+    return resposta.json();
+}
+```
+
+### 4.2 Estados de UI
+
+```js
+async function carregarProdutos() {
+    estado.textContent = "A carregar...";
+
+    try {
+        const produtos = await getJSON("/api/produtos");
+        renderProdutos(produtos, lista);
+        estado.textContent = "Concluído";
+    } catch (erro) {
+        estado.textContent = "Não foi possível carregar";
+        console.error(erro);
+    }
+}
+```
+
+Estados típicos:
+
+- `idle`
+- `loading`
+- `success`
+- `error`
+- `empty`
+
+### 4.3 Checkpoint
+
+- Para que serve `AbortController`?
+- Que estados de UI deves prever quando carregas dados?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] CORS, autenticação e diagnóstico
+
+### 5.1 CORS
+
+CORS é uma regra de segurança do browser. Se uma página numa origem tenta chamar outra origem, o servidor precisa de autorizar.
+
+```txt
+http://localhost:5173 -> http://localhost:3000
+```
+
+Mesmo sendo ambos `localhost`, portas diferentes contam como origens diferentes.
+
+### 5.2 Autenticação
+
+Algumas APIs exigem credenciais.
 
 ```js
 async function getPrivado(url, token) {
-    const r = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
+    const resposta = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
+
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
+    }
+
+    return resposta.json();
 }
 ```
 
--   **Cuidados**: não publiques tokens; evita guardar tokens sensíveis em `localStorage` em apps reais; para projetos escolares serve para perceber o fluxo.
+Não coloques chaves secretas no frontend. Código no browser é público.
 
----
+### 5.3 Diagnóstico rápido
 
-## 9) CORS (explicação simples)
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| `404` | URL errada ou recurso inexistente | Confirmar endpoint |
+| `500` | Erro no servidor | Ver logs do backend |
+| `Failed to fetch` | Rede, CORS ou servidor desligado | Ver DevTools/Network |
+| `Unexpected token <` | Recebeste HTML em vez de JSON | Confirmar URL |
+| Pedido nunca termina | Servidor lento | Usar timeout |
 
--   Por segurança, o browser só deixa uma página pedir dados ao **mesmo domínio/porta/protocolo**.
--   Se queres pedir a outro domínio (ex.: `http://localhost:3000` → `http://api.local:4000`), o servidor tem de **autorizar** com headers CORS (ex.: `Access-Control-Allow-Origin`).
--   Isto configura‑se **no servidor**. Em ambiente escolar, usa‑se muitas vezes um **proxy** de desenvolvimento.
+<a id="exercicios"></a>
 
----
+## Exercícios - Fetch/AJAX
 
-## 10) Mini‑projetos guiados
+1. Cria `getJSON(url)` e testa com um ficheiro `produtos.json`.
+2. Mostra os produtos numa `<ul>` usando `textContent`.
+3. Simula erro trocando o URL e mostra uma mensagem amigável.
+4. Cria `urlComParams("/api/produtos", { q, page })`.
+5. Cria um formulário e envia JSON com `POST` para uma API de testes.
+6. Cria `getComTimeout(url, ms)` com `AbortController`.
+7. Mostra estados `loading`, `success`, `error` e `empty` no DOM.
+8. Analisa um erro CORS nas DevTools e identifica onde aparece.
 
-1. **Lista de alunos (GET + erro)**
-
-    - Botão “Carregar”. Faz `getJSON("/api/alunos")`, mostra com `console.table` (ou `<ul>`). Em erro, mostra mensagem “Tenta mais tarde”.
-
-2. **Criar aluno (POST JSON)**
-
-    - Formulário com `nome` e `nota`. No `submit`, `preventDefault`, lê com `FormData`, envia com `postJSON`. Depois faz refresh da lista.
-
-3. **Pesquisa com query string**
-
-    - Input “Pesquisar por nome…”. Ao clicar “Pesquisar”, constrói URL com `page` e `q` e chama `getJSON`.
-
-4. **Timeout + retry**
-
-    - Usa `getComTimeout` com 3 segundos. Se falhar, tenta `getComRetry` com 3 tentativas.
-
-5. **Upload de imagem (FormData)**
-    - Input `type="file"`. Envia com `fetch` e mostra o nome do ficheiro devolvido pelo servidor.
-
----
-
-## 11) Mini desafios
-
-1. **Botão Carregar** - cria um botão que, ao clicar, usa `fetch("alunos.json")`, chama `response.json()` e mostra os nomes numa `<ul>`.
-2. **Mensagem de erro** - altera o desafio anterior para mostrar “Tenta mais tarde” num `<p>` se o `fetch` falhar (simula trocando o URL por um inexistente).
-3. **Pesquisa simples** - cria um formulário com `<input name="q">`. No `submit`, usa `urlComParams` para montar `/api/alunos?q=valor` (pode ser apenas `console.log` da URL) e limpa o formulário.
-4. **Loader** - antes de fazer `fetch`, mostra “A carregar…”; quando termina, troca para “Concluído” ou “Erro”. Usa `try/catch` com `await`.
-5. **POST fictício** - cria um formulário com `nome` e `nota`, lê com `FormData` e envia para `https://jsonplaceholder.typicode.com/posts` com `fetch` (método `POST`). Mostra o `id` devolvido.
-6. **Abortar pedido** - usa `AbortController` para cancelar um `fetch` após 2 segundos (`setTimeout`). Mostra no `console` se foi cancelado ou concluído.
-
----
-
-## 12) Resumo
-
--   Usa `fetch` para comunicar com **APIs**: **GET** para ler, **POST/PUT/PATCH** para enviar/atualizar, **DELETE** para remover.
--   Lê JSON com `await r.json()` e **verifica `r.ok`** para lançar erro em HTTP 4xx/5xx.
--   Para **timeout/cancelamento**, usa `AbortController`.
--   Envia **JSON** com `Content-Type: application/json`; para **ficheiros**, usa `FormData`.
--   **CORS** precisa de configuração **no servidor** (ou proxy de desenvolvimento).
--   Cria **utilitários** (`getJSON`, `postJSON`, `urlComParams`) para escreveres menos e com menos erros.
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.2.0 - 2025-11-10**
-    -   Mini desafios simplificados para cenários de browser com `fetch` a ficheiros locais ou APIs públicas.
--   **v1.1.0 - 2025-11-10**
-    -   Exercícios renomeados para Mini desafios e revistos para cobrir o ciclo completo de pedidos.
-    -   Changelog adicionado para acompanhar futuras melhorias do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados erros HTTP, CORS, segurança no frontend, timeout e estados de UI.
 
 ![Footer](../Images/Footer.png)

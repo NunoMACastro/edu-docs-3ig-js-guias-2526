@@ -1,75 +1,251 @@
 ![Header](../Images/Header.png)
 
-# [9] Exceções (12.º ano)
+# JavaScript (12.º Ano) - 09 · Exceções
 
-> **Objetivo**: perceber como o JavaScript reage a erros, como lançar (`throw`) e apanhar (`try/catch`) exceções e como tratar erros assíncronos com `Promises` ou `async/await` de forma simples.
+> **Objetivo deste ficheiro**
+>
+> - Perceber o que acontece quando o JavaScript encontra um erro.
+> - Usar `try`, `catch`, `finally` e `throw`.
+> - Lançar erros com objetos `Error` adequados.
+> - Tratar erros síncronos e assíncronos.
+> - Criar funções que falham de forma previsível.
 
 ---
 
-## 0) Porque precisamos disto?
+## Índice
 
-Quando algo corre mal (por exemplo, dividir por zero ou fazer `JSON.parse` de texto inválido), o motor lança uma **exceção**. Se ninguém a apanhar, o programa pára naquela pilha e mostra um stack trace. Por isso usamos `try/catch`.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] O que é uma exceção](#sec-1)
+- [2. [ESSENCIAL] `try/catch/finally`](#sec-2)
+- [3. [ESSENCIAL] Lançar erros com `throw`](#sec-3)
+- [4. [ESSENCIAL+] Erros assíncronos](#sec-4)
+- [5. [EXTRA] Erros personalizados e diagnóstico](#sec-5)
+- [Exercícios - Exceções](#exercicios)
+- [Changelog](#changelog)
 
----
+<a id="sec-0"></a>
 
-## 1) `try / catch / finally`
+## 0. Enquadramento do material
+
+Erros não são apenas “coisas más”. São sinais de que o programa encontrou uma situação que não consegue continuar a tratar da forma normal.
+
+- **Núcleo do tema:** apanhar, lançar e limpar depois de erros.
+- **Aprofundamento:** erros assíncronos e classes de erro.
+- **Ligação ao percurso:** exceções aparecem em validação, `fetch`, Node, Express, MongoDB e testes.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] O que é uma exceção
+
+### 1.1 Modelo mental
+
+Quando uma função encontra um problema grave, pode **lançar** uma exceção. O fluxo normal pára e o JavaScript procura um `catch`.
+
+```txt
+função lança erro
+   ↓
+o fluxo normal pára
+   ↓
+um catch trata o erro
+```
+
+### 1.2 Exemplo simples
+
+```js
+function dividir(a, b) {
+    if (b === 0) {
+        throw new RangeError("Divisão por zero");
+    }
+
+    return a / b;
+}
+```
+
+Quem chama a função deve decidir como tratar a falha.
+
+### 1.3 Erros comuns
+
+- Ignorar entradas inválidas e deixar o programa falhar mais tarde.
+- Lançar strings em vez de `Error`.
+- Apanhar todos os erros e esconder o problema.
+
+### 1.4 Checkpoint
+
+- O que acontece ao fluxo normal quando há `throw`?
+- Porque é que `throw new Error(...)` é melhor do que `throw "erro"`?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] `try/catch/finally`
+
+### 2.1 Estrutura base
 
 ```js
 try {
     // código que pode falhar
 } catch (erro) {
-    console.error("Ups:", erro.message);
+    // tratamento do erro
 } finally {
-    // executa sempre: limpar recursos, fechar ficheiros, etc.
+    // corre sempre
 }
 ```
 
-Exemplo:
+### 2.2 Exemplo completo
 
 ```js
-function dividir(a, b) {
-    if (typeof a !== "number" || typeof b !== "number") {
-        throw new TypeError("Preciso de números");
+function lerJSON(texto) {
+    try {
+        return JSON.parse(texto);
+    } catch (erro) {
+        console.warn("JSON inválido:", erro.message);
+        return null;
+    } finally {
+        console.log("Tentativa de leitura concluída");
     }
-    if (b === 0) throw new RangeError("Divisão por zero");
-    return a / b;
 }
 
+console.log(lerJSON('{"ok": true}'));
+console.log(lerJSON("{ inválido }"));
+```
+
+### 2.3 `finally`
+
+`finally` é útil para limpar recursos:
+
+```js
+let aberto = false;
+
 try {
-    console.log(dividir(10, 2));
+    aberto = true;
+    throw new Error("Falhou");
 } catch (erro) {
-    console.error(erro.name, erro.message);
+    console.error(erro.message);
 } finally {
-    console.log("Fim do cálculo");
+    aberto = false;
 }
 ```
 
----
+### 2.4 Checkpoint
 
-## 2) `throw` corretamente
+- Quando corre o `finally`?
+- O que deve acontecer dentro de um `catch`?
 
--   Lança objetos `Error` ou subclasses (`TypeError`, `RangeError`, `ReferenceError`, ...).
--   Evita lançar strings soltas (perdes stack trace consistente).
--   Podes anexar informação extra no objeto (`erro.dados = {...}`).
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Lançar erros com `throw`
+
+### 3.1 Validar e falhar cedo
 
 ```js
-throw new Error("Algo falhou");
-throw new TypeError("Esperava string");
+function calcularMedia(notas) {
+    if (!Array.isArray(notas)) {
+        throw new TypeError("Notas deve ser um array");
+    }
+
+    if (notas.length === 0) {
+        throw new RangeError("Notas não pode estar vazio");
+    }
+
+    const soma = notas.reduce((total, nota) => total + nota, 0);
+    return soma / notas.length;
+}
 ```
 
-Em ES2022 podes encadear causas:
+### 3.2 Tipos de erro úteis
+
+- `Error`: erro genérico.
+- `TypeError`: tipo errado.
+- `RangeError`: valor fora de intervalo.
+- `SyntaxError`: sintaxe inválida, como JSON mal formado.
+
+### 3.3 Voltar a lançar
+
+Se o erro não é esperado, podes voltar a lançá-lo.
 
 ```js
 try {
-    JSON.parse("{ inválido }");
-} catch (erroOriginal) {
-    throw new Error("Configuração inválida", { cause: erroOriginal });
+    calcularMedia("12,14");
+} catch (erro) {
+    if (erro instanceof TypeError) {
+        console.warn("Entrada com tipo errado");
+    } else {
+        throw erro;
+    }
 }
 ```
 
----
+### 3.4 Checkpoint
 
-## 3) Erros personalizados
+- Que erro faz sentido para tipo errado?
+- Que erro faz sentido para valor fora de intervalo?
+- Quando deves voltar a lançar um erro?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Erros assíncronos
+
+### 4.1 Com Promises
+
+```js
+fetch("/api/dados")
+    .then((resposta) => {
+        if (!resposta.ok) {
+            throw new Error(`HTTP ${resposta.status}`);
+        }
+
+        return resposta.json();
+    })
+    .then((dados) => console.log(dados))
+    .catch((erro) => console.error("Falhou:", erro.message));
+```
+
+### 4.2 Com `async/await`
+
+```js
+async function getJSON(url) {
+    const resposta = await fetch(url);
+
+    if (!resposta.ok) {
+        throw new Error(`HTTP ${resposta.status}`);
+    }
+
+    return resposta.json();
+}
+
+try {
+    const dados = await getJSON("/api/dados");
+    console.log(dados);
+} catch (erro) {
+    console.error("Não foi possível carregar:", erro.message);
+}
+```
+
+### 4.3 `try/catch` e `setTimeout`
+
+Este `try/catch` não apanha o erro dentro do `setTimeout`:
+
+```js
+try {
+    setTimeout(() => {
+        throw new Error("Falha atrasada");
+    }, 100);
+} catch (erro) {
+    console.log("Não chega aqui");
+}
+```
+
+O erro tem de ser tratado dentro da callback ou modelado como Promise.
+
+### 4.4 Checkpoint
+
+- Porque é que `await` permite usar `try/catch`?
+- Porque é que erros dentro de `setTimeout` precisam de cuidado especial?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Erros personalizados e diagnóstico
+
+### 5.1 Classe de erro
 
 ```js
 class NotaInvalidaError extends Error {
@@ -79,85 +255,16 @@ class NotaInvalidaError extends Error {
     }
 }
 
-function classificar(nota) {
+function validarNota(nota) {
     if (typeof nota !== "number" || nota < 0 || nota > 20) {
         throw new NotaInvalidaError(nota);
     }
-    return nota >= 10 ? "Aprovado" : "Reprovado";
+
+    return nota;
 }
 ```
 
-No `catch` podes distinguir facilmente:
-
-```js
-try {
-    classificar(42);
-} catch (erro) {
-    if (erro instanceof NotaInvalidaError) {
-        console.warn("Corrige a nota:", erro.message);
-    } else {
-        throw erro; // algo inesperado → volta a lançar
-    }
-}
-```
-
----
-
-## 4) `finally` para limpar
-
-Corre sempre, mesmo que haja `return` dentro do `try` ou `catch`.
-
-```js
-let recursoAberto = false;
-try {
-    recursoAberto = true;
-    // usar recurso
-} catch (erro) {
-    console.error(erro);
-} finally {
-    recursoAberto = false; // garantir fecho
-}
-```
-
----
-
-## 5) Erros em código assíncrono
-
-### Promises com `.then/.catch/.finally`
-
-```js
-fetch("/api/dados")
-    .then((resp) => {
-        if (!resp.ok) throw new Error("HTTP " + resp.status);
-        return resp.json();
-    })
-    .then((dados) => console.log("OK", dados))
-    .catch((erro) => console.error("Falhou:", erro.message))
-    .finally(() => console.log("pedido terminado"));
-```
-
-### `async/await`
-
-```js
-async function carregarDados() {
-    try {
-        const resp = await fetch("/api/dados");
-        if (!resp.ok) throw new Error("HTTP " + resp.status);
-        return await resp.json();
-    } catch (erro) {
-        console.error("Erro a carregar:", erro.message);
-        return null; // ou volta a lançar: throw erro;
-    }
-}
-```
-
-> Atenção: `try/catch` não apanha erros que acontecem noutro "tick" sem `await`, como dentro de `setTimeout`. Nesse caso o `try/catch` tem de estar **lá dentro**.
-
----
-
-## 6) Padrões úteis
-
-### Função segura que devolve `{ ok, valor }`
+### 5.2 Resultado seguro
 
 ```js
 function executarComSeguranca(fn) {
@@ -169,35 +276,34 @@ function executarComSeguranca(fn) {
 }
 ```
 
-### Defaults claros em APIs
+### 5.3 Diagnóstico rápido
 
-```js
-function lerJSONSeguro(texto, fallback = {}) {
-    try {
-        return JSON.parse(texto);
-    } catch (erro) {
-        console.warn("JSON inválido, a usar fallback");
-        return fallback;
-    }
-}
-```
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Programa pára | Erro sem `catch` | Envolver chamada arriscada |
+| `catch` não apanha timeout | Erro noutro ciclo do Event Loop | Tratar dentro da callback |
+| Stack trace pouco útil | Foi lançada string | Lançar `Error` |
+| Erro esperado vira 500 numa API | Falta mapeamento de erro | Usar códigos/nomes claros |
 
----
+<a id="exercicios"></a>
 
-## 7) Mini desafios
+## Exercícios - Exceções
 
-1. Cria uma função `lerNumero(promptMsg)` que usa `prompt`, converte para número e lança `TypeError` se for inválido. Apanha o erro fora da função.
-2. Implementa `fetchAluno(id)` que simula `fetch` com `setTimeout` e trata erros dentro da Promise.
-3. Faz uma mini utilidade que recebe uma função `async` e volta a tentar até 3 vezes antes de desistir (com mensagens no `console`).
-4. Define uma classe `SaldoInsuficienteError` e usa-a num método `levantar` que recusa levantamentos maiores que o saldo.
-5. Escreve `executarComRetry(fn, tentativas)` que volta a tentar funções síncronas e devolve `{ ok, valor/erro, tentativasUsadas }`.
-6. Cria um `try/catch/finally` que abre um recurso simulado (`const recurso = { aberto: true }`), lança erro propositado e garante no `finally` que `recurso.aberto = false`.
-7. Usa `Promise.allSettled` para correr três Promises, duas que resolvem e uma que rejeita. Faz pós-processamento que identifica quais falharam.
+1. Cria `dividir(a, b)` que lança `TypeError` se os argumentos não forem números e `RangeError` se `b` for `0`.
+2. Cria `lerJSONSeguro(texto, fallback)` que devolve `fallback` se o JSON for inválido.
+3. Cria `validarNota(nota)` que lança `RangeError` para valores fora de 0-20.
+4. Cria uma classe `NotaInvalidaError` e usa-a numa função de validação.
+5. Cria `executarComSeguranca(fn)` que devolve `{ ok, valor }` ou `{ ok, erro }`.
+6. Simula uma Promise que rejeita e trata-a com `.catch`.
+7. Reescreve o exercício anterior com `async/await` e `try/catch`.
+8. Usa `Promise.allSettled` com três Promises e mostra quais falharam.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Mini desafios expandidos para sete propostas cobrindo erros síncronos e assíncronos.
-    -   Changelog inaugurado para seguir alterações do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçado o tratamento de erros síncronos, assíncronos e personalizados.
 
 ![Footer](../Images/Footer.png)

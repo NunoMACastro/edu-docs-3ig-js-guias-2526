@@ -1,149 +1,246 @@
 ![Header](../Images/Header.png)
 
-# [11] Funções de Alto Nível em Arrays (12.º ano)
+# JavaScript (12.º Ano) - 11 · Métodos de alto nível em arrays
 
-> **Objetivo**: deixar os ciclos manuais de lado e usar métodos como `map`, `filter`, `reduce` e `find` para escrever código mais declarativo e fácil de ler.
+> **Objetivo deste ficheiro**
+>
+> - Usar `map`, `filter`, `reduce`, `find`, `some` e `every`.
+> - Escrever código mais declarativo para transformar listas.
+> - Perceber quando usar `forEach` e quando evitar.
+> - Encadear operações sem perder legibilidade.
+> - Evitar mutações acidentais dentro de callbacks.
 
 ---
 
-## 0) O que são HOFs?
+## Índice
 
-HOF significa _Higher-Order Functions_. São métodos de array que recebem uma **função callback**. Tu explicas o que queres fazer e o método trata do ciclo.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] O que são métodos de alto nível](#sec-1)
+- [2. [ESSENCIAL] `map`, `filter` e `reduce`](#sec-2)
+- [3. [ESSENCIAL] Procurar e verificar](#sec-3)
+- [4. [ESSENCIAL+] Encadear com clareza](#sec-4)
+- [5. [EXTRA] Diagnóstico rápido](#sec-5)
+- [Exercícios - Métodos de alto nível em arrays](#exercicios)
+- [Changelog](#changelog)
 
-Assinatura genérica:
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Depois de aprender ciclos, este capítulo mostra uma forma mais declarativa de trabalhar com listas. Em vez de escreveres todos os passos do ciclo, descreves a transformação que queres.
+
+- **Núcleo do tema:** transformar, filtrar, acumular, procurar e verificar.
+- **Aprofundamento:** encadeamento, callbacks e legibilidade.
+- **Ligação ao percurso:** estes métodos aparecem muito em DOM, React, respostas de APIs e processamento de dados.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] O que são métodos de alto nível
+
+### 1.1 Modelo mental
+
+Métodos como `map` e `filter` recebem uma função callback.
 
 ```js
-array.metodo((valor, indice, arrayCompleto) => resultado, valorInicialOpcional);
+array.metodo((valor, indice, arrayCompleto) => {
+    // regra aplicada a cada elemento
+});
 ```
 
-A maior parte destes métodos devolve **novo array** ou um novo valor, sem alterar o original (a não ser que a tua callback mude objetos internos de propósito).
+Tu descreves a regra; o método trata da repetição.
 
----
+### 1.2 Ciclo manual vs método
 
-## 1) `map` - transformar
+```js
+const numeros = [1, 2, 3];
+const dobrados = [];
 
-Aplica a callback a cada elemento e devolve um novo array com os resultados.
+for (const numero of numeros) {
+    dobrados.push(numero * 2);
+}
+```
+
+Com `map`:
+
+```js
+const dobrados = numeros.map((numero) => numero * 2);
+```
+
+### 1.3 Checkpoint
+
+- O que significa passar uma callback a um método?
+- Que parte do trabalho fica escondida dentro de `map`?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] `map`, `filter` e `reduce`
+
+### 2.1 `map`: transformar
+
+Mantém o mesmo número de elementos.
 
 ```js
 const notas = [10, 12, 18];
-const comBónus = notas.map((nota) => nota + 1);
+const percentagens = notas.map((nota) => nota * 5);
 ```
 
--   Mantém o mesmo tamanho.
--   Ótimo para extrair campos (`aluno => aluno.nome`).
+Útil para extrair campos:
 
----
+```js
+const produtos = [
+    { nome: "Caderno", preco: 2.5 },
+    { nome: "Lápis", preco: 0.8 },
+];
 
-## 2) `filter` - selecionar
+const nomes = produtos.map((produto) => produto.nome);
+```
 
-Mantém apenas os elementos cuja callback devolve `true`.
+### 2.2 `filter`: selecionar
 
 ```js
 const aprovados = notas.filter((nota) => nota >= 10);
 ```
 
-Usa quando queres remover valores nulos, procurar pares, etc.
+Mantém apenas os elementos cuja callback devolve `true`.
 
----
-
-## 3) `reduce` - acumular
-
-Recebe um acumulador (`acc`) e o elemento atual (`valor`). Serve para somas, contagens, médias, objetos agregados…
+### 2.3 `reduce`: acumular
 
 ```js
-const soma = notas.reduce((acc, nota) => acc + nota, 0);
-const media = notas.length ? soma / notas.length : 0;
+const soma = notas.reduce((total, nota) => total + nota, 0);
+const media = notas.length === 0 ? 0 : soma / notas.length;
 ```
 
--   Passa **sempre** um valor inicial (`0`, `{}`, `[]`, ...). Evita surpresas com arrays vazios.
--   Pensa no `acc` como o "estado" que vais atualizando.
+Passa sempre valor inicial. Evita bugs com arrays vazios.
 
----
+### 2.4 Erros comuns
 
-## 4) `find` e `findIndex` - primeiro que passa
+- Usar `map` quando não queres guardar o resultado.
+- Usar `filter` e esquecer que a callback tem de devolver booleano.
+- Usar `reduce` sem valor inicial.
+
+### 2.5 Checkpoint
+
+- Que método mantém o mesmo tamanho da lista?
+- Que método pode reduzir a lista?
+- Porque é importante o valor inicial em `reduce`?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Procurar e verificar
+
+### 3.1 `find` e `findIndex`
 
 ```js
-const alunos = [
-    { nome: "Ana", nota: 18 },
-    { nome: "Bruno", nota: 9 },
+const produtos = [
+    { id: 1, nome: "Caderno" },
+    { id: 2, nome: "Lápis" },
 ];
-const primeiroReprovado = alunos.find((a) => a.nota < 10); // objeto ou undefined
-const indiceReprovado = alunos.findIndex((a) => a.nota < 10); // índice ou -1
+
+const produto = produtos.find((item) => item.id === 2);
+const indice = produtos.findIndex((item) => item.id === 2);
 ```
 
-Quando só queres saber se existe, `some` pode ser mais direto.
+`find` devolve o elemento ou `undefined`. `findIndex` devolve o índice ou `-1`.
 
----
-
-## 5) `some` e `every`
-
--   `some` → `true` se **algum** elemento passar.
--   `every` → `true` se **todos** passarem.
+### 3.2 `some` e `every`
 
 ```js
-notas.some((nota) => nota === 20); // procura nota máxima
-notas.every((nota) => nota >= 10); // verifica se todos aprovam
+const temNegativos = [3, -1, 5].some((n) => n < 0);
+const todosValidos = [12, 16, 18].every((nota) => nota >= 0 && nota <= 20);
 ```
 
----
+### 3.3 `forEach`
 
-## 6) `flat` e `flatMap`
-
--   `flat(n)` → achata `n` níveis de arrays aninhados.
--   `flatMap` → faz `map` seguido de `flat(1)`.
+`forEach` é para efeitos colaterais.
 
 ```js
-const grupos = [["Ana", "Bia"], ["Carlos"]];
-const todos = grupos.flat(); // ["Ana","Bia","Carlos"]
-
-const duplicado = ["a", "b"].flatMap((letra) => [letra, letra.toUpperCase()]);
+produtos.forEach((produto) => console.log(produto.nome));
 ```
 
----
+Não uses `forEach` quando precisas de criar novo array; usa `map` ou `filter`.
 
-## 7) `forEach` - efeitos colaterais
+### 3.4 Checkpoint
 
-Quando queres apenas **fazer algo** para cada elemento (escrever no ecrã, guardar na base de dados), usa `forEach`. Não devolve nada.
+- Quando usas `some` em vez de `find`?
+- Porque é que `forEach` não é ideal para transformar dados?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Encadear com clareza
+
+### 4.1 Pipeline simples
 
 ```js
-alunos.forEach((aluno) => console.log(aluno.nome));
+const produtos = [
+    { nome: "Caderno", preco: 2.5, ativo: true },
+    { nome: "Caneta", preco: 1.2, ativo: false },
+    { nome: "Lápis", preco: 0.8, ativo: true },
+];
+
+const nomesAtivos = produtos
+    .filter((produto) => produto.ativo)
+    .map((produto) => produto.nome)
+    .sort((a, b) => a.localeCompare(b, "pt-PT"));
 ```
 
-Se precisares de um novo array/valor, prefere `map`, `filter` ou `reduce`.
+### 4.2 Variáveis intermédias
 
----
-
-## 8) Encadear com clareza
-
-Podes usar vários métodos seguidos. Formata em linhas diferentes para manter a leitura.
+Se a cadeia ficar difícil, separa.
 
 ```js
-const mediaAprovados = alunos
-    .filter((a) => a.nota >= 10)
-    .map((a) => a.nota)
-    .reduce((acc, nota, _, arr) => acc + nota / arr.length, 0);
+const ativos = produtos.filter((produto) => produto.ativo);
+const nomes = ativos.map((produto) => produto.nome);
 ```
 
-Quando a cadeia crescer demasiado, guarda resultados intermédios em variáveis com nomes claros (`const aprovados = ...`).
+Legibilidade vem antes de mostrar tudo numa linha.
 
----
+### 4.3 Evitar mutação nas callbacks
 
-## 9) Mini desafios
+```js
+const atualizados = produtos.map((produto) => ({
+    ...produto,
+    preco: produto.preco * 1.23,
+}));
+```
 
-1. Com `[1, 2, 3, 4, 5]`, usa `map` para devolver um array com o dobro de cada valor.
-2. Recebe `[15, 8, 20, 9, 18]` e usa `filter` para ficar apenas com notas ≥ 10.
-3. A partir de `[{ nome: "Ana", nota: 18 }, ...]`, usa `map` seguido de `join(", ")` para gerar a frase `"Alunos: Ana, Bruno"`.
-4. Usa `reduce` para somar os números `[3, 7, 4]` e calcula a média dividindo pelo comprimento.
-5. Com `["Ana", "Álvaro", "Bruno"]`, mostra qual o primeiro nome que começa por "A" usando `find` (ignora acentos com `toLowerCase`).
-6. Verifica se há algum valor maior que 50 com `some` e se todos são positivos com `every` num array à tua escolha.
-7. Escreve um pequeno pipeline com `filter` + `map` que recebe palavras e devolve só as que têm mais de 4 letras em maiúsculas.
+Evita alterar o próprio objeto dentro do `map`, a menos que seja mesmo essa a intenção.
+
+### 4.4 Checkpoint
+
+- Quando deves partir uma cadeia em variáveis?
+- Como atualizas objetos num `map` sem mutar o original?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Array cheio de `undefined` | `map` sem `return` | Devolver valor |
+| `reduce` falha em array vazio | Sem valor inicial | Passar `0`, `{}` ou `[]` |
+| Resultado original mudou | Mutação dentro da callback | Criar cópias |
+| `find` não encontra objeto | Comparação errada | Comparar uma chave |
+| Código encadeado ilegível | Pipeline grande demais | Criar variáveis intermédias |
+
+<a id="exercicios"></a>
+
+## Exercícios - Métodos de alto nível em arrays
+
+1. Usa `map` para dobrar `[1, 2, 3, 4]`.
+2. Usa `filter` para obter notas maiores ou iguais a 10.
+3. Usa `reduce` para calcular a soma e a média de uma lista de notas.
+4. Usa `find` para procurar um produto por `id`.
+5. Usa `some` para verificar se existe algum preço acima de 100.
+6. Usa `every` para validar se todas as notas estão entre 0 e 20.
+7. Cria um pipeline que filtre produtos ativos, extraia nomes e ordene alfabeticamente.
+8. Reescreve um ciclo manual do capítulo anterior usando `filter` + `map`.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.2.0 - 2025-11-10**
-    -   Mini desafios simplificados para focar em `map`, `filter`, `reduce`, `find`, `some/every` sem padrões avançados.
--   **v1.1.0 - 2025-11-10**
-    -   Mini desafios reforçados com duas novas propostas (`groupBy` e pipeline encadeado).
-    -   Nova secção de changelog para documentar revisões futuras.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçada a escolha entre `map`, `filter`, `reduce`, `find`, `some`, `every` e `forEach`.
 
 ![Footer](../Images/Footer.png)

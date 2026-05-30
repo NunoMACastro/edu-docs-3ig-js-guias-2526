@@ -1,130 +1,207 @@
 ![Header](../Images/Header.png)
 
-# [10] Funções (12.º ano)
+# JavaScript (12.º Ano) - 10 · Funções
 
-> **Objetivo**: criar funções claras, escolher a forma certa (declaração, expressão ou arrow), trabalhar com parâmetros, entender escopos/closures e saber quando usar `return` cedo.
+> **Objetivo deste ficheiro**
+>
+> - Criar funções com parâmetros e `return`.
+> - Distinguir declarações, expressões e arrow functions.
+> - Perceber escopo, hoisting e closures.
+> - Escrever funções pequenas, testáveis e previsíveis.
+> - Usar callbacks como preparação para arrays, eventos e Promises.
 
 ---
 
-## 0) Porque usar funções?
+## Índice
 
--   Agrupam passos que pertencem juntos.
--   Podem receber **parâmetros** e devolver **valores**.
--   Evitam repetir código e facilitam testes.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Funções como blocos reutilizáveis](#sec-1)
+- [2. [ESSENCIAL] Formas de declarar funções](#sec-2)
+- [3. [ESSENCIAL] Parâmetros, `return` e guard clauses](#sec-3)
+- [4. [ESSENCIAL+] Escopo, closures e callbacks](#sec-4)
+- [5. [EXTRA] Recursão e pureza](#sec-5)
+- [Exercícios - Funções](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Funções permitem dar nome a uma ideia, reutilizar lógica e dividir problemas grandes em passos pequenos. São a base de métodos de array, eventos, módulos, componentes React e handlers Express.
+
+- **Núcleo do tema:** declarar, chamar, receber parâmetros e devolver valores.
+- **Aprofundamento:** escopo, closures, callbacks e funções puras.
+- **Ligação ao percurso:** quase todos os capítulos seguintes dependem de funções bem escritas.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Funções como blocos reutilizáveis
+
+### 1.1 Modelo mental
+
+Uma função é uma pequena máquina:
+
+```txt
+entrada -> processamento -> saída
+```
 
 ```js
 function somar(a, b) {
     return a + b;
 }
+
 console.log(somar(2, 3)); // 5
 ```
 
----
+### 1.2 `return`
 
-## 1) Formas de declarar
-
-### Declaração (Function Declaration)
-
--   Içada (podes chamar antes da linha em que está escrita).
--   Ótima para utilitários principais do ficheiro.
+`return` devolve um valor e termina a função.
 
 ```js
-saudar("Ana"); // funciona
-function saudar(nome) {
-    console.log(`Olá, ${nome}`);
-}
-```
-
-### Expressão (Function Expression)
-
--   Guardada numa variável `const` ou `let`.
--   Só fica disponível depois da linha onde é criada.
-
-```js
-const dobro = function (n) {
+function dobro(n) {
     return n * 2;
-};
-```
-
-### Arrow function (`=>`)
-
--   Sintaxe curta, ideal para callbacks.
--   Não cria `this` nem `arguments` próprios.
-
-```js
-const soma = (a, b) => a + b;
-const triplo = (n) => {
-    const resultado = n * 3;
-    return resultado;
-};
-```
-
-> Usa arrow para funções pequenas, especialmente dentro de `map`, `filter`, `then`, etc. Para métodos de objetos ou quando precisas de hoisting, fica com declaração/expressão.
-
----
-
-## 2) Parâmetros e `return`
-
-### Valores por defeito
-
-```js
-function saudar(nome = "aluno", prefixo = "Olá") {
-    return `${prefixo}, ${nome}!`;
+    // código aqui já não corre
 }
 ```
 
-### `rest` (`...`)
+Se não houver `return`, a função devolve `undefined`.
+
+### 1.3 Funções com responsabilidade clara
 
 ```js
-function somaTudo(...numeros) {
+function calcularMedia(notas) {
+    const soma = notas.reduce((total, nota) => total + nota, 0);
+    return soma / notas.length;
+}
+```
+
+O nome deve dizer o que a função faz.
+
+### 1.4 Checkpoint
+
+- O que acontece quando uma função chega a `return`?
+- Que valor devolve uma função sem `return`?
+- Porque é importante dar bons nomes às funções?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Formas de declarar funções
+
+### 2.1 Declaração
+
+```js
+saudar("Ana");
+
+function saudar(nome) {
+    return `Olá, ${nome}!`;
+}
+```
+
+Declarações têm hoisting: podem ser chamadas antes da linha onde aparecem.
+
+### 2.2 Expressão
+
+```js
+const triplo = function (n) {
+    return n * 3;
+};
+```
+
+A função só está disponível depois da atribuição.
+
+### 2.3 Arrow function
+
+```js
+const quadrado = (n) => n ** 2;
+
+const formatarNome = (nome) => {
+    const limpo = nome.trim();
+    return limpo.toUpperCase();
+};
+```
+
+Arrow functions são ótimas para callbacks e funções curtas. Não têm `this` próprio.
+
+### 2.4 Erros comuns
+
+- Usar arrow function como método quando precisas de `this`.
+- Chamar uma expressão de função antes de a criar.
+- Misturar demasiados estilos no mesmo ficheiro sem motivo.
+
+### 2.5 Checkpoint
+
+- Que forma tem hoisting?
+- Porque é que arrow functions aparecem tanto em callbacks?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Parâmetros, `return` e guard clauses
+
+### 3.1 Valores por defeito
+
+```js
+function saudar(nome = "visitante") {
+    return `Olá, ${nome}!`;
+}
+```
+
+### 3.2 Rest parameters
+
+```js
+function somarTudo(...numeros) {
     return numeros.reduce((total, n) => total + n, 0);
 }
 ```
 
-### Desestruturação direta
+### 3.3 Desestruturação
 
 ```js
-function mostrarAluno({ nome, nota = 0 }) {
-    console.log(`${nome} tem ${nota}`);
+function formatarProduto({ nome, preco }) {
+    return `${nome}: ${preco.toFixed(2)} €`;
 }
 ```
 
-### Guard clauses
+### 3.4 Guard clauses
 
 ```js
 function dividir(a, b) {
-    if (typeof a !== "number" || typeof b !== "number") return NaN;
-    if (b === 0) return Infinity;
+    if (typeof a !== "number" || typeof b !== "number") return null;
+    if (b === 0) return null;
     return a / b;
 }
 ```
 
----
+### 3.5 Checkpoint
 
-## 3) Hoisting
+- Para que serve `...numeros` num parâmetro?
+- Quando é útil desestruturar um objeto no parâmetro?
+- Porque é que guard clauses tornam funções mais simples?
 
--   Declarações de função ficam disponíveis em todo o escopo onde vivem.
--   `var` é içada mas inicializada com `undefined`.
--   `let/const` ficam na **TDZ** até à linha onde aparecem (não podes usar antes).
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Escopo, closures e callbacks
+
+### 4.1 Escopo
+
+Variáveis declaradas dentro de uma função vivem nessa função.
 
 ```js
-hoisted(); // OK
-function hoisted() {}
+function exemplo() {
+    const interno = 10;
+    return interno;
+}
 
-// console.log(valor); // ReferenceError (TDZ)
-let valor = 5;
+// console.log(interno); // ReferenceError
 ```
 
----
+### 4.2 Closure
 
-## 4) Escopo e closures
-
--   Cada função cria o seu próprio **escopo**.
--   Funções internas conseguem “lembrar-se” de variáveis externas → isto é um **closure**.
+Uma função interna lembra-se das variáveis externas que usa.
 
 ```js
 function criarContador(inicial = 0) {
     let atual = inicial;
+
     return function () {
         atual++;
         return atual;
@@ -132,105 +209,96 @@ function criarContador(inicial = 0) {
 }
 
 const proximo = criarContador(10);
-proximo(); // 11
-proximo(); // 12 (continua a lembrar-se de "atual")
+console.log(proximo()); // 11
+console.log(proximo()); // 12
 ```
 
-Armadilha clássica: usar `var` em ciclos com funções que correm mais tarde. Prefere `let` para ter uma cópia por iteração.
+### 4.3 Callback
 
----
-
-## 5) Recursão (quando uma função chama a si própria)
-
-Usa em problemas que se dividem naturalmente em partes menores (fatorial, percorrer pastas, etc.). Precisamos sempre de um **caso base**.
-
-```js
-function fatorial(n) {
-    if (n < 0) return NaN;
-    if (n === 0) return 1;
-    return n * fatorial(n - 1);
-}
-```
-
-Contar vogais numa palavra:
-
-```js
-function contarVogais(palavra) {
-    if (palavra.length === 0) return 0;
-    const primeira = palavra[0].toLowerCase();
-    const resto = palavra.slice(1);
-    const ehVogal = "aeiou".includes(primeira) ? 1 : 0;
-    return ehVogal + contarVogais(resto);
-}
-```
-
----
-
-## 6) Funções puras vs impuras
-
--   **Pura** → depende só dos argumentos, não altera nada fora dela.
--   **Impura** → escreve/usa algo externo (ficheiros, consola, rede, variáveis globais).
-
-```js
-const soma = (a, b) => a + b; // pura
-
-let total = 0;
-function adicionar(n) {
-    total += n; // impura (depende de total)
-}
-```
-
-Prefere funções puras sempre que possível: mais fáceis de testar e repetir.
-
----
-
-## 7) `this` e arrow
-
-Se precisares de `this`, usa funções normais.
-
-```js
-const conta = {
-    saldo: 100,
-    debitar(valor) {
-        this.saldo -= valor;
-    },
-};
-```
-
-Arrow functions capturam o `this` exterior, portanto são ótimas para callbacks onde não queres um `this` novo.
-
----
-
-## 8) Funções de Callback
-
-Funções que são passadas como argumentos para outras funções.
-
-Por exemplo, fazer uma função que recebe uma operação matemática como callback permite flexibilidade para executar diferentes cálculos sem alterar a função principal.
+Callback é uma função passada como argumento.
 
 ```js
 function calcular(a, b, operacao) {
     return operacao(a, b);
 }
-const soma = (x, y) => x + y;
-const produto = (x, y) => x * y;
+
+const soma = (a, b) => a + b;
+const produto = (a, b) => a * b;
+
 console.log(calcular(4, 2, soma)); // 6
 console.log(calcular(4, 2, produto)); // 8
 ```
 
-## 9) Mini desafios
+Callbacks aparecem em eventos, arrays e Promises.
 
-1. Escreve uma função `saudacao(nome, hora)` que devolve uma saudação diferente consoante a hora do dia (manhã, tarde, noite). Usa valores por defeito para `hora` (hora atual).
-2. Cria uma função `contador(inicio)`que faz uma contagem decrescente desde o argumento `inicio` até 0, imprimindo cada número.
-3. Cria uma função que recebe um array de números e diz quantos são pares e quantos são ímpares. Usa `for...of`.
-4. Cria uma função que recebe um nome, uma idade e peso e devolve true se a pessoa poder doar sangue (idade entre 18 e 65 e peso ≥ 50kg) e false caso contrário.
-5. Cria uma arrow `function` que recebe um array de strings e devolve um novo array com todas as strings em maiúsculas.
-6. Cria uma função que recebe 2 números e um callback `operacao`. A função deve aplicar a operação aos dois números e devolver o resultado. Testa com operações de soma, subtração, multiplicação e divisão.
-7. Cria uma função recursiva `contarVogais(palavra)` que conta o número de vogais numa palavra.
+### 4.4 Checkpoint
+
+- O que é uma closure?
+- O que é uma callback?
+- Onde já viste callbacks antes?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Recursão e pureza
+
+### 5.1 Recursão
+
+Uma função recursiva chama-se a si própria e precisa de caso base.
+
+```js
+function fatorial(n) {
+    if (n < 0) return null;
+    if (n === 0) return 1;
+    return n * fatorial(n - 1);
+}
+```
+
+### 5.2 Funções puras
+
+Uma função pura depende só dos argumentos e não altera nada fora dela.
+
+```js
+const somar = (a, b) => a + b;
+```
+
+Função impura:
+
+```js
+let total = 0;
+
+function adicionar(n) {
+    total += n;
+}
+```
+
+### 5.3 Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Função devolve `undefined` | Falta `return` | Confirmar caminhos de saída |
+| Variável não existe | Escopo errado | Declarar no escopo certo |
+| Recursão nunca termina | Falta caso base | Definir condição de paragem |
+| Resultado muda sem razão | Função impura | Reduzir efeitos externos |
+
+<a id="exercicios"></a>
+
+## Exercícios - Funções
+
+1. Cria `saudar(nome)` que devolve uma saudação.
+2. Cria `media(...numeros)` usando rest parameters.
+3. Cria `formatarProduto({ nome, preco })`.
+4. Cria `dividir(a, b)` com guard clauses.
+5. Cria `criarContador(inicial)` usando closure.
+6. Cria `calcular(a, b, operacao)` e testa com soma, subtração, produto e divisão.
+7. Cria `fatorial(n)` com recursão.
+8. Reescreve uma função impura para devolver um novo valor sem alterar variável externa.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Mini desafios ampliados com mais quatro propostas sobre closures e composição de funções.
-    -   Changelog adicionado para acompanhar futuras melhorias do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados modelos mentais de closure, callback e pureza.
 
 ![Footer](../Images/Footer.png)

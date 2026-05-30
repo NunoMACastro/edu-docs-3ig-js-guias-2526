@@ -1,161 +1,313 @@
 ![Header](../Images/Header.png)
 
-# [1] Variáveis e Tipos (12.º ano)
+# JavaScript (12.º Ano) - 01 · Variáveis e tipos
 
-> **Objetivo**: perceber porque existe `"use strict"`, quando usar `var`/`let`/`const`, o que significa “tipo” em JavaScript e como evitar surpresas com coerção e igualdade.
+> **Objetivo deste ficheiro**
+>
+> - Distinguir `const`, `let` e `var`.
+> - Perceber o que é um tipo de dado em JavaScript.
+> - Usar conversões explícitas para evitar surpresas.
+> - Trabalhar com `truthy`, `falsy`, `===` e `!==`.
+> - Reconhecer erros comuns de escopo, coerção e comparação.
 
 ---
 
-## 0) Ligar o "modo seguro"
+## Índice
+
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Variáveis: nomes para valores](#sec-1)
+- [2. [ESSENCIAL] Tipos primitivos e `typeof`](#sec-2)
+- [3. [ESSENCIAL] Conversões, `truthy/falsy` e igualdade segura](#sec-3)
+- [4. [ESSENCIAL+] Escopo, TDZ e referências](#sec-4)
+- [5. [EXTRA] Diagnóstico rápido](#sec-5)
+- [Exercícios - Variáveis e tipos](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Este capítulo abre o percurso de JavaScript. Antes de escrever condições, ciclos, funções ou componentes React, precisas de saber guardar valores, perceber que tipo de valor tens e comparar dados sem deixar o motor da linguagem “adivinhar” por ti.
+
+- **Núcleo do tema:** variáveis, tipos, conversões e igualdade.
+- **Aprofundamento:** escopo, TDZ e diferença entre referência e conteúdo.
+- **Ligação ao percurso:** estes conceitos aparecem em todos os capítulos seguintes, sobretudo em operadores, controlo de fluxo, arrays, objetos e formulários.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Variáveis: nomes para valores
+
+### 1.1 Modelo mental
+
+Uma variável é um **nome** que aponta para um valor.
 
 ```js
-"use strict";
+const escola = "EPMS";
+let ano = 12;
 ```
 
--   Acrescenta esta linha no topo de cada ficheiro ou `<script>`.
--   O motor deixa de aceitar variáveis criadas "por acidente" e avisa mais cedo quando algo corre mal.
+Pensa assim:
 
----
+```txt
+nome da variável -> valor guardado
+ano              -> 12
+```
 
-## 1) Três formas de criar variáveis (e qual escolher)
+Quando lês `ano`, o JavaScript procura o valor associado a esse nome.
 
-| Palavra-chave | Pode mudar o valor? | Onde vive? | Quando usar                                                         |
-| ------------- | ------------------- | ---------- | ------------------------------------------------------------------- |
-| `const`       | ❌ (valor fixo)     | Bloco `{}` | Usa por defeito; deixa claro que a referência não muda              |
-| `let`         | ✅                  | Bloco `{}` | Quando precisas de atualizar a variável (contadores, acumuladores…) |
-| `var`         | ✅                  | Função     | Evita em novo código → ignora blocos e traz bugs difíceis           |
+### 1.2 `const`, `let` e `var`
 
--   **TDZ** (_Temporal Dead Zone_): intervalo entre o início do bloco e a linha da declaração. Se leres a variável antes de `let/const`, recebes `ReferenceError`.
--   `const` impede mudar a referência, **não** o conteúdo interno. Objetos/arrays podem ter campos alterados.
+| Palavra-chave | Pode reatribuir? | Escopo principal | Uso recomendado |
+| ------------- | ---------------- | ---------------- | --------------- |
+| `const`       | Não              | Bloco `{}`       | Por defeito |
+| `let`         | Sim              | Bloco `{}`       | Contadores e valores que mudam |
+| `var`         | Sim              | Função           | Evitar em código novo |
 
 ```js
-{
-    // console.log(x); // ReferenceError (ainda na TDZ)
-    let x = 10;
+const nome = "Ana";
+let pontos = 0;
+
+pontos = pontos + 10;
+// nome = "Rita"; // TypeError: não podes reatribuir uma const
+```
+
+`const` não significa que o conteúdo interno nunca muda. Significa que a variável não pode apontar para outro valor.
+
+```js
+const perfil = { nome: "Ana", pontos: 10 };
+perfil.pontos = 12; // válido: o objeto é o mesmo
+
+// perfil = {}; // inválido: tenta mudar a referência
+```
+
+### 1.3 Erros comuns
+
+- Usar `var` por hábito e depois ter valores a “vazar” para fora de blocos.
+- Declarar uma variável sem a inicializar e assumir que tem valor útil.
+- Pensar que `const` torna objetos e arrays completamente imutáveis.
+
+### 1.4 Checkpoint
+
+- Quando deves usar `const`?
+- Qual é a diferença entre reatribuir uma variável e alterar uma propriedade de um objeto?
+- Porque é que `var` deve ser evitado em código moderno?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Tipos primitivos e `typeof`
+
+### 2.1 Os tipos mais importantes
+
+JavaScript tem valores primitivos:
+
+```js
+const idade = 17; // number
+const nome = "Marta"; // string
+const ativo = true; // boolean
+const vazio = null; // ausência intencional
+let porDefinir; // undefined
+const id = Symbol("id"); // symbol
+const enorme = 9007199254740993n; // bigint
+```
+
+Para observar tipos:
+
+```js
+console.log(typeof idade); // "number"
+console.log(typeof nome); // "string"
+console.log(typeof ativo); // "boolean"
+console.log(typeof porDefinir); // "undefined"
+```
+
+### 2.2 A exceção histórica de `null`
+
+```js
+typeof null; // "object"
+```
+
+Isto é um detalhe antigo da linguagem. Na prática, trata `null` como “não há valor aqui de propósito”.
+
+### 2.3 Números e `NaN`
+
+JavaScript usa `number` para inteiros e decimais.
+
+```js
+0.1 + 0.2; // 0.30000000000000004
+```
+
+Para validar conversões numéricas:
+
+```js
+const valor = Number("abc");
+
+if (Number.isNaN(valor)) {
+    console.log("Número inválido");
 }
-
-const aluno = { nome: "Ana" };
-aluno.nome = "Rita"; // OK
-// aluno = {}; // ERRO (não podes apontar para outro objeto)
 ```
 
----
+### 2.4 Checkpoint
 
-## 2) Escopos e shadowing
+- Qual é a diferença entre `null` e `undefined`?
+- Porque é que `Number.isNaN(...)` é útil depois de converter texto?
+- O que devolve `typeof "12"`?
 
--   **Global**: tudo o que declaras fora de funções/blocos (evita acumular globais).
--   **Função**: cada `function ... { }` cria um "mundo" novo.
--   **Bloco `{}`**: `let/const` vivem apenas aqui (if, for, while, ...).
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Conversões, `truthy/falsy` e igualdade segura
+
+### 3.1 Converter de forma explícita
+
+Entradas vindas de `prompt`, formulários e URLs chegam quase sempre como texto.
 
 ```js
-let mensagem = "fora";
-{
-    let mensagem = "dentro"; // shadowing → a exterior continua intacta
-    console.log(mensagem); // "dentro"
-}
-console.log(mensagem); // "fora"
+const entrada = "18";
+const idade = Number(entrada);
 ```
 
-> Usa `let/const` e o escopo resolve-se sozinho; `var` ignora blocos e pode "vazar" para fora do `if/for`.
-
----
-
-## 3) Tipos primitivos (e como descobrir qual tens)
-
-Primitivos em JS: `number`, `string`, `boolean`, `null`, `undefined`, `symbol`, `bigint`.
+Prefere converter tu próprio em vez de deixar o JavaScript fazer coerção implícita.
 
 ```js
-const n = 42; // number (inteiros e decimais)
-const s = "Nuno"; // string
-const ok = true; // boolean
-const nada = null; // ausência intencional
-let indef; // undefined (não inicializada)
-const chave = Symbol("id"); // symbol (identificadores únicos)
-const grande = 9007199254740993n; // bigint (inteiros gigantes)
+"2" + 3; // "23"
+"2" * 3; // 6
+Number("2") + 3; // 5
 ```
 
-Ferramentas úteis:
+### 3.2 `truthy` e `falsy`
 
--   `typeof valor` → devolve uma string com o tipo (`typeof null` devolve `"object"` por motivos históricos).
--   `Number.isNaN(x)` → confirma se o valor é **precisamente** `NaN`.
--   Para números com vírgulas, lembra-te do erro clássico: `0.1 + 0.2` não é exatamente `0.3`. Compara sempre com tolerância quando trabalhas com floats.
+Valores `falsy`:
 
----
+```txt
+false, 0, -0, 0n, "", null, undefined, NaN
+```
 
-## 4) Truthy/falsy e coerção (quando JS "faz magia")
-
-Valores **falsy**: `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`. Tudo o resto é **truthy** (incluindo `"0"`, `"false"`, `[]`, `{}`...).
+Tudo o resto é `truthy`, incluindo `"0"`, `"false"`, `[]` e `{}`.
 
 ```js
-if ("") {
-    // não entra (string vazia é falsy)
-}
 if ("0") {
-    // entra (string com caracteres é truthy)
+    console.log("Entra, porque a string não está vazia");
 }
 ```
 
--   **Coerção implícita**: o motor tenta converter automaticamente (`"2" * 3` → `6`).
--   **Coerção explícita**: tu decides (`Number("2")`). Prefere esta opção.
+### 3.3 `===` e `!==`
 
-```js
-"2" + 3; // "23" (concatena strings)
-"2" * 3; // 6   (coerção para number)
-Number("2"); // 2 (conversão explícita)
-```
-
-> Regra didática: quando comparares valores, converte primeiro (se necessário) e usa os operadores estritos.
-
----
-
-## 5) Igualdade segura: `===` e `!==`
-
--   `===` e `!==` **não** fazem coerção → comparam tipo + valor.
--   `==` e `!=` fazem coerção automática → evitamos para não termos surpresas (`"" == 0` é `true`).
+Usa comparação estrita:
 
 ```js
 2 === "2"; // false
-2 == "2"; // true (coerção) ← evita
+2 == "2"; // true, mas evita
 ```
 
-Para objetos/arrays, a comparação é por **referência**. Dois arrays com o mesmo conteúdo não são iguais entre si, apenas se apontarem para o mesmo sítio na memória.
+`==` tenta converter os valores antes de comparar. Isso pode esconder bugs.
+
+### 3.4 `??` vs `||`
 
 ```js
-const a = { x: 1 };
-const b = { x: 1 };
-a === b; // false
-const c = a;
-a === c; // true
+const pagina = 0;
+
+const a = pagina || 1; // 1, porque 0 é falsy
+const b = pagina ?? 1; // 0, porque só troca null/undefined
 ```
 
-> Curiosidade: `Object.is(NaN, NaN)` devolve `true` e distingue `0` de `-0`. Útil quando queres ser super rigoroso.
+Usa `??` quando `0`, `""` ou `false` forem valores válidos.
 
----
+### 3.5 Erros comuns
 
-## 6) Guião rápido de boas práticas
+- Fazer contas com texto sem converter.
+- Usar `||` para valores por defeito e perder `0`.
+- Comparar com `==` e não perceber que houve coerção.
 
--   Usa `"use strict"` e corre o código no modo módulo (`<script type="module">` ou ficheiros `.mjs`).
--   Começa sempre com `const`; troca para `let` apenas quando fizer sentido.
--   Nomes descritivos em `camelCase`. Guarda maiúsculas (`UPPER_SNAKE_CASE`) para constantes verdadeiramente globais.
--   Converte entradas (prompt, formulários) **antes** de fazer contas.
--   Quando precisares de valores por defeito, usa `??` em vez de `||` se quiseres preservar `0`, `""` ou `false`.
+### 3.6 Checkpoint
 
----
+- Porque é que `"2" + 3` devolve `"23"`?
+- Em que situação `??` é melhor do que `||`?
+- Quais são os valores `falsy` que deves decorar?
 
-## 7) Exercícios
+<a id="sec-4"></a>
 
-1. Cria `const escola = "EPMS"; let ano = 11;` e escreve no `console` uma frase como `"Estou no 11.º ano na EPMS"`. Atualiza `ano` para `12` e mostra a nova mensagem.
-2. Usa `prompt` para ler a idade. Converte com `Number`, valida com `Number.isNaN` e escreve `"Maior"` ou `"Menor"` usando `const`/`let` adequados.
-3. Declara três variáveis num bloco `{ ... }`, duas com `const` e uma com `let`. Mostra como o `shadowing` funciona declarando outra variável com o mesmo nome dentro de um bloco interno.
-4. Implementa `function ehVazio(v)` que devolve `true` apenas para `null` e `undefined`. Testa a função com valores truthy/falsy e regista os resultados.
-5. Escreve uma pequena tabela no `console` onde comparas `==` vs `===` para os pares `""/0`, `"0"/0`, `false/0` e `null/undefined`. Explica em comentários cada resultado.
-6. Cria um array com valores mistos (`[0, "0", null, undefined, []]`). Percorre-o com `for...of` e, para cada elemento, mostra `typeof`, se é truthy e a conversão explícita para `Number`.
-7. Desenvolve uma função `converteParaNumero(texto)` que devolve um número válido ou `null`. Usa-a para converter entradas de `prompt` e mostrar mensagens claras ao utilizador.
+## 4. [ESSENCIAL+] Escopo, TDZ e referências
+
+### 4.1 Escopo de bloco
+
+`let` e `const` vivem dentro do bloco onde foram declaradas.
+
+```js
+let mensagem = "fora";
+
+{
+    let mensagem = "dentro";
+    console.log(mensagem); // "dentro"
+}
+
+console.log(mensagem); // "fora"
+```
+
+Isto chama-se **shadowing**: um nome interno tapa temporariamente um nome externo.
+
+### 4.2 Temporal Dead Zone
+
+Entre o início do bloco e a linha da declaração, a variável existe mas não pode ser usada.
+
+```js
+{
+    // console.log(total); // ReferenceError
+    const total = 10;
+}
+```
+
+Isto ajuda a apanhar erros cedo.
+
+### 4.3 Comparar objetos e arrays
+
+Objetos e arrays são comparados por referência.
+
+```js
+const a = [1, 2];
+const b = [1, 2];
+const c = a;
+
+console.log(a === b); // false
+console.log(a === c); // true
+```
+
+`a` e `b` têm o mesmo conteúdo, mas são arrays diferentes.
+
+### 4.4 Checkpoint
+
+- O que é shadowing?
+- Porque é que `[] === []` é `false`?
+- O que significa comparar por referência?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Diagnóstico rápido
+
+| Sintoma | Causa provável | Verificação |
+| ------- | -------------- | ----------- |
+| `ReferenceError` | Variável fora de escopo ou usada antes da declaração | Confirma onde foi declarada |
+| Resultado `"105"` | Número tratado como string | Usa `Number(...)` |
+| Valor por defeito troca `0` por `1` | Uso de `||` | Usa `??` |
+| Dois arrays iguais dão `false` | Comparação por referência | Compara conteúdo, não referência |
+| `NaN` aparece nas contas | Conversão inválida | Usa `Number.isNaN(...)` |
+
+<a id="exercicios"></a>
+
+## Exercícios - Variáveis e tipos
+
+1. Cria `const escola = "EPMS"` e `let ano = 12`. Mostra uma frase no `console` e altera apenas `ano`.
+2. Lê uma idade com `prompt`, converte com `Number` e mostra se é maior ou menor de idade. Trata entradas inválidas.
+3. Cria uma tabela com `console.table` que compare `typeof` para `42`, `"42"`, `true`, `null`, `undefined`, `{}` e `[]`.
+4. Testa `""`, `"0"`, `0`, `null`, `undefined`, `[]` e `{}` dentro de `Boolean(...)`.
+5. Compara `==` e `===` para `"5"`/`5`, `false`/`0`, `null`/`undefined`. Escreve comentários com a conclusão.
+6. Cria `converteParaNumero(texto)` que devolve um número válido ou `null`.
+7. Demonstra a diferença entre alterar uma propriedade de um objeto guardado em `const` e tentar reatribuir esse objeto.
+8. Cria dois arrays com o mesmo conteúdo e confirma que `===` devolve `false`. Depois cria uma segunda variável que aponta para o primeiro array e confirma que devolve `true`.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Secção de Exercícios expandida para sete propostas práticas.
-    -   Adicionada a primeira entrada de changelog para registar futuras alterações.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados os modelos mentais de coerção, `truthy/falsy`, escopo e referência.
 
 ![Footer](../Images/Footer.png)

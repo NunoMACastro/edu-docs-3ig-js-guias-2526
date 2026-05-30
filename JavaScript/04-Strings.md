@@ -1,128 +1,200 @@
 ![Header](../Images/Header.png)
 
-# [4] Strings (12.º ano)
+# JavaScript (12.º Ano) - 04 · Strings
 
-> **Objetivo**: trabalhar textos em JavaScript de forma simples: criar, formatar, procurar, recortar e substituir sem te perderes em detalhes demasiado técnicos.
-
----
-
-## 0) Ideias base
-
--   Strings são **primitivos imutáveis**: sempre que “alteras”, na verdade recebes uma **nova** string.
--   Usa `"texto"`, `'texto'` ou crases `` `texto` ``. Evita `new String()`.
--   Internamente o JS usa Unicode (UTF‑16). Basta saber que `length` conta unidades, não emojis completas (ver secção 7).
+> **Objetivo deste ficheiro**
+>
+> - Criar, combinar, procurar e transformar texto.
+> - Usar `template literals` para construir mensagens legíveis.
+> - Perceber que strings são imutáveis.
+> - Aplicar métodos como `slice`, `includes`, `replace`, `split`, `join` e `trim`.
+> - Reconhecer cuidados com acentos, maiúsculas/minúsculas e dados do utilizador.
 
 ---
 
-## 1) Concatenar e usar _template literals_
+## Índice
 
--   Com `+` podes juntar textos.
--   Com crases `` ` ` `` ganhas interpolação `${...}` e multilinha.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Strings como valores de texto](#sec-1)
+- [2. [ESSENCIAL] Procurar, cortar e normalizar](#sec-2)
+- [3. [ESSENCIAL] Dividir, juntar e substituir](#sec-3)
+- [4. [ESSENCIAL+] Funções úteis com strings](#sec-4)
+- [5. [EXTRA] Unicode, acentos e segurança](#sec-5)
+- [Exercícios - Strings](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Quase todos os programas recebem e mostram texto: nomes, mensagens, pesquisas, URLs, emails e respostas de APIs. Saber tratar strings com cuidado evita erros em validação, filtros e interfaces.
+
+- **Núcleo do tema:** criar, ler, cortar, procurar, substituir e limpar texto.
+- **Aprofundamento:** normalização, acentos, emojis e funções reutilizáveis.
+- **Ligação ao percurso:** strings entram em formulários, DOM, `fetch`, rotas, queries e validação.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Strings como valores de texto
+
+### 1.1 Modelo mental
+
+Uma string é uma sequência de caracteres.
 
 ```js
 const nome = "Ana";
-const idade = 16;
-console.log("Sou " + nome + " e tenho " + idade + " anos.");
-console.log(`Sou ${nome} e tenho ${idade} anos.`); // mais limpo
-console.log(`Linha 1
-Linha 2`); // mantém quebras
+const frase = "JavaScript é útil";
 ```
 
-Quando tiveres muitas partes, acumula num array e usa `join("")` para evitar misturas confusas.
+Strings são **imutáveis**: os métodos devolvem novas strings, não alteram a original.
 
----
+```js
+const texto = "  Olá  ";
+const limpo = texto.trim();
 
-## 2) Tamanho, acesso e cortes
+console.log(texto); // "  Olá  "
+console.log(limpo); // "Olá"
+```
 
--   `str.length` → número de unidades (não altera a string).
--   `str[i]` → caractere naquela posição (ou `undefined`).
--   `slice(inicio, fimExclusivo?)` → recorta aceitando índices negativos.
--   `substring(inicio, fimExclusivo?)` → não aceita negativos e troca argumentos se vierem invertidos.
+### 1.2 Aspas e `template literals`
+
+```js
+const nome = "Marta";
+const idade = 17;
+
+const mensagem = `Olá, ${nome}. Tens ${idade} anos.`;
+```
+
+`template literals` são a forma mais limpa de juntar variáveis e texto.
+
+### 1.3 Tamanho e acesso
 
 ```js
 const palavra = "banana";
+
 palavra.length; // 6
 palavra[0]; // "b"
-palavra.slice(1, 3); // "an"
-palavra.slice(-2); // "na"
+palavra[99]; // undefined
 ```
 
-Prefere `slice` por ser consistente.
+### 1.4 Checkpoint
 
----
+- O que significa dizer que uma string é imutável?
+- Porque é que `template literals` melhoram a leitura?
+- O que acontece se acederes a um índice que não existe?
 
-## 3) Procurar padrões simples
+<a id="sec-2"></a>
 
--   `includes(substr, inicio?)` → devolve `true/false`.
--   `indexOf(substr)` / `lastIndexOf(substr)` → posição ou `-1`.
--   `startsWith` / `endsWith` para verificar prefixos e sufixos.
+## 2. [ESSENCIAL] Procurar, cortar e normalizar
+
+### 2.1 Procurar texto
 
 ```js
 "JavaScript".includes("Script"); // true
-"musica.mp3".endsWith(".mp3"); // true
+"ficheiro.pdf".endsWith(".pdf"); // true
+"index.html".startsWith("index"); // true
 "banana".indexOf("na"); // 2
 ```
 
-Para buscas sem distinguir maiúsculas/minúsculas, converte ambos os lados para `toLowerCase()` ou `toLocaleLowerCase("pt")`.
-
----
-
-## 4) Substituir, dividir, juntar
-
--   `replace(alvo, novo)` → só a primeira ocorrência.
--   `replaceAll(alvo, novo)` → todas as ocorrências (ou usa `replace` com regex `/.../g`).
--   `split(sep)` → converte em array.
--   `join(sep)` → faz o inverso.
+Para pesquisa sem distinguir maiúsculas/minúsculas:
 
 ```js
-"olá mundo".replace("mundo", "turma"); // "olá turma"
-"ana banana".replaceAll("na", "NA"); // "aNA baNANA"
-"um,dois".split(","); // ["um","dois"]
-["a", "b"].join("-"); // "a-b"
+const termo = "ana";
+const nome = "Ana Maria";
+
+nome.toLowerCase().includes(termo.toLowerCase()); // true
 ```
 
----
+### 2.2 Cortar com `slice`
 
-## 5) Aparar, preencher, repetir
+```js
+const palavra = "programar";
 
--   `trim()`, `trimStart()`, `trimEnd()` → removem espaços nas pontas.
--   `padStart(tamanho, preenchimento)` / `padEnd(...)` → completam texto.
--   `repeat(n)` → repete a string n vezes.
+palavra.slice(0, 3); // "pro"
+palavra.slice(-3); // "mar"
+```
+
+Prefere `slice` para cortes simples, porque aceita índices negativos de forma previsível.
+
+### 2.3 Limpar espaços
 
 ```js
 "  texto  ".trim(); // "texto"
+"  texto  ".trimStart(); // "texto  "
+"  texto  ".trimEnd(); // "  texto"
+```
+
+### 2.4 Erros comuns
+
+- Esquecer `.trim()` antes de validar campo vazio.
+- Usar `indexOf(...) > 0` e falhar quando o texto aparece na posição `0`.
+- Comparar texto sem normalizar maiúsculas/minúsculas.
+
+### 2.5 Checkpoint
+
+- Qual é a diferença entre `includes` e `indexOf`?
+- Porque é que `indexOf(...) >= 0` é mais seguro do que `> 0`?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Dividir, juntar e substituir
+
+### 3.1 `split` e `join`
+
+```js
+const nomes = "Ana, Bruno, Carla";
+
+const lista = nomes.split(",").map((nome) => nome.trim());
+const texto = lista.join(" | ");
+
+console.log(lista); // ["Ana", "Bruno", "Carla"]
+console.log(texto); // "Ana | Bruno | Carla"
+```
+
+### 3.2 `replace` e `replaceAll`
+
+```js
+"olá mundo".replace("mundo", "JavaScript"); // "olá JavaScript"
+"ana banana".replaceAll("na", "NA"); // "aNA baNANA"
+```
+
+Com expressões regulares:
+
+```js
+"Tel: 912-345-678".replace(/\D+/g, ""); // "912345678"
+```
+
+### 3.3 Preencher e repetir
+
+```js
 "7".padStart(3, "0"); // "007"
 "-".repeat(5); // "-----"
 ```
 
----
+### 3.4 Checkpoint
 
-## 6) Maiúsculas, minúsculas e ordenação com acentos
+- Quando usarias `split` seguido de `map(...trim)`?
+- Qual é a diferença entre `replace` e `replaceAll`?
 
--   `toUpperCase()` / `toLowerCase()` funcionam para a maioria dos casos.
--   Para ordenar nomes com acentos usa `localeCompare` com o locale português.
+<a id="sec-4"></a>
 
-```js
-["Álvaro", "Ana", "Élio"].sort((a, b) => a.localeCompare(b, "pt"));
-```
+## 4. [ESSENCIAL+] Funções úteis com strings
 
----
-
-## 7) Nota rápida sobre emojis e Unicode
-
-Emojis e alguns caracteres ocupam 2 unidades de `length`. Quando precisares de tratar "caracteres humanos", usa `Array.from`.
+### 4.1 Capitalizar palavras
 
 ```js
-const emoji = "🙂";
-emoji.length; // 2
-Array.from(emoji).length; // 1 (agora faz sentido)
+function capitalizarPalavras(frase) {
+    return frase
+        .trim()
+        .split(/\s+/)
+        .map((palavra) => palavra[0].toUpperCase() + palavra.slice(1).toLowerCase())
+        .join(" ");
+}
+
+console.log(capitalizarPalavras("  ana maria  ")); // "Ana Maria"
 ```
 
-Isto só é relevante quando estiveres a limitar caracteres ou a percorrer texto com emojis/acentos combinados.
-
----
-
-## 8) Funções práticas para copiar
+### 4.2 Criar slug simples
 
 ```js
 function slugifyPt(frase) {
@@ -135,30 +207,74 @@ function slugifyPt(frase) {
         .replace(/(^-|-$)/g, "");
 }
 
-function contarVogais(str) {
-    const regex = /[aeiouáéíóúàâêîôûãõ]/gi;
-    return (str.match(regex) || []).length;
+console.log(slugifyPt("Introdução ao JavaScript!")); // "introducao-ao-javascript"
+```
+
+### 4.3 Contar vogais
+
+```js
+function contarVogais(texto) {
+    const resultado = texto.match(/[aeiouáéíóúàâêîôûãõ]/gi);
+    return resultado ? resultado.length : 0;
 }
 ```
 
-Explica passo a passo aos alunos antes de copiarem; aproveita para falar de regex a um nível introdutório.
+### 4.4 Checkpoint
 
----
+- Porque é que `slugifyPt` usa `normalize("NFD")`?
+- Que valor devolve `match(...)` quando não encontra nada?
 
-## 9) Exercícios
+<a id="sec-5"></a>
 
-1. Lê uma frase com `prompt` e devolve-a capitalizada: usa `split`, `map` e `join`. Mostra resultado com `alert`.
-2. Pergunta o nome completo e mostra apenas o apelido usando `lastIndexOf(" ")` + `slice`. Trata casos sem espaços.
-3. Cria `contarLetra(frase, letra)` que usa `toLowerCase` e `split`/`filter` ou `match` para devolver o número de ocorrências.
-4. Imprime uma tabela (`console.table`) com resultado de `includes`, `startsWith`, `endsWith` e `localeCompare` para diferentes palavras. Usa comentários para analisar.
-5. Implementa `mascararEmail("ana@example.com")` → `"a***@example.com"` usando `slice`, `padEnd` ou `repeat`.
-6. Escreve `apenasNumeros(str)` que remove tudo menos dígitos (`replace(/\D+/g, "")`). Usa-a para limpar números de telefone.
-7. Constrói um slug simples a partir de títulos inseridos pelo utilizador e mostra-o numa frase do género `"URL: /artigos/${slug}"`.
+## 5. [EXTRA] Unicode, acentos e segurança
+
+### 5.1 Emojis e `length`
+
+```js
+const emoji = "🙂";
+
+emoji.length; // 2
+Array.from(emoji).length; // 1
+```
+
+Para contar símbolos como uma pessoa os vê, `Array.from` é mais útil do que `length`.
+
+### 5.2 Ordenação com acentos
+
+```js
+["Álvaro", "Ana", "Élia"].sort((a, b) => a.localeCompare(b, "pt-PT"));
+```
+
+### 5.3 Texto vindo do utilizador
+
+Quando mostrares texto numa página, prefere `textContent`.
+
+```js
+const p = document.createElement("p");
+p.textContent = textoDoUtilizador;
+```
+
+Evita usar `innerHTML` com texto que veio de fora da aplicação.
+
+<a id="exercicios"></a>
+
+## Exercícios - Strings
+
+1. Pede uma frase e mostra-a sem espaços nas pontas.
+2. Cria `capitalizarPalavras(frase)` e testa com nomes em minúsculas.
+3. Cria `obterApelido(nomeCompleto)` usando `lastIndexOf(" ")` e `slice`.
+4. Cria `contarLetra(frase, letra)` sem distinguir maiúsculas/minúsculas.
+5. Cria `mascararEmail("ana@example.com")`, devolvendo algo como `"a***@example.com"`.
+6. Cria `apenasNumeros(texto)` para limpar números de telefone.
+7. Cria `slugifyPt(titulo)` e testa com acentos, espaços e pontuação.
+8. Ordena uma lista de nomes com acentos usando `localeCompare("pt-PT")`.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Nova secção de Exercícios com sete propostas focadas em manipulação de strings.
-    -   Adicionada secção de changelog para acompanhar futuras revisões.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Removida linguagem operacional e reforçados exemplos seguros para texto vindo do utilizador.
 
 ![Footer](../Images/Footer.png)

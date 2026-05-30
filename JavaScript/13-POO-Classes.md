@@ -1,235 +1,251 @@
 ![Header](../Images/Header.png)
 
-# [13] Classes e OOP (12.º ano)
+# JavaScript (12.º Ano) - 13 · Classes e POO
 
-> **Objetivo**: entender, com linguagem simples e muitos exemplos, o que são **classes** e **objetos** em JavaScript, a utilização de **constructor**, **métodos**, **getters/setters**, **campos privados `#`**, **métodos/variáveis estáticas**, **herança (`extends/super`)**, e quando faz sentido **preferir composição**. No fim tens desafios para praticar.
-
----
-
-## 0) Classes: molde → objeto
-
--   **Classe**: Pensa numa receita ou molde (ex.: **bolo**). Define como são os objetos (ex.: **ingredientes** e **passos**).
--   **Objeto (instância)**: o **bolo** feito a partir do molde / receita. Cada bolo tem os **seus próprios valores**.
--   **Propriedades** = dados (ex.: `nome`, `idade`). **Métodos** = ações (ex.: `apresentar()`).
--   Em JavaScript, **classes** são uma forma prática de escrever algo que por baixo funciona com **protótipos** (vamos ver mais tarde).
+> **Objetivo deste ficheiro**
+>
+> - Perceber classes como moldes para criar objetos.
+> - Usar `constructor`, métodos, getters, setters e campos privados.
+> - Distinguir métodos de instância de métodos `static`.
+> - Usar herança apenas quando a relação faz sentido.
+> - Preferir composição quando ela simplifica o desenho do código.
 
 ---
 
-## 1) A tua primeira classe
+## Índice
+
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Classe, objeto e instância](#sec-1)
+- [2. [ESSENCIAL] Encapsulamento com `#`, getters e setters](#sec-2)
+- [3. [ESSENCIAL] Métodos `static` e validação](#sec-3)
+- [4. [ESSENCIAL+] Herança vs composição](#sec-4)
+- [5. [EXTRA] `this`, JSON, fábricas e diagnóstico](#sec-5)
+- [Exercícios - Classes e POO](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+JavaScript não obriga a escrever código orientado a objetos, mas classes são úteis quando queres representar entidades com dados e comportamento juntos.
+
+- **Núcleo do tema:** classe, instância, `constructor`, métodos e `this`.
+- **Aprofundamento:** encapsulamento, herança, composição e serialização.
+- **Ligação ao percurso:** classes ajudam a perceber modelos, erros personalizados, serviços e algumas bibliotecas.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Classe, objeto e instância
+
+### 1.1 Modelo mental
+
+Uma classe é um molde. Uma instância é um objeto criado a partir desse molde.
 
 ```js
 class Pessoa {
-    // (opcional) campos declarados aqui ajudam a ver o que existe
-    nome;
-    idade;
-
-    // constructor: corre quando fazemos "new Pessoa(...)"
     constructor(nome, idade) {
-        this.nome = nome; // "this" aponta para o objeto que está a nascer
-        this.idade = idade; // guarda valores nesse objeto
-    }
-
-    // método de instância (ação que cada pessoa sabe fazer)
-    apresentar() {
-        return `Olá, eu sou a/o ${this.nome} e tenho ${this.idade} anos.`;
-    }
-}
-
-const ana = new Pessoa("Ana", 16); // criamos um objeto (instância)
-console.log(ana.apresentar()); // "Olá, eu sou a/o Ana..."
-```
-
-**Pontos‑chave**
-
--   `new` cria um **novo objeto** e corre o `constructor`.
--   `this` dentro dos métodos da classe refere‑se ao **objeto atual**. O `this`é um “atalho” para o objeto e é um dos principais conceitos de OOP pois permite associar o objeto aos seus dados e comportamentos.
-
----
-
-## 2) Controlar acesso: getters e setters
-
-Às vezes, antes de **guardar** um valor, queremos **validar** ou definir como e em que condições pode ser acedido. Para isso, usamos `get` e `set`.
-
--   `get` define um **método de leitura**.
--   `set` define um **método de escrita**.
-
-```js
-class Aluno {
-    nome;
-    #nota; // vamos falar de "privado" já a seguir
-
-    constructor(nome, nota) {
         this.nome = nome;
-        this.nota = nota; // usa o setter em vez de mexer diretamente
+        this.idade = idade;
     }
 
-    get nota() {
-        // ler: al.nota
-        return this.#nota;
-    }
-    set nota(v) {
-        // escrever: al.nota = 18
-        if (typeof v !== "number" || v < 0 || v > 20) {
-            throw new RangeError("Nota inválida (0–20).");
-        }
-        this.#nota = v;
+    apresentar() {
+        return `${this.nome} tem ${this.idade} anos.`;
     }
 }
+
+const ana = new Pessoa("Ana", 17);
+console.log(ana.apresentar());
 ```
 
-**Ideia**: o **setter** bloqueia valores errados e o **getter** expõe o valor com segurança.
+### 1.2 O papel de `new`
 
-Um exemplo mais pratico e útil:
+`new Pessoa(...)`:
+
+1. cria um novo objeto;
+2. chama o `constructor`;
+3. liga `this` à nova instância;
+4. devolve a instância.
+
+### 1.3 Métodos vivem na classe
+
+Cada instância tem os seus dados, mas os métodos são partilhados pelo protótipo da classe.
 
 ```js
-class Conta_Bancaria {
-    #saldo = 0;
+const a = new Pessoa("Ana", 17);
+const b = new Pessoa("Bruno", 18);
 
-    depositar(valor) {
-        if (valor <= 0) throw new RangeError("Valor inválido.");
-        this.#saldo += valor;
-    }
-
-    levantar(valor) {
-        if (valor <= 0 || valor > this.#saldo)
-            throw new RangeError("Saldo insuficiente.");
-        this.#saldo -= valor;
-    }
-
-    get saldo() {
-        if (this.#saldo < 0) {
-            throw new Error("Erro: saldo negativo.");
-        }
-        return this.#saldo;
-    }
-    set saldo(v) {
-        throw new Error("Não podes definir o saldo diretamente.");
-    }
-}
+console.log(a.apresentar());
+console.log(b.apresentar());
 ```
 
----
+### 1.4 Erros comuns
 
-## 3) Encapsulamento: campos **privados `#`**
+- Esquecer `new`.
+- Tentar usar `this` antes de `super(...)` numa subclasse.
+- Colocar demasiada lógica dentro do `constructor`.
 
--   Um campo que começa por `#` é **privado**: **só** pode ser usado dentro da própria classe.
--   Ajuda a **proteger o estado** de alterações acidentais.
+### 1.5 Checkpoint
+
+- O que é uma instância?
+- Para que serve o `constructor`?
+- O que representa `this` dentro de um método de instância?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Encapsulamento com `#`, getters e setters
+
+### 2.1 Campo privado
+
+Campos começados por `#` só podem ser usados dentro da classe.
 
 ```js
 class Conta {
-    #saldo = 0; // começa a 0 e é privado
-    #registar(op, valor) {
-        /* guardar histórico internamente */
-    }
+    #saldo = 0;
 
-    depositar(v) {
-        if (v <= 0) throw new RangeError("valor inválido");
-        this.#saldo += v;
-        this.#registar("DEP", v);
-    }
-
-    levantar(v) {
-        if (v <= 0 || v > this.#saldo)
-            throw new RangeError("saldo insuficiente");
-        this.#saldo -= v;
-        this.#registar("LEV", v);
+    depositar(valor) {
+        if (valor <= 0) throw new RangeError("Valor inválido");
+        this.#saldo += valor;
     }
 
     get saldo() {
         return this.#saldo;
-    } // só leitura
+    }
 }
+
+const conta = new Conta();
+conta.depositar(50);
+console.log(conta.saldo); // 50
 ```
 
-> Em JS **não existe** o modificador “protegido” (protected). Se precisares que subclasses interajam, expõe **métodos públicos** específicos em vez de abrir o estado.
-
-> Se precisares **MESMO** de algo acessível só dentro da classe e subclasses, considera usar **WeakMap** ou **Symbol** (avançado, não é comum).
-
----
-
-## 4) Métodos e campos **estáticos** (da classe, não do objeto)
-
--   `static` vive na **classe**, não nas instâncias. Útil para **constantes** e **utilitários** comuns.
+### 2.2 Getter e setter
 
 ```js
-class Util {
-    static PI = 3.14159;
-    static clamp(v, min, max) {
-        return Math.min(max, Math.max(min, v));
+class Produto {
+    #preco;
+
+    constructor(nome, preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+
+    get preco() {
+        return this.#preco;
+    }
+
+    set preco(valor) {
+        if (typeof valor !== "number" || valor < 0) {
+            throw new RangeError("Preço inválido");
+        }
+
+        this.#preco = valor;
     }
 }
-console.log(Util.PI); // 3.14159
-console.log(Util.clamp(10, 0, 5)); // 5
 ```
 
-Também podem ser **privados** na classe:
+O setter valida antes de guardar.
+
+### 2.3 Encapsular não é esconder tudo
+
+Encapsular é controlar como o estado muda.
 
 ```js
-class Contador {
-    static #total = 0;
-    constructor() {
-        Contador.#total++;
-    }
-    static total() {
-        return Contador.#total;
-    }
-}
-new Contador();
-new Contador();
-console.log(Contador.total()); // 2
+produto.preco = 10; // usa o setter
 ```
 
----
+O exterior usa uma API simples; a classe protege as regras internas.
 
-## 5) Herança: `extends` e `super`
+### 2.4 Checkpoint
 
-Usa herança quando a relação é claramente **“é‑um”** (um Aluno **é uma** Pessoa).
+- Para que servem campos privados?
+- Qual é a vantagem de validar num setter?
+- Porque é que `get saldo()` pode expor leitura sem permitir escrita direta?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Métodos `static` e validação
+
+### 3.1 Métodos da classe
+
+`static` pertence à classe, não à instância.
+
+```js
+class Conversor {
+    static eurParaUsd(valor, taxa = 1.08) {
+        return valor * taxa;
+    }
+}
+
+console.log(Conversor.eurParaUsd(10));
+```
+
+### 3.2 Fábricas estáticas
+
+```js
+class Tarefa {
+    constructor(titulo, feito = false) {
+        this.titulo = titulo;
+        this.feito = feito;
+    }
+
+    static criarPorTitulo(titulo) {
+        if (titulo.trim() === "") {
+            throw new RangeError("Título em falta");
+        }
+
+        return new Tarefa(titulo.trim());
+    }
+}
+```
+
+### 3.3 Checkpoint
+
+- Porque é que `static` não precisa de instância?
+- Quando uma fábrica estática pode ser útil?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Herança vs composição
+
+### 4.1 Herança: relação “é um”
 
 ```js
 class Pessoa {
     constructor(nome) {
         this.nome = nome;
     }
+
     apresentar() {
         return `Sou ${this.nome}`;
     }
 }
 
-class Aluno extends Pessoa {
-    constructor(nome, turma) {
-        super(nome); // chama constructor da "Pessoa"
-        this.turma = turma;
+class Utilizador extends Pessoa {
+    constructor(nome, email) {
+        super(nome);
+        this.email = email;
     }
+
     apresentar() {
-        // sobrepõe e reutiliza
-        return `${super.apresentar()} e estou na turma ${this.turma}`;
+        return `${super.apresentar()} e uso ${this.email}`;
     }
 }
-
-const c = new Aluno("Carla", "11.º IG");
-console.log(c.apresentar());
 ```
 
-**Notas rápidas**
+Usa herança quando a subclasse pode ser usada no lugar da classe base sem surpresa.
 
--   Tem de chamar `super(...)` antes de usar `this` no `constructor`.
--   Podes chamar `super.metodo()` para **reaproveitar** lógica da classe‑pai.
-
----
-
-## 6) Composição (muitas vezes melhor que herança)
-
-Usa composição quando a relação é **“tem‑um”** (um Relógio **tem um** Temporizador).
+### 4.2 Composição: relação “tem um”
 
 ```js
 class Temporizador {
     #id = null;
-    start(ms, cb) {
-        this.stop();
-        this.#id = setInterval(cb, ms);
+
+    iniciar(ms, callback) {
+        this.parar();
+        this.#id = setInterval(callback, ms);
     }
-    stop() {
-        if (this.#id) {
+
+    parar() {
+        if (this.#id !== null) {
             clearInterval(this.#id);
             this.#id = null;
         }
@@ -237,164 +253,122 @@ class Temporizador {
 }
 
 class Relogio {
-    #t = new Temporizador();
-    #seg = 0;
+    #temporizador = new Temporizador();
+    #segundos = 0;
+
     iniciar() {
-        this.#t.start(1000, () => this.#seg++);
+        this.#temporizador.iniciar(1000, () => {
+            this.#segundos++;
+        });
     }
+
     parar() {
-        this.#t.stop();
+        this.#temporizador.parar();
     }
+
     get segundos() {
-        return this.#seg;
+        return this.#segundos;
     }
 }
 ```
 
-**Regra prática**
+Composição costuma ser mais flexível do que árvores grandes de herança.
 
--   **Herança**: quando a subclasse **cumpre o contrato** da classe‑base (se alguém pedir uma `Pessoa`, um `Aluno` serve sem surpresas).
--   **Composição**: quando queres **juntar capacidades** sem criar uma árvore de heranças difícil de manter.
+### 4.3 Checkpoint
 
----
+- Que pergunta ajuda a decidir herança?
+- Que pergunta ajuda a decidir composição?
+- Porque é que herança em excesso pode complicar um projeto?
 
-## 7) `this` em classes e callbacks
+<a id="sec-5"></a>
 
--   Dentro de um **método**, `this` é a **instância**.
--   Ao passar métodos como **callback** (ex.: para um evento), podes **perder** o `this`. Duas soluções comuns:
+## 5. [EXTRA] `this`, JSON, fábricas e diagnóstico
 
-**A) Fazer `bind` no constructor**
+### 5.1 `this` em callbacks
+
+Ao passar um método como callback, podes perder o `this`.
 
 ```js
-class Botao {
+class BotaoLogico {
     constructor() {
-        this.handleClick = this.handleClick.bind(this);
+        this.contador = 0;
     }
-    handleClick() {
-        console.log("this é a instância:", this);
-    }
+
+    clicar = () => {
+        this.contador++;
+    };
 }
 ```
 
----
+Campos com arrow function podem ser úteis quando o método vai ser usado como callback.
 
-## 8) JSON e classes (nota útil)
+### 5.2 JSON e classes
 
--   Converter para JSON **não inclui** métodos nem campos privados. Normalmente só os **dados públicos** são serializados.
--   Se precisares, cria um método que devolve um **objeto simples** pronto para `JSON.stringify`:
+`JSON.stringify` não guarda métodos nem campos privados.
 
 ```js
 class Pessoa {
+    #idade;
+
     constructor(nome, idade) {
         this.nome = nome;
         this.#idade = idade;
     }
-    // ...
+
     toJSON() {
-        return { nome: this.nome };
-    } // exemplo básico
+        return { nome: this.nome, idade: this.#idade };
+    }
 }
 ```
 
----
-
-## 9) Fábricas vs Classes (quando usar cada uma)
-
-**Fábrica**: função que devolve um objeto, muitas vezes com **estado privado por closure** (sem `new`).  
-**Classe**: quando queres **herdar**, usar **`instanceof`** e uma API de OOP clara para a turma.
+### 5.3 Fábrica sem classe
 
 ```js
-// FÁBRICA (leve, sem herança)
-function criarTermometro() {
-    let c = 20;
+function criarContador(inicial = 0) {
+    let valor = inicial;
+
     return {
-        aquecer() {
-            c++;
+        incrementar() {
+            valor++;
         },
-        arrefecer() {
-            c--;
-        },
-        get c() {
-            return c;
+        get valor() {
+            return valor;
         },
     };
 }
-
-// CLASSE (quando pedes OOP explícito)
-class Termometro {
-    #c = 20;
-    aquecer() {
-        this.#c++;
-    }
-    arrefecer() {
-        this.#c--;
-    }
-    get c() {
-        return this.#c;
-    }
-}
 ```
 
----
+Classes não são obrigatórias. Usa-as quando melhoram a estrutura.
 
-## 10) Boas práticas e armadilhas
+### 5.4 Diagnóstico rápido
 
--   **Valida** dados nos **setters** ou em métodos que mudam estado.
--   Usa **`#privado`** para proteger o que não deve ser alterado de fora.
--   **Não abuses** da herança; **composição** é mais flexível na maioria dos casos.
--   Lembra‑te do `new` ao criar instâncias (sem `new` não corre o `constructor`).
--   Em callbacks, **garante** o `this` (ver §7).
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| `this` é `undefined` | Método perdeu contexto | Usar chamada correta, `bind` ou arrow field |
+| Campo privado dá erro | Acesso fora da classe | Criar método/getter público |
+| `super` dá erro | Usado depois de `this` | Chamar `super(...)` primeiro |
+| JSON não inclui dados | Campos privados/métodos | Criar `toJSON()` |
+| Hierarquia confusa | Herança mal escolhida | Preferir composição |
 
----
+<a id="exercicios"></a>
 
-## 11) Dicionário rápido
+## Exercícios - Classes e POO
 
--   **Classe**: molde/receita de como os objetos são.
--   **Objeto/Instância**: “coisa” criada a partir da classe.
--   **Propriedade**: dado (ex.: `nome`).
--   **Método**: ação (ex.: `apresentar()`).
--   **Constructor**: função especial que corre ao criar um objeto.
--   **Getter/Setter**: ler/escrever com controlo/validação.
--   **`#privado`**: campo só acessível dentro da classe.
--   **`static`**: pertence à classe, não às instâncias.
--   **Herança**: uma classe “filha” aproveita e ajusta a lógica da “mãe”.
--   **Composição**: construir por peças (tem‑um).
+1. Cria `class Pessoa` com `nome`, `idade` e `apresentar()`.
+2. Cria `class Conta` com `#saldo`, `depositar`, `levantar` e `get saldo`.
+3. Cria `class Produto` com setter que rejeita preço negativo.
+4. Cria `class Conversor` com métodos `static` para EUR/USD e USD/EUR.
+5. Cria `class Tarefa` com fábrica estática `criarPorTitulo`.
+6. Cria uma herança simples `Pessoa -> Utilizador`.
+7. Cria uma composição em que `Relogio` usa internamente `Temporizador`.
+8. Adiciona `toJSON()` a uma classe com campos privados.
 
----
-
-## 12) Mini desafios
-
-1. **Saudação** - cria `class Saudacao` com `mensagem` no constructor e um método `falar()` que devolve `Olá + mensagem`. Instancia duas versões e mostra o texto no `console`.
-2. **Contador simples** - cria `class Contador` com uma propriedade `valor = 0` e um método `incrementar()` que soma 1. Mostra o valor após três chamadas.
-3. **Pessoa básica** - cria `class Pessoa` com `nome` e `apresentar()`. Cria 3 pessoas e imprime as apresentações.
-4. **Getter introdutório** - cria `class Termometro` com um campo privado `#celsius` e um getter `fahrenheit` que devolve `#celsius * 1.8 + 32`. Mostra ambos os valores.
-5. **Setter introdutório** - cria `class Produto` com `#preco` e um setter `preco` que rejeita valores negativos (lança `RangeError`). Usa o getter correspondente para ler o valor atual.
-6. **Validação** - cria `class Aluno` com `#nota` e um `set nota(v)` que só aceita 0–20 (lança `RangeError` caso contrário).
-7. **Conta bancária** - implementa `depositar`, `levantar` e `get saldo`; lança erro se tentar levantar mais do que o saldo.
-8. **Estáticos** - cria `class Conversor` com `static eurParaUsd(valor)` e `static usdParaEur(valor)` e usa-os em dois exemplos.
-9. **Herança** - `class Pessoa` → `class Professor` (com `disciplina`). Sobrepõe `apresentar()` para incluir a disciplina mas chama `super.apresentar()`.
-10. **Composição** - `class Relogio` que usa internamente `setInterval` para contar segundos e expõe `iniciar()`, `parar()` e `get segundos`.
-11. **JSON** - adiciona `toJSON()` a `class Aluno` para devolver `{ nome, turma }` e confirma com `JSON.stringify` que só esses campos aparecem.
-12. **Fábrica x Classe** - escreve uma função `criarContador()` (fábrica) e `class Contador`. Usa ambos para mostrar que guardam estado.
-
-## 13) Resumo final
-
--   **Classe** = molde; **objeto** = instância do molde.
--   **Encapsula** com `#privado` e valida com **getters/setters**.
--   Usa **`static`** para utilitários e informação da classe.
--   **Herança** só quando for claramente “**é‑um**”; caso contrário, **composição**.
--   Cuida do **`this`** quando passares métodos como callbacks.
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.4.0 - 2025-11-10**
-    -   Adicionados dois desafios introdutórios específicos para getters e setters antes do exercício de validação.
--   **v1.3.0 - 2025-11-10**
-    -   Mini desafios reorganizados para começarem com exercícios muito simples e progressivos (Saudação e Contador) antes dos tópicos avançados.
--   **v1.2.0 - 2025-11-10**
-    -   Mini desafios simplificados para focar em padrões básicos (classes, getters/setters, estáticos e herança direta).
--   **v1.1.0 - 2025-11-10**
-    -   Secção de desafios renomeada para Mini desafios para reforçar o caráter avançado.
-    -   Adicionado changelog inicial para registar futuras alterações no capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçada a diferença entre encapsulamento, herança e composição.
 
 ![Footer](../Images/Footer.png)

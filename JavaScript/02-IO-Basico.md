@@ -1,122 +1,291 @@
 ![Header](../Images/Header.png)
 
-# [2] Input/Output Básico (12.º ano)
+# JavaScript (12.º Ano) - 02 · Input/Output básico
 
-> **Objetivo**: mostrar informação (`output`) e recolher dados (`input`) tanto no browser como em Node.js, usando ferramentas simples e previsíveis.
-
----
-
-## 0) Onde está o nosso código?
-
--   **Browser** → usas a consola das DevTools (`F12` ou `Ctrl+Shift+I`) e tens `prompt/alert/confirm` à disposição.
--   **Node.js** → corres ficheiros `.js` no terminal. Não existe `prompt`, por isso usamos módulos como `readline`.
-
-Começa sempre por abrir a consola para veres erros e mensagens.
+> **Objetivo deste ficheiro**
+>
+> - Mostrar informação com `console`, `alert` e elementos HTML simples.
+> - Recolher dados no browser com `prompt` e `confirm`.
+> - Recolher dados em Node.js com `readline/promises`.
+> - Converter e validar entradas antes de as usar.
+> - Perceber diferenças entre browser e Node.
 
 ---
 
-## 1) Mostrar informação com `console.*`
+## Índice
 
-Muda o método consoante o tipo de mensagem.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Output: ver o que o programa está a fazer](#sec-1)
+- [2. [ESSENCIAL] Input no browser](#sec-2)
+- [3. [ESSENCIAL] Input em Node.js](#sec-3)
+- [4. [ESSENCIAL+] Validar entradas](#sec-4)
+- [5. [EXTRA] Pequenos padrões úteis](#sec-5)
+- [Exercícios - Input/Output básico](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Input/output é a primeira forma de perceber que o programa comunica com o exterior. O programa recebe dados, processa-os e mostra resultados.
+
+- **Núcleo do tema:** `console`, `prompt`, `confirm`, `alert` e `readline`.
+- **Aprofundamento:** validação e diferenças entre browser e Node.js.
+- **Ligação ao percurso:** validação de entradas volta a aparecer em formulários, APIs, DOM, Node e MongoDB.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Output: ver o que o programa está a fazer
+
+### 1.1 Modelo mental
+
+Output é tudo o que o programa mostra:
+
+- texto na consola;
+- caixas no browser;
+- conteúdo numa página;
+- resposta de uma API.
+
+Nos primeiros exercícios, a consola é o sítio mais rápido para observar dados.
+
+### 1.2 `console.*`
 
 ```js
-console.log("Olá, turma!"); // mensagem normal
-console.info("Versão", 1); // informação
-console.warn("Atenção!", dados); // aviso
-console.error("Ups, deu erro"); // erro
+console.log("Mensagem normal");
+console.info("Informação");
+console.warn("Aviso");
+console.error("Erro");
+
 console.table([
     { nome: "Ana", nota: 18 },
     { nome: "Bruno", nota: 9 },
-]); // tabela amigável
+]);
 ```
 
-> `console.table` é perfeito para arrays de objetos (notas, inventários, etc.).
+`console.table` é muito útil para arrays de objetos.
 
----
-
-## 2) Entrada no browser (`prompt`, `confirm`, `alert`)
-
--   `prompt(mensagem, valorInicial?)` → devolve **string** ou `null` (se clicares Cancelar).
--   `confirm(mensagem)` → devolve **boolean** (`true` se OK).
--   `alert(mensagem)` → só mostra texto.
+### 1.3 `alert`
 
 ```js
-const nome = prompt("Como te chamas?", "aluno");
-if (nome === null) {
-    alert("Operação cancelada");
+alert("Operação concluída");
+```
+
+`alert` interrompe a interação até a pessoa fechar a caixa. É útil em exemplos simples, mas em páginas reais costuma ser melhor mostrar mensagens no HTML.
+
+### 1.4 Erros comuns
+
+- Usar `console.log` para tudo e não distinguir avisos ou erros.
+- Deixar logs temporários espalhados num projeto final.
+- Tentar mostrar objetos complexos em `alert`; a consola é melhor para isso.
+
+### 1.5 Checkpoint
+
+- Quando é que `console.table` ajuda mais do que `console.log`?
+- Porque é que `alert` não é ideal para interfaces maiores?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Input no browser
+
+### 2.1 `prompt`
+
+`prompt` devolve sempre uma string ou `null` se for cancelado.
+
+```js
+const nome = prompt("Nome:");
+
+if (nome === null || nome.trim() === "") {
+    alert("Nome em falta");
 } else {
-    alert(`Olá, ${nome}!`);
+    alert(`Olá, ${nome.trim()}!`);
 }
 ```
 
-### Converter texto em números
-
-`prompt` devolve sempre texto. Converte com `Number`, `parseFloat` ou `parseInt` e valida com `Number.isNaN`.
+### 2.2 Converter números
 
 ```js
-const entrada = prompt("Indica um número para dobrar:");
-const numero = Number(entrada);
-if (Number.isNaN(numero)) {
-    alert("Isso não é número válido");
+const texto = prompt("Idade:");
+const idade = Number(texto);
+
+if (Number.isNaN(idade)) {
+    alert("Idade inválida");
 } else {
-    alert(`O dobro de ${numero} é ${numero * 2}`);
+    alert(`Daqui a um ano terás ${idade + 1}`);
 }
 ```
 
-### Caixa de confirmação
+`prompt` não sabe que queres um número. Tens de converter.
+
+### 2.3 `confirm`
 
 ```js
-if (confirm("Queres guardar?")) {
-    console.log("Guardado!");
+const querContinuar = confirm("Queres continuar?");
+
+if (querContinuar) {
+    console.log("A continuar");
 } else {
-    console.log("Operação cancelada");
+    console.log("Cancelado");
 }
 ```
 
----
+`confirm` devolve `true` ou `false`.
 
-## 3) Entrada simples em Node.js (`readline`)
+### 2.4 Checkpoint
 
-Para exercícios rápidos em Node, usa `readline`. Exemplo minimalista:
+- Que valor devolve `prompt` quando é cancelado?
+- Porque é que `Number(prompt(...))` pode produzir `NaN`?
+- O que devolve `confirm`?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Input em Node.js
+
+### 3.1 Browser vs Node
+
+No browser existem `prompt`, `alert` e `confirm`.
+
+Em Node.js, o programa corre no terminal. Para ler texto, usa-se o módulo nativo `readline/promises`.
+
+### 3.2 Exemplo completo
 
 ```js
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
 const rl = readline.createInterface({ input, output });
+
 const nome = await rl.question("Nome: ");
-console.log(`Olá, ${nome}!`);
+const idadeTexto = await rl.question("Idade: ");
+const idade = Number(idadeTexto);
+
+if (nome.trim() === "" || Number.isNaN(idade)) {
+    console.log("Dados inválidos");
+} else {
+    console.log(`${nome.trim()} tem ${idade} anos.`);
+}
+
 rl.close();
 ```
 
-> Node não suporta `prompt` nativamente; por isso recorremos a bibliotecas externas ou a este módulo da própria plataforma.
+Para este exemplo funcionar com `await` no topo, o ficheiro deve ser um módulo ES.
 
----
+### 3.3 Erros comuns
 
-## 4) Boas práticas para I/O nesta fase
+- Esquecer `rl.close()` e deixar o processo preso.
+- Usar `prompt` em Node.js.
+- Esquecer que tudo o que vem de `question(...)` é texto.
 
--   Prefere o **browser** nos primeiros exercícios: feedback imediato e menos configuração.
--   Converte entradas para o tipo certo logo após leres (números, booleanos, etc.).
--   Usa `console.log` para mensagens normais e `console.error` para erros; ajuda muito quando o projeto crescer.
--   Limpa `console.log` supérfluos antes de entregar trabalhos finais.
--   Nunca assumas que o utilizador escreveu algo válido - valida sempre.
+### 3.4 Checkpoint
 
----
+- Porque é que `readline/promises` devolve texto?
+- O que acontece se não fechares a interface `rl`?
 
-## 5) Exercícios
+<a id="sec-4"></a>
 
-1. Cria um pequeno script de browser que pergunta o primeiro e o último nome com `prompt` e mostra `alert("Olá, ...")` apenas se ambos não forem `null` nem vazios.
-2. Lê dois números com `prompt`, converte-os com `Number` e mostra a média com duas casas decimais (usa `toFixed`). Trata entradas inválidas com `alert`.
-3. Usa `confirm` para perguntar se o aluno quer receber notificações. Dependendo do resultado, escreve mensagens distintas no `console` e num `alert`.
-4. Constrói um mini menu em Node usando `readline` que pergunta “1) Somar 2) Dobrar”. Dependendo da resposta, pede outro valor e mostra o resultado antes de fechar a interface.
-5. Adiciona um exemplo com `console.table` para mostrar uma lista de alunos lida de um `prompt` (separados por vírgulas). Divide com `split` e mostra nome e comprimento.
-6. Em Node, usa `readline/promises` para perguntar email e senha, valida se a senha tem pelo menos 6 caracteres e mostra mensagens diferentes mantendo o terminal aberto até validares.
-7. Cria um snippet que lê um número e mostra no `console` o dobro, triplo e quadrado usando `console.group` para organizar as saídas.
+## 4. [ESSENCIAL+] Validar entradas
+
+### 4.1 Função reutilizável
+
+```js
+function lerNumero(texto) {
+    const numero = Number(texto);
+
+    if (texto === null || texto.trim() === "" || Number.isNaN(numero)) {
+        return null;
+    }
+
+    return numero;
+}
+
+const idade = lerNumero(prompt("Idade:"));
+
+if (idade === null) {
+    alert("Número inválido");
+} else {
+    alert(`Idade válida: ${idade}`);
+}
+```
+
+### 4.2 Separar ler, converter e decidir
+
+Uma forma limpa de pensar:
+
+```txt
+entrada -> conversão -> validação -> decisão -> output
+```
+
+Exemplo:
+
+```js
+const entrada = prompt("Nota:");
+const nota = lerNumero(entrada);
+
+if (nota === null || nota < 0 || nota > 20) {
+    alert("Nota inválida");
+} else if (nota >= 10) {
+    alert("Aprovado");
+} else {
+    alert("Reprovado");
+}
+```
+
+### 4.3 Checkpoint
+
+- Porque é útil criar `lerNumero`?
+- Que vantagens há em separar conversão e decisão?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Pequenos padrões úteis
+
+### 5.1 Agrupar saída na consola
+
+```js
+console.group("Resultado");
+console.log("Nome:", "Ana");
+console.log("Nota:", 18);
+console.groupEnd();
+```
+
+### 5.2 Mostrar listas
+
+```js
+const nomes = "Ana, Bruno, Carla"
+    .split(",")
+    .map((nome) => nome.trim())
+    .filter(Boolean);
+
+console.table(nomes.map((nome, indice) => ({ indice, nome })));
+```
+
+### 5.3 Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Resultado é `NaN` | Conversão falhou | Validar com `Number.isNaN` |
+| Nome vem com espaços | Entrada não foi aparada | Usar `.trim()` |
+| Node não termina | `rl.close()` em falta | Fechar a interface |
+| `prompt is not defined` | Código corre em Node | Usar `readline` |
+
+<a id="exercicios"></a>
+
+## Exercícios - Input/Output básico
+
+1. Pede primeiro e último nome com `prompt`. Mostra uma saudação apenas se ambos tiverem texto.
+2. Pede dois números, calcula a média e mostra o resultado com duas casas decimais.
+3. Usa `confirm` para perguntar se uma operação deve continuar e mostra mensagens diferentes.
+4. Cria `lerNumero(texto)` e usa-a para validar idade, nota e preço.
+5. Em Node.js, lê nome e idade com `readline/promises` e mostra uma frase final.
+6. Cria uma lista a partir de texto separado por vírgulas e mostra-a com `console.table`.
+7. Usa `console.group` para organizar a saída de um cálculo com dobro, triplo e quadrado.
+8. Escreve um pequeno menu em Node com as opções `1 - Somar`, `2 - Dobrar`, `3 - Sair`.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Acrescentados sete exercícios cobrindo browser e Node para treinar I/O.
-    -   Passa a existir secção de changelog para acompanhar futuras revisões.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçada a validação de entradas no browser e em Node.js.
 
 ![Footer](../Images/Footer.png)

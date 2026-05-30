@@ -1,145 +1,279 @@
 ![Header](../Images/Header.png)
 
-# [3] Operadores Essenciais (12.º ano)
+# JavaScript (12.º Ano) - 03 · Operadores essenciais
 
-> **Objetivo**: dominar as operações básicas de matemática, comparação e decisão em JavaScript usando uma linguagem clara e evitando armadilhas de coerção.
+> **Objetivo deste ficheiro**
+>
+> - Usar operadores aritméticos, de atribuição, comparação e lógica.
+> - Perceber coerção em expressões comuns.
+> - Escrever condições legíveis com `&&`, `||`, `!`, `??` e ternário.
+> - Reconhecer erros de precedência e comparação.
 
 ---
 
-## 0) Dica geral
+## Índice
 
-Quando a expressão ficar comprida, usa **parênteses** para mostrar a intenção. Torna o código mais legível e evita erros de precedência.
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Operadores aritméticos](#sec-1)
+- [2. [ESSENCIAL] Comparação e igualdade](#sec-2)
+- [3. [ESSENCIAL] Lógicos, curto-circuito e valores por defeito](#sec-3)
+- [4. [ESSENCIAL+] Precedência e expressões legíveis](#sec-4)
+- [5. [EXTRA] Diagnóstico rápido](#sec-5)
+- [Exercícios - Operadores essenciais](#exercicios)
+- [Changelog](#changelog)
 
----
+<a id="sec-0"></a>
 
-## 1) Aritmética do dia a dia
+## 0. Enquadramento do material
 
-Operadores principais: `+`, `-`, `*`, `/`, `%` (resto), `**` (potência).
+Operadores são as peças que ligam valores: somam, comparam, negam, escolhem e atribuem. São pequenos, mas definem a maior parte das decisões que o programa toma.
+
+- **Núcleo do tema:** aritmética, comparação e lógica.
+- **Aprofundamento:** curto-circuito, `??`, precedência e ternário.
+- **Ligação ao percurso:** operadores aparecem em condições, ciclos, validação, filtros e regras de negócio.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Operadores aritméticos
+
+### 1.1 Modelo mental
+
+Operadores são verbos curtos entre valores. Eles dizem ao JavaScript que operação deve acontecer:
+
+```txt
+valor operador valor -> resultado
+```
+
+Exemplo:
+
+```js
+2 + 3; // 5
+```
+
+### 1.2 Operações principais
 
 ```js
 5 + 2; // 7
 5 - 2; // 3
 5 * 2; // 10
 5 / 2; // 2.5
-7 % 3; // 1 (resto)
+7 % 3; // 1
 2 ** 3; // 8
 ```
 
-Notas rápidas:
-
--   `+` também concatena strings: `"5" + 2` → `"52"`.
--   `-`, `*`, `/` obrigam a coerção numérica: `"5" - 1` → `4`.
--   Potência é **associativa à direita**: `2 ** 3 ** 2` = `2 ** (3 ** 2)`.
--   Para números negativos com potência, usa parênteses: `(-3) ** 2`.
-
-Incrementos:
+`%` devolve o resto da divisão e é muito usado para descobrir pares:
 
 ```js
-let i = 0;
-i += 1; // preferido (mais legível)
-// ++i ou i++ também existem, mas evita em expressões complicadas.
+const numero = 8;
+const par = numero % 2 === 0;
 ```
 
----
+### 1.3 Coerção com `+`
 
-## 2) Atribuição com açúcar sintático
-
--   `=, +=, -=, *=, /=, %=, **=`
--   Lógicos modernos:
-    -   `||=` → só atribui se o valor atual for **falsy**.
-    -   `&&=` → só atribui se o valor atual for **truthy**.
-    -   `??=` → só atribui se for `null` ou `undefined`.
+O operador `+` também junta strings.
 
 ```js
-let paginas = 0;
-paginas ||= 1; // passa a 1 (0 é falsy)
-let nome;
-nome ??= "anónimo"; // undefined → "anónimo"
+"5" + 2; // "52"
+"5" - 2; // 3
+Number("5") + 2; // 7
 ```
 
-Usa `??=` quando quiseres preservar `0`, `""` e `false`.
+Quando a intenção é fazer contas, converte antes.
 
----
-
-## 3) Comparações (`<`, `>`, `===`, ...)
-
--   `===` e `!==` → comparação **estrita** (tipo + valor). Usa sempre que possível.
--   `==` e `!=` fazem coerção → evitamos.
--   Strings são comparadas alfabeticamente (`"Ana" < "Bruno"`).
+### 1.4 Atribuição curta
 
 ```js
-2 === "2"; // false
-2 == "2"; // true (coerção) ← evita
-"maçã" > "banana"; // false (ordem alfabética)
+let pontos = 10;
+
+pontos += 5; // pontos = pontos + 5
+pontos -= 2;
+pontos *= 3;
 ```
 
-Para comparar números especiais:
+Estas formas são úteis quando a variável depende do seu valor anterior.
+
+### 1.5 Checkpoint
+
+- Para que serve `%`?
+- Porque é que `"5" + 2` não devolve `7`?
+- Quando é que `+=` melhora a leitura?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] Comparação e igualdade
+
+### 2.1 Comparações numéricas
 
 ```js
-Number.isNaN(valor); // melhor forma de testar NaN
-Object.is(-0, 0); // false (distingue o sinal de zero)
+10 > 5; // true
+10 >= 10; // true
+3 < 2; // false
 ```
 
----
-
-## 4) Lógicos (`&&`, `||`, `!`) e curto-circuito
-
--   `A && B` devolve o primeiro falsy ou, se ambos forem truthy, devolve `B`.
--   `A || B` devolve o primeiro truthy; caso contrário devolve `B`.
--   `!A` inverte um booleano.
-
-```js
-const nome = entrada || "anónimo"; // se entrada for falsy, usa "anónimo"
-const paginas = entrada ?? 1; // preserva 0 e ""
-condicao && fazAlgo(); // só chama se condicao for truthy
-```
-
-> Guarda resultados em variáveis com nomes claros (`temAutorizacao`, `temSaldo`) para manter condições legíveis.
-
----
-
-## 5) Operador ternário
-
-Sintaxe: `condicao ? valorSeVerdade : valorSeFalso`.
+Em condições, guarda expressões importantes em variáveis com nomes claros.
 
 ```js
 const nota = 14;
+const aprovado = nota >= 10;
+```
+
+### 2.2 Igualdade estrita
+
+```js
+2 === "2"; // false
+2 !== "2"; // true
+```
+
+Evita `==` e `!=`, porque fazem coerção automática.
+
+```js
+"" == 0; // true, surpresa comum
+"" === 0; // false
+```
+
+### 2.3 Comparar strings
+
+```js
+"Ana" < "Bruno"; // true
+```
+
+Para ordenação com acentos, prefere `localeCompare`.
+
+```js
+["Élia", "Ana", "Álvaro"].sort((a, b) => a.localeCompare(b, "pt-PT"));
+```
+
+### 2.4 Erros comuns
+
+- Usar `=` dentro de uma condição quando querias comparar.
+- Usar `==` e não perceber que houve conversão.
+- Comparar strings como se fossem números.
+
+### 2.5 Checkpoint
+
+- Qual é a diferença entre `=` e `===`?
+- Porque é que `==` pode esconder bugs?
+- Como ordenas palavras com acentos?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Lógicos, curto-circuito e valores por defeito
+
+### 3.1 `&&`, `||` e `!`
+
+```js
+const idade = 18;
+const temDocumento = true;
+
+if (idade >= 18 && temDocumento) {
+    console.log("Pode avançar");
+}
+```
+
+- `&&` exige que tudo seja verdadeiro.
+- `||` aceita que pelo menos uma parte seja verdadeira.
+- `!` inverte.
+
+### 3.2 Curto-circuito
+
+```js
+const nome = "";
+const nomeVisivel = nome || "Sem nome";
+```
+
+`||` devolve o primeiro valor `truthy`. Isto é útil, mas pode ser perigoso com `0`, `""` ou `false`.
+
+### 3.3 `??`
+
+```js
+const pagina = 0;
+
+const paginaA = pagina || 1; // 1
+const paginaB = pagina ?? 1; // 0
+```
+
+`??` só troca quando o valor é `null` ou `undefined`.
+
+### 3.4 Ternário
+
+```js
 const estado = nota >= 10 ? "Aprovado" : "Reprovado";
 ```
 
-Ótimo para retornar um valor simples. Quando precisares de mais passos, volta ao bom e velho `if/else`.
+Usa ternário quando queres escolher um valor simples. Se houver várias instruções, usa `if/else`.
 
----
+### 3.5 Checkpoint
 
-## 6) Precedência (quem vem primeiro?)
+- Quando é que `&&` para de avaliar?
+- Porque é que `??` preserva `0`?
+- Quando é que o ternário deixa de ser boa opção?
 
-1. Parênteses `()`
-2. Potência `**`
-3. Negação `!` e sinais `+`/`-` unários
-4. Multiplicação/divisão/resto
-5. Soma/subtração
-6. Comparações
-7. Lógicos `&&` → depois `||`
-8. Ternário
+<a id="sec-4"></a>
 
-Usa parênteses sempre que a expressão possa gerar dúvidas.
+## 4. [ESSENCIAL+] Precedência e expressões legíveis
+
+### 4.1 Parênteses mostram intenção
 
 ```js
 2 + 3 * 4; // 14
 (2 + 3) * 4; // 20
-(a || b) && c; // força a tua ordem
 ```
 
----
+Em condições maiores, usa parênteses mesmo quando a linguagem não obriga.
 
-## 7) Exercícios
+```js
+const podeEntrar = (idade >= 18 && temDocumento) || temAutorizacao;
+```
 
-1. Calcula manualmente e confirma no `console` os resultados de `"7" - 2`, `"5" * 2`, `5 + "2"` e `Number("5") + 2`. Explica a coerção em cada caso.
+### 4.2 Dividir condições
+
+```js
+const temIdade = idade >= 18;
+const documentoValido = documento !== null && documento.ativo === true;
+
+if (temIdade && documentoValido) {
+    console.log("Entrada validada");
+}
+```
+
+Condições com nomes tornam o programa mais fácil de verificar.
+
+### 4.3 Checkpoint
+
+- Porque é que parênteses podem melhorar código mesmo quando não são obrigatórios?
+- Como podes simplificar uma condição muito comprida?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Resultado virou string | Uso de `+` com texto | Converter com `Number` |
+| Condição aceita valores estranhos | Uso de `==` | Trocar para `===` |
+| `0` vira valor por defeito | Uso de `||` | Usar `??` |
+| Expressão difícil de ler | Demasiados operadores juntos | Criar variáveis intermédias |
+| Resultado matemático inesperado | Precedência | Usar parênteses |
+
+<a id="exercicios"></a>
+
+## Exercícios - Operadores essenciais
+
+1. Calcula e confirma no `console`: `"7" - 2`, `"7" + 2`, `Number("7") + 2`.
+2. Cria uma função `ehPar(numero)` usando `%`.
+3. Escreve uma expressão que indique se uma nota está entre 0 e 20.
+4. Compara `"" == 0`, `"" === 0`, `false == 0` e `false === 0`. Comenta cada resultado.
+5. Cria `valorPorDefeito(valor)` que usa `??` para devolver `"N/D"` apenas quando o valor é `null` ou `undefined`.
+6. Reescreve uma condição longa dividindo-a em variáveis auxiliares.
+7. Usa ternário para devolver `"Aprovado"` ou `"Reprovado"` a partir de uma nota.
+8. Ordena uma lista de nomes com acentos usando `localeCompare("pt-PT")`.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Atualização da secção de Exercícios com sete propostas focadas em coerção e operadores lógicos.
-    -   Changelog adicionado para registar futuras evoluções do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçada a distinção entre coerção, igualdade estrita e valores por defeito.
 
 ![Footer](../Images/Footer.png)

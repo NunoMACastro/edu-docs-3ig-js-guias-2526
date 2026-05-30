@@ -1,149 +1,264 @@
 ![Header](../Images/Header.png)
 
-# [7] Arrays - Versão Didática (11.º ano)
+# JavaScript (12.º Ano) - 07 · Arrays
 
-> **Objetivo**: trabalhar listas ordenadas de valores, saber quando alterar o array original e quando criar cópias imutáveis, além de dominar métodos básicos usados todos os dias.
+> **Objetivo deste ficheiro**
+>
+> - Representar listas ordenadas com arrays.
+> - Ler, acrescentar, remover, procurar e copiar elementos.
+> - Distinguir métodos mutáveis de métodos que devolvem cópias.
+> - Evitar erros de índice, referência e mutação inesperada.
+> - Preparar a passagem para `map`, `filter`, `reduce` e outros métodos de alto nível.
 
 ---
 
-## 0) Relembrar: o que é um array?
+## Índice
 
--   Lista ordenada onde cada elemento tem um **índice** (começa em 0).
--   Guarda qualquer tipo: números, strings, objetos, outros arrays.
--   `length` diz-te quantos elementos existem (pode ser alterado, mas evita mexer diretamente).
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] O que é um array](#sec-1)
+- [2. [ESSENCIAL] Ler, alterar e percorrer](#sec-2)
+- [3. [ESSENCIAL] Métodos mutáveis e cópias](#sec-3)
+- [4. [ESSENCIAL+] Pesquisa e transformação inicial](#sec-4)
+- [5. [EXTRA] Diagnóstico rápido](#sec-5)
+- [Exercícios - Arrays](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Arrays são a estrutura base para listas: notas, produtos, tarefas, mensagens, resultados de APIs e elementos do DOM. Saber usá-los bem é essencial antes de entrar em métodos de alto nível e React.
+
+- **Núcleo do tema:** índices, `length`, percorrer, adicionar, remover e copiar.
+- **Aprofundamento:** mutação, imutabilidade e pesquisa.
+- **Ligação ao percurso:** arrays aparecem em funções, DOM, `fetch`, React e MongoDB.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] O que é um array
+
+### 1.1 Modelo mental
+
+Um array é uma lista ordenada. Cada posição tem um índice, começando em `0`.
 
 ```js
-const numeros = [10, 20, 30];
-console.log(numeros[0]); // 10
-console.log(numeros.length); // 3
+const notas = [12, 16, 9];
+
+console.log(notas[0]); // 12
+console.log(notas[1]); // 16
+console.log(notas.length); // 3
 ```
 
-Comparação é por **referência**: `[] === []` é `false` porque são caixas diferentes.
+```txt
+índice:  0   1   2
+valor:  12  16   9
+```
 
----
-
-## 1) Criar arrays de forma segura
+### 1.2 Criar arrays
 
 ```js
 const vazio = [];
+const nomes = ["Ana", "Bruno", "Carla"];
 const misto = [1, "dois", true];
-const copia = Array.of(1, 2, 3);
-const sequencia = Array.from({ length: 5 }, (_, i) => i + 1); // [1..5]
+const sequencia = Array.from({ length: 5 }, (_, i) => i + 1);
 ```
 
-Usa sempre o literal `[]` quando possível - é mais claro.
+Prefere `[]` para arrays escritos diretamente.
 
----
-
-## 2) Métodos que **alteram** o array (mutáveis)
-
-> Usa-os quando queres mesmo mudar a lista original.
-
--   `push` / `pop` → fim.
--   `unshift` / `shift` → início.
--   `splice(inicio, quantos, ...novos)` → remove/insere em qualquer posição.
--   `sort(compareFn)` → ordena (muta!).
--   `reverse()` → inverte (muta!).
--   `fill(valor, inicio?, fim?)` → preenche intervalo.
+### 1.3 Arrays são referências
 
 ```js
-const alunos = ["Ana", "Bruno"];
-alunos.push("Carla"); // ["Ana","Bruno","Carla"]
-alunos.splice(1, 1, "Bia"); // ["Ana","Bia","Carla"]
-const notas = [12, 5, 18];
-notas.sort((a, b) => a - b); // [5,12,18]
+const a = [1, 2];
+const b = a;
+
+b.push(3);
+
+console.log(a); // [1, 2, 3]
 ```
 
-> Quando ordenares strings com acentos, usa `localeCompare("pt")` na função de comparação.
+`a` e `b` apontam para o mesmo array.
 
----
+### 1.4 Checkpoint
 
-## 3) Métodos que devolvem **cópias** (imutáveis)
+- Qual é o índice do primeiro elemento?
+- O que significa `length`?
+- Porque é que alterar `b` também alterou `a`?
 
-> Ótimos quando queres preservar o array original e evitar efeitos inesperados.
+<a id="sec-2"></a>
 
--   `slice(inicio, fimExclusivo?)` → recorta sem alterar o original.
--   `concat(...itens)` → junta arrays/valores e devolve novo array.
--   `spread` `[...]` → cria cópias rápidas.
--   Versões modernas (`toSorted`, `toReversed`, `toSpliced`) fazem o mesmo que `sort/reverse/splice` mas devolvem cópia (Node 20+/browsers recentes).
+## 2. [ESSENCIAL] Ler, alterar e percorrer
+
+### 2.1 Ler e alterar por índice
+
+```js
+const tarefas = ["Estudar", "Praticar", "Rever"];
+
+tarefas[1] = "Resolver exercícios";
+console.log(tarefas);
+```
+
+Se leres fora do array:
+
+```js
+tarefas[99]; // undefined
+```
+
+### 2.2 Percorrer com `for...of`
+
+```js
+for (const tarefa of tarefas) {
+    console.log(tarefa);
+}
+```
+
+### 2.3 Índice e valor
+
+```js
+for (const [indice, tarefa] of tarefas.entries()) {
+    console.log(`${indice}: ${tarefa}`);
+}
+```
+
+### 2.4 Checkpoint
+
+- Como percorres valores sem precisar de índice?
+- Como obténs índice e valor ao mesmo tempo?
+
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Métodos mutáveis e cópias
+
+### 3.1 Métodos que alteram o original
+
+```js
+const nomes = ["Ana", "Bruno"];
+
+nomes.push("Carla"); // acrescenta no fim
+nomes.pop(); // remove do fim
+nomes.unshift("Rita"); // acrescenta no início
+nomes.shift(); // remove do início
+```
+
+`splice`, `sort` e `reverse` também alteram o array original.
+
+```js
+const numeros = [3, 1, 2];
+numeros.sort((a, b) => a - b);
+```
+
+### 3.2 Criar cópias
 
 ```js
 const base = [3, 1, 2];
-const ordenado = base.slice().sort((a, b) => a - b); // base intacto
-const comExtra = [...base, 4];
+const copia = [...base];
+const ordenado = [...base].sort((a, b) => a - b);
+
+console.log(base); // [3, 1, 2]
+console.log(ordenado); // [1, 2, 3]
 ```
 
-Se `toSorted` ainda não existir no ambiente dos alunos, a alternativa com `slice()` antes de `sort()` cria uma cópia antes da ordenação.
+### 3.3 Métodos modernos que devolvem cópias
 
----
-
-## 4) Procurar e verificar
-
--   `includes(valor)` → `true/false`.
--   `indexOf(valor)` / `lastIndexOf(valor)` → posição ou `-1`.
--   `find(callback)` → devolve o primeiro elemento que passa no teste.
--   `findIndex(callback)` → devolve o índice.
--   `some(callback)` → `true` se **algum** elemento passar.
--   `every(callback)` → `true` se **todos** passarem.
+Em ambientes recentes:
 
 ```js
-const alunos = [
-    { nome: "Ana", nota: 18 },
-    { nome: "Bruno", nota: 9 },
+const ordenado = base.toSorted((a, b) => a - b);
+const invertido = base.toReversed();
+```
+
+Se o ambiente não suportar estes métodos, usa `[...]` ou `slice()` antes do método mutável.
+
+### 3.4 Erros comuns
+
+- Usar `sort` sem função de comparação para números.
+- Pensar que `const arr = []` impede alterações internas.
+- Copiar com `const b = a` quando querias uma cópia independente.
+
+### 3.5 Checkpoint
+
+- Que métodos alteram o array original?
+- Como crias uma cópia antes de ordenar?
+- Porque é que `sort()` sozinho ordena números de forma estranha?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Pesquisa e transformação inicial
+
+### 4.1 Procurar valores simples
+
+```js
+const nomes = ["Ana", "Bruno", "Carla"];
+
+nomes.includes("Ana"); // true
+nomes.indexOf("Carla"); // 2
+```
+
+### 4.2 Procurar objetos
+
+```js
+const produtos = [
+    { id: 1, nome: "Caderno", preco: 2.5 },
+    { id: 2, nome: "Lápis", preco: 0.8 },
 ];
-alunos.find((a) => a.nota < 10); // { nome: "Bruno", nota: 9 }
-alunos.some((a) => a.nota >= 18); // true
+
+const produto = produtos.find((item) => item.id === 2);
 ```
 
----
-
-## 5) Transformar (provocação para o capítulo seguinte)
-
--   `map` → cria novo array transformando cada elemento.
--   `filter` → mantém apenas os que cumprem uma condição.
--   `reduce` → acumula num valor.
--   `flat` / `flatMap` → achatam arrays.
-
-Vamos aprofundar isto no capítulo `[8] Funções de Alto Nível`. Usa estes métodos sempre que quiseres evitar `for` manuais para tarefas simples.
-
----
-
-## 6) Desestruturação, `rest` e `spread`
+### 4.3 Preparação para `map` e `filter`
 
 ```js
-const [primeiro, segundo, ...resto] = [10, 20, 30, 40];
-// primeiro=10, segundo=20, resto=[30,40]
-const combinado = [0, ...resto, 50]; // [0,30,40,50]
+const numeros = [1, 2, 3, 4];
+const paresDobrados = [];
+
+for (const numero of numeros) {
+    if (numero % 2 === 0) {
+        paresDobrados.push(numero * 2);
+    }
+}
 ```
 
-Desestruturação permite extrair valores por posição com sintaxe concisa.
+No capítulo 11, esta lógica passa a:
 
----
+```js
+const paresDobrados = numeros.filter((n) => n % 2 === 0).map((n) => n * 2);
+```
 
-## 7) Boas práticas
+### 4.4 Checkpoint
 
--   Não uses `for...in` em arrays (pode trazer propriedades inesperadas). Prefere `for`, `for...of` ou métodos de array.
--   Nomeia claramente os arrays: `alunos`, `notas`, `carrinho`. Evita nomes genéricos como `arr` em código final.
--   Se precisares de partilhar um array entre várias funções/componentes, cria cópias imutáveis antes de mexer.
--   Lembra-te que `length = 0` apaga todo o conteúdo - usa apenas se souberes o que fazes.
+- Quando usas `find` em vez de `includes`?
+- Porque é que `filter` + `map` substitui alguns ciclos manuais?
 
----
+<a id="sec-5"></a>
 
-## 8) Exercícios
+## 5. [EXTRA] Diagnóstico rápido
 
-1. Cria uma função `adicionarAluno(lista, nome)` que devolve **novo** array com o nome no fim (não muta).
-2. Usa `splice` para inserir "EPMS" na posição 2 de `["11º", "Turma", "A"]` e explica o resultado passo a passo.
-3. A partir de `[5, 8, 12, 3]`, devolve um array com os números pares multiplicados por 10 (podes usar `for` ou já experimentar `filter` + `map`).
-4. Escreve um programa que pede 10 números ao utilizador, guarda‑os num array e depois mostra o maior e o menor valor inseridos.
-5. Ainda no array de números do exercício anterior, cria uma cópia ordenada sem alterar o original e mostra ambos.
-6. Ainda no array de números, verifica se todos são positivos e se algum é maior que 100.
-7. Usa `includes`, `indexOf` e `find` para procurar o aluno `"Ana"` numa lista de objetos `{ nome, nota }`. Comenta as diferenças.
-8. Desestrutura `["João", "Maria", "Ana", "Rui"]` para extrair o primeiro, o último e ficar com um array `resto` para o meio. Usa `spread` para construir um novo array `novoGrupo` começando por `"Prof."`.
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Valor é `undefined` | Índice não existe | Confirmar `length` |
+| Array original mudou | Método mutável | Criar cópia |
+| Números mal ordenados | `sort()` sem comparação | Usar `(a, b) => a - b` |
+| `[] === []` dá `false` | Referências diferentes | Comparar conteúdo |
+| Pesquisa em objetos falha | `includes` compara referência | Usar `find` |
+
+<a id="exercicios"></a>
+
+## Exercícios - Arrays
+
+1. Cria um array de tarefas e mostra cada tarefa com índice.
+2. Cria `adicionarTarefa(lista, tarefa)` que devolve um novo array sem alterar o original.
+3. Ordena `[5, 12, 1, 30]` corretamente sem alterar o array base.
+4. Usa `find` para procurar um produto por `id`.
+5. Verifica se todos os números de um array são positivos.
+6. Cria um novo array apenas com números pares dobrados usando ciclos.
+7. Demonstra a diferença entre `const copia = original` e `const copia = [...original]`.
+8. Remove uma tarefa por índice criando uma nova lista.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Secção de Exercícios expandida para sete desafios sobre mutação, cópia e pesquisa.
-    -   Changelog adicionado para manter histórico de alterações do capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçada a diferença entre mutação, cópia e referência.
 
 ![Footer](../Images/Footer.png)

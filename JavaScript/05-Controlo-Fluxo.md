@@ -1,20 +1,52 @@
 ![Header](../Images/Header.png)
 
-# [5] Estruturas de Controlo (12.º ano)
+# JavaScript (12.º Ano) - 05 · Controlo de fluxo
 
-> **Objetivo**: tomar decisões claras com `if`, `else`, `switch`, operadores lógicos e guard clauses sem cair em armadilhas de `truthy/falsy`.
-
----
-
-## 0) Como o JavaScript decide?
-
-Sempre que escreves `if (condicao)`, o motor converte o valor em **booleano**. Se for `true`, executa o bloco; caso contrário, ignora.
-
-Valores falsy: `0`, `-0`, `0n`, `""`, `null`, `undefined`, `NaN`. Todo o resto é truthy.
+> **Objetivo deste ficheiro**
+>
+> - Tomar decisões com `if`, `else if`, `else` e `switch`.
+> - Usar guard clauses para simplificar validações.
+> - Evitar armadilhas com `truthy/falsy`.
+> - Escolher entre `if`, `switch` e ternário.
+> - Escrever condições legíveis e fáceis de testar.
 
 ---
 
-## 1) `if / else if / else`
+## Índice
+
+- [0. Enquadramento do material](#sec-0)
+- [1. [ESSENCIAL] Decisões com `if/else`](#sec-1)
+- [2. [ESSENCIAL] `switch` e escolhas por casos](#sec-2)
+- [3. [ESSENCIAL] Guard clauses](#sec-3)
+- [4. [ESSENCIAL+] Condições legíveis](#sec-4)
+- [5. [EXTRA] Diagnóstico rápido](#sec-5)
+- [Exercícios - Controlo de fluxo](#exercicios)
+- [Changelog](#changelog)
+
+<a id="sec-0"></a>
+
+## 0. Enquadramento do material
+
+Controlo de fluxo é a capacidade de o programa escolher caminhos diferentes. Sem isto, o código corria sempre da mesma forma.
+
+- **Núcleo do tema:** `if`, `else`, `switch` e validações.
+- **Aprofundamento:** guard clauses e composição de condições.
+- **Ligação ao percurso:** estas decisões aparecem em ciclos, funções, formulários, APIs e tratamento de erros.
+
+<a id="sec-1"></a>
+
+## 1. [ESSENCIAL] Decisões com `if/else`
+
+### 1.1 Modelo mental
+
+Um `if` é uma pergunta:
+
+```txt
+se a condição for verdadeira -> corre este bloco
+caso contrário               -> segue outro caminho
+```
+
+### 1.2 Exemplo base
 
 ```js
 const nota = 14;
@@ -28,120 +60,229 @@ if (nota >= 18) {
 }
 ```
 
-Boas práticas:
+A ordem importa. O JavaScript testa de cima para baixo e pára quando encontra a primeira condição verdadeira.
 
--   Usa `{}` mesmo em blocos curtos (evita erros quando adicionas linhas).
--   Divide condições complexas em variáveis auxiliares (`const maiorIdade = idade >= 18`).
--   Compara com `===` quando esperas valores específicos.
-
----
-
-## 2) `switch` para muitos casos do mesmo valor
-
-Perfeito quando compares um único valor com várias opções.
+### 1.3 Validação antes de classificar
 
 ```js
-const fruta = "maçã";
-switch (fruta) {
-    case "maçã":
-    case "pera":
-        console.log("Fruta comum");
-        break; // impede que continue a executar os outros casos
-    case "kiwi":
-        console.log("Exótico");
+function classificarNota(nota) {
+    if (typeof nota !== "number" || Number.isNaN(nota)) {
+        return "Nota não numérica";
+    }
+
+    if (nota < 0 || nota > 20) {
+        return "Nota fora do intervalo";
+    }
+
+    if (nota >= 18) return "Excelente";
+    if (nota >= 10) return "Aprovado";
+    return "Reprovado";
+}
+```
+
+### 1.4 Erros comuns
+
+- Escrever condições na ordem errada.
+- Usar `if (valor)` quando `0` ou `""` são valores válidos.
+- Esquecer `{}` e criar bugs ao acrescentar linhas.
+
+### 1.5 Checkpoint
+
+- Porque é que a ordem dos `else if` importa?
+- Quando é que `if (valor)` pode ser perigoso?
+
+<a id="sec-2"></a>
+
+## 2. [ESSENCIAL] `switch` e escolhas por casos
+
+### 2.1 Quando usar
+
+`switch` funciona bem quando comparas **o mesmo valor** contra vários casos.
+
+```js
+const opcao = "listar";
+
+switch (opcao) {
+    case "listar":
+        console.log("A listar dados");
+        break;
+    case "criar":
+        console.log("A criar registo");
+        break;
+    case "sair":
+        console.log("A sair");
         break;
     default:
-        console.log("Outra fruta");
+        console.log("Opção inválida");
 }
 ```
 
-> Agrupa casos seguidos sem `break` para partilharem o mesmo resultado.
+### 2.2 `break`
 
-Quando precisas de intervalos, podes usar `switch(true)` como alternativa a vários `if/else`, mas mantém o código simples.
-
----
-
-## 3) Lidar com `truthy` e `falsy`
-
-Nunca uses apenas `if (valor)` se `0`, `""` ou `false` forem válidos nos teus dados.
+Sem `break`, a execução continua para o caso seguinte.
 
 ```js
-const paginas = 0;
-const pagInseguro = paginas || 1; // dá 1, porque 0 é falsy
-const pagSeguro = paginas ?? 1; // dá 0, porque só troca quando é null/undefined
-```
-
-Quando validas entradas, prefere verificações explícitas:
-
-```js
-if (valor === null || valor === undefined) {
-    console.log("Valor em falta");
+switch ("a") {
+    case "a":
+        console.log("A");
+        break;
+    case "b":
+        console.log("B");
+        break;
 }
 ```
 
----
-
-## 4) Guard clauses (saídas rápidas)
-
-Evita criar escadas de `if` aninhados. Valida cedo e faz `return` quando algo não cumpre os requisitos.
+### 2.3 Agrupar casos
 
 ```js
-function classificarIdade(idade) {
-    if (idade == null) return "Sem idade";
-    if (typeof idade !== "number" || Number.isNaN(idade)) return "Não numérico";
-    if (idade < 0) return "Idade inválida";
-    if (idade < 18) return "Menor";
-    return "Maior";
+const dia = "sábado";
+
+switch (dia) {
+    case "sábado":
+    case "domingo":
+        console.log("Fim de semana");
+        break;
+    default:
+        console.log("Dia útil");
 }
 ```
 
-Lê-se como uma lista de regras, fácil de seguir.
+### 2.4 Checkpoint
 
----
+- Em que situação `switch` é mais claro do que vários `if`?
+- Para que serve `default`?
+- O que acontece se esqueceres `break`?
 
-## 5) Compor condições com `&&` e `||`
+<a id="sec-3"></a>
+
+## 3. [ESSENCIAL] Guard clauses
+
+### 3.1 Modelo mental
+
+Guard clauses são saídas rápidas. Em vez de criar muitos blocos aninhados, validas cedo e sais.
 
 ```js
-const temAut = encarregado?.assinou === true;
-const maior = idade >= 18;
+function calcularDesconto(preco, percentagem) {
+    if (typeof preco !== "number" || Number.isNaN(preco)) return null;
+    if (typeof percentagem !== "number" || Number.isNaN(percentagem)) return null;
+    if (preco < 0) return null;
+    if (percentagem < 0 || percentagem > 100) return null;
 
-if ((maior && escolaAberta) || (temAut && acompanhado)) {
-    console.log("Pode entrar");
+    return preco * (1 - percentagem / 100);
 }
 ```
 
--   `&&` precisa que **tudo** seja verdadeiro.
--   `||` aceita que **pelo menos um** seja verdadeiro.
--   Usa parênteses para clarificar o agrupamento.
+### 3.2 Antes e depois
 
----
-
-## 6) Ternário (quando devolver um valor)
+Código muito aninhado:
 
 ```js
-const nota = 18;
-const conceito =
-    nota >= 18 ? "Excelente" : nota >= 10 ? "Aprovado" : "Reprovado";
+function podeComprar(preco, saldo) {
+    if (preco > 0) {
+        if (saldo >= preco) {
+            return true;
+        }
+    }
+
+    return false;
+}
 ```
 
-Dica: se o ternário tiver de fazer duas ou mais instruções, volta ao `if/else`. Vários ternários alinhados funcionam, mas usa quebras de linha para manter a leitura.
+Com guard clauses:
 
----
+```js
+function podeComprar(preco, saldo) {
+    if (preco <= 0) return false;
+    if (saldo < preco) return false;
+    return true;
+}
+```
 
-## 7) Exercícios
+### 3.3 Checkpoint
 
-1. Constrói um programa que lê a média de um aluno e imprime "Excelente", "Aprovado" ou "Reprovado" usando `if/else if/else`. Depois reescreve com ternário.
-2. Cria um `switch` que recebe o número do mês e devolve a estação do ano. Mostra exemplo com dois meses diferentes.
-3. Pede duas notas via `prompt`, valida se são números e usa guard clauses numa função `classificarMedia` para devolver mensagens diferentes.
-4. Implementa um programa que pede a temperatura da água e diz se está congelada, fria, morna, quente ou a ferver usando `if/else if` e depois com `switch(true)`.
-5. Escreve `avaliarFormulario(campos)` que recebe um objeto com `nome`, `idade`, `email` e devolve a primeira mensagem de erro usando guard clauses.
-6. Cria um `switch(true)` que classifica temperaturas: `<0`, `0-15`, `16-25`, `>25`. Relata resultados com `console.log`.
-7. Simula um menu textual (`prompt`) onde o utilizador escolhe `1` para consultar saldo, `2` para depositar, `3` para sair. Usa `switch` e repete até escolher sair.
+- Porque é que guard clauses reduzem aninhamento?
+- Em que zona da função costumam aparecer?
+
+<a id="sec-4"></a>
+
+## 4. [ESSENCIAL+] Condições legíveis
+
+### 4.1 Nomear partes da condição
+
+```js
+const emailValido = email.includes("@") && email.includes(".");
+const senhaValida = senha.length >= 8;
+
+if (emailValido && senhaValida) {
+    console.log("Formulário válido");
+}
+```
+
+Nomes claros transformam lógica em frases.
+
+### 4.2 Ternário para escolher valores
+
+```js
+const estado = nota >= 10 ? "Aprovado" : "Reprovado";
+```
+
+Usa ternário para valores simples. Para fluxos com vários passos, usa `if/else`.
+
+### 4.3 `switch(true)` com cuidado
+
+```js
+const temperatura = 22;
+
+switch (true) {
+    case temperatura < 0:
+        console.log("Gelo");
+        break;
+    case temperatura < 18:
+        console.log("Frio");
+        break;
+    default:
+        console.log("Agradável");
+}
+```
+
+É possível, mas muitas vezes `if/else if` fica mais natural.
+
+### 4.4 Checkpoint
+
+- Como podes tornar uma condição longa mais legível?
+- Quando é que o ternário é uma boa escolha?
+
+<a id="sec-5"></a>
+
+## 5. [EXTRA] Diagnóstico rápido
+
+| Sintoma | Causa provável | Solução |
+| ------- | -------------- | ------- |
+| Código entra no ramo errado | Ordem dos `if` incorreta | Testar casos limite |
+| `0` é tratado como vazio | Uso de `if (valor)` | Comparação explícita |
+| `switch` executa vários casos | `break` em falta | Adicionar `break` |
+| Função difícil de ler | Muitos níveis de `if` | Usar guard clauses |
+| Ternário ilegível | Lógica demasiado grande | Trocar para `if/else` |
+
+<a id="exercicios"></a>
+
+## Exercícios - Controlo de fluxo
+
+1. Cria `classificarNota(nota)` com validação e mensagens para inválida, reprovado, aprovado e excelente.
+2. Cria um `switch` para opções de menu: `listar`, `criar`, `editar`, `sair`.
+3. Reescreve uma função com vários `if` aninhados usando guard clauses.
+4. Cria `validarEmail(email)` com regras simples: não vazio, inclui `@`, inclui `.`, mínimo de 6 caracteres.
+5. Usa ternário para escolher uma etiqueta de estado a partir de `feito === true`.
+6. Cria um programa que classifica temperatura com `if/else if`.
+7. Repete a classificação da temperatura com `switch(true)` e compara a leitura.
+8. Cria um objeto `campos` com `nome`, `idade` e `email`; devolve a primeira mensagem de erro encontrada.
+
+<a id="changelog"></a>
 
 ## Changelog
 
--   **v1.1.0 - 2025-11-10**
-    -   Exercícios reformulados com sete propostas progressivas sobre decisões e guard clauses.
-    -   Changelog introduzido para documentar atualizações no capítulo.
+- **v2.0.0 - 2026-05-30**
+    - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
+    - Reforçados guard clauses, validação explícita e diagnóstico de condições.
 
 ![Footer](../Images/Footer.png)
