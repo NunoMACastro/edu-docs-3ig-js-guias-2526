@@ -10,24 +10,24 @@ Este repositório reúne materiais de apoio ao estudo de Programação no 12.º 
 
 ## Mapa do repositório
 
-| Pasta | O que se aprende aqui |
-| ----- | --------------------- |
-| [`Git/`](Git/) | Primeiros comandos de Git e um template de `.gitignore` para projetos das aulas. |
-| [`JavaScript/`](JavaScript/) | 17 capítulos para consolidar fundamentos, funções, arrays, objetos, módulos, DOM e código assíncrono. |
-| [`Node/`](Node/) | Percurso de Node.js e Express com 15 guias em Markdown e 1 guia JS de apoio. |
-| [`MongoDB/`](MongoDB/) | 8 capítulos sobre Atlas, modelação de dados, CRUD, Node driver, Mongoose, agregações e validação. |
-| [`React/`](React/) | 17 capítulos para aprender React de forma progressiva, desde componentes até organização de projetos. |
-| [`React/Fichas/`](React/Fichas/) | 9 fichas práticas para aplicar React em pequenos projetos guiados. |
-| [`React/Fichas/Dev/`](React/Fichas/Dev/) | Projetos de apoio usados nas fichas práticas. |
-| [`Fullstack/`](Fullstack/) | Materiais para ligar React, Express e MongoDB num mesmo projeto. |
-| [`Fullstack/Dev/`](Fullstack/Dev/) | Projeto de desenvolvimento usado como apoio ao módulo fullstack. |
-| [`Documentacao/`](Documentacao/) | 9 capítulos para aprender a explicar, justificar e documentar projetos de software. |
-| [`Documentacao/Exemplos/`](Documentacao/Exemplos/) | Modelos de documentação que os alunos podem adaptar aos seus projetos. |
-| [`Images/`](Images/) | Imagens usadas como cabeçalho e rodapé dos materiais. |
+| Pasta                                              | O que se aprende aqui                                                                                 |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [`Git/`](Git/)                                     | Primeiros comandos de Git e um template de `.gitignore` para projetos das aulas.                      |
+| [`JavaScript/`](JavaScript/)                       | 17 capítulos para consolidar fundamentos, funções, arrays, objetos, módulos, DOM e código assíncrono. |
+| [`Node/`](Node/)                                   | Percurso de Node.js e Express com 15 guias em Markdown e 1 guia JS de apoio.                          |
+| [`MongoDB/`](MongoDB/)                             | 8 capítulos sobre Atlas, modelação de dados, CRUD, Node driver, Mongoose, agregações e validação.     |
+| [`React/`](React/)                                 | 17 capítulos para aprender React de forma progressiva, desde componentes até organização de projetos. |
+| [`React/Fichas/`](React/Fichas/)                   | 9 fichas práticas para aplicar React em pequenos projetos guiados.                                    |
+| [`React/Fichas/Dev/`](React/Fichas/Dev/)           | Projetos de apoio usados nas fichas práticas.                                                         |
+| [`Fullstack/`](Fullstack/)                         | Materiais para ligar React, Express e MongoDB num mesmo projeto.                                      |
+| [`Fullstack/Dev/`](Fullstack/Dev/)                 | Projeto de desenvolvimento usado como apoio ao módulo fullstack.                                      |
+| [`Documentacao/`](Documentacao/)                   | 9 capítulos para aprender a explicar, justificar e documentar projetos de software.                   |
+| [`Documentacao/Exemplos/`](Documentacao/Exemplos/) | Modelos de documentação que os alunos podem adaptar aos seus projetos.                                |
+| [`Images/`](Images/)                               | Imagens usadas como cabeçalho e rodapé dos materiais.                                                 |
 
 ---
 
-## Percurso de aprendizagem sugerido
+## Percurso
 
 1. [`Git/`](Git/) para criar uma base de trabalho organizada.
 2. [`JavaScript/`](JavaScript/) para consolidar a linguagem antes de avançar para frameworks.
@@ -186,13 +186,5 @@ Este repositório reúne materiais de apoio ao estudo de Programação no 12.º 
 - [AI_CONTRACTS](Documentacao/Exemplos/AI_CONTRACTS.md)
 - [AI_TESTING](Documentacao/Exemplos/AI_TESTING.md)
 - [AI_CHANGELOG](Documentacao/Exemplos/AI_CHANGELOG.md)
-
----
-
-## Preparação para as aulas
-
-- Browser atualizado com DevTools.
-- Node.js LTS com npm.
-- Editor de código, como VS Code ou equivalente.
 
 ![Footer](Images/Footer.png)
