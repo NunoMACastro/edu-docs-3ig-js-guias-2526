@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Migração da Pokédex Explorer (Tutorial 02 - Parte I) para Pokédex v2 com Router (Tutorial 02 - Parte 2) (12.º ano)
 
 Este tutorial **continua diretamente a Ficha 3**.
@@ -3262,3 +3264,5 @@ Nesta transição, o que muda primeiro é a **pasta mãe** (`frontend/`), não a
 ---
 
 Fim.
+
+![Footer](../../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação de Dados
 
 ## Entidades
@@ -50,3 +52,5 @@
 ## Notas
 
 - Se mudares campos, atualiza `API.md` e `TESTES.md`.
+
+![Footer](../../Images/Footer.png)

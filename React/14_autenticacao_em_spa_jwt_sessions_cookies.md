@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 14 · Autenticação em SPA: JWT, Sessions e Cookies
 
 > **Objetivo deste ficheiro**
@@ -724,3 +726,5 @@ Porque:
 ## Changelog
 
 - 2026-01-27: reescrita para nível de detalhe do ficheiro 08 (mapas mentais, comparação de abordagens, cookies por dentro, CSRF, CORS com credenciais, e implementação prática com React + Axios + Express).
+
+![Footer](../Images/Footer.png)

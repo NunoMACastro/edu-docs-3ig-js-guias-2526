@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AI_LIMITS.md
 
 Não alterar:
@@ -11,3 +13,5 @@ Não fazer:
 - Reorganizar estrutura sem pedido
 - Deixar placeholders por preencher
 - Inventar endpoints/campos sem confirmar
+
+![Footer](../../Images/Footer.png)

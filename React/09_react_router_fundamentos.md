@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 09 · React Router (fundamentos)
 
 > **Objetivo deste ficheiro**
@@ -724,3 +726,5 @@ src/
 - 2026-01-11: criação do ficheiro.
 - 2026-01-12: exemplos básicos com Routes/Route e navegação com Link.
 - 2026-01-26: reescrita com modelo mental de SPA, setup mais claro, Link/NavLink com `isActive`, `useNavigate`, layout com Outlet, rota 404 e nota sobre refresh em produção.
+
+![Footer](../Images/Footer.png)

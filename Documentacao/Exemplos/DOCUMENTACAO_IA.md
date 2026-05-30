@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação para Agentes de IA
 
 ## Objetivo
@@ -39,3 +41,5 @@ AI_CONTRACTS.md e AI_TESTING.md são resumos e devem ser atualizados quando a fo
 - Se faltar contexto, pedir esclarecimento.
 - Declarar suposições quando não houver informação.
 - Não inventar endpoints ou campos.
+
+![Footer](../../Images/Footer.png)

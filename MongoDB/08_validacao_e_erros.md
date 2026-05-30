@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 08 · Validação e erros
 
 > **Objetivo deste ficheiro**
@@ -155,3 +157,5 @@ Objetivo: frontend nunca ter de adivinhar formato de erro.
 ## Changelog
 
 - 2026-04-17: capítulo criado (validação, mapeamento de erros e contrato de erro).
+
+![Footer](../Images/Footer.png)

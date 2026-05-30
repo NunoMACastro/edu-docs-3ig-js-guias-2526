@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 12 · Context API e estado global
 
 > **Objetivo deste ficheiro**
@@ -600,3 +602,5 @@ Permissões reais (segurança) são validadas no backend.
     - hook personalizado (`useTheme`) como padrão recomendado
     - secção de diagnóstico e anti-padrões
     - mini-exemplo de `useReducer` + Context
+
+![Footer](../Images/Footer.png)

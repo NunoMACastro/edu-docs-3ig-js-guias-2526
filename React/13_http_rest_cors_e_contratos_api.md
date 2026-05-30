@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 13 · HTTP, REST, CORS e contratos de API
 
 > **Objetivo deste ficheiro**
@@ -884,3 +886,5 @@ Checklist:
     - preflight (OPTIONS) e quando aparece
     - introdução a Axios e onde faz sentido encaixar no curso
     - secção de diagnóstico rápido + exercícios mais completos
+
+![Footer](../Images/Footer.png)

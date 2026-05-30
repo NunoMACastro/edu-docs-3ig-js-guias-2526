@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Quiz Game: Jogo de Perguntas (Ficha React 12.º ano)
 
 Esta ficha guia-te na construção de uma pequena app React em formato de jogo.
@@ -3588,3 +3590,5 @@ Antes de entregar, volta aos JSDoc e melhora-os. A qualidade dos JSDoc conta: el
 Prazo de entrega do repositório: **18/05 às 23:55**.
 
 O objetivo não é decorar hooks. O objetivo é perceber quando cada ferramenta faz sentido.
+
+![Footer](../../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 17 · Organização, boas práticas e mini-projeto guiado
 
 > **Objetivo deste ficheiro**
@@ -646,3 +648,5 @@ useEffect(() => {
 - 2026-01-11: criação dos ficheiros originais (Organização e Mini-projeto).
 - 2026-01-12: mini-projeto detalhado com checkpoints e milestones opcionais.
 - 2026-01-27: merge dos ficheiros 13 e 14 num único ficheiro (novo nº 17).
+
+![Footer](../Images/Footer.png)

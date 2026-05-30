@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 01) Módulos: ES Modules vs CommonJS
 
 -   ESM (moderno): import ... from '...' e export.
@@ -100,3 +102,5 @@ async function carregarAdmin() {
 -   **v1.1.0 - 2025-11-10**
     -   Acrescentadas explicações sobre a diferença histórica entre CommonJS e ES Modules, tipos de export e top-level await.
     -   Incluído checklist para depurar imports e secção de changelog.
+
+![Footer](../Images/Footer.png)

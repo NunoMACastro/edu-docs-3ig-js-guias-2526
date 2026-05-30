@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 10) Variáveis de ambiente e 12-Factor
 
 Variáveis de ambiente são pares chave-valor que o sistema operativo disponibiliza para o teu programa. Em Node.js, acedes a elas através de `process.env`.
@@ -70,3 +72,5 @@ export const config = Object.freeze({
 -   **v1.1.0 - 2025-11-10**
     -   Explicadas as vantagens de `.env`, criado plano de aula e exercício guiado.
     -   Adicionada secção de changelog.
+
+![Footer](../Images/Footer.png)

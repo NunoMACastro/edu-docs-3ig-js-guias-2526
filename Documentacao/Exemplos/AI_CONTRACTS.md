@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AI_CONTRACTS.md
 
 Fonte: API.md
@@ -25,3 +27,5 @@ Exemplo (erro):
 ```json
 { "error": { "code": "VALIDATION_ERROR", "message": "Título obrigatório", "details": ["titulo"] } }
 ```
+
+![Footer](../../Images/Footer.png)

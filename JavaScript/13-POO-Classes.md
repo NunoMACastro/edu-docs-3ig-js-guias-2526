@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # [13] Classes e OOP (12.º ano)
 
 > **Objetivo**: entender, com linguagem simples e muitos exemplos, o que são **classes** e **objetos** em JavaScript, como usar **constructor**, **métodos**, **getters/setters**, **campos privados `#`**, **métodos/variáveis estáticas**, **herança (`extends/super`)**, e quando faz sentido **preferir composição**. No fim tens desafios para praticar.
@@ -394,3 +396,5 @@ class Termometro {
 -   **v1.1.0 - 2025-11-10**
     -   Secção de desafios renomeada para Mini desafios para reforçar o caráter avançado.
     -   Adicionado changelog inicial para registar futuras alterações no capítulo.
+
+![Footer](../Images/Footer.png)

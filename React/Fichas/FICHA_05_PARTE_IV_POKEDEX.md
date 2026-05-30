@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Pokédex v4 (Tutorial 02 - Parte 4) (12.º ano)
 
 Esta é a Tutorial 02 - Parte 4.
@@ -2895,3 +2897,5 @@ Item checklist + teste executado + resultado observado + estado final.
 - [ ] Testes manuais fim-a-fim executados com sucesso.
 
 Se tudo estiver marcado, a Tutorial 02 - Parte 4 está concluída e consistente com a Tutorial 02 - Parte 3.
+
+![Footer](../../Images/Footer.png)

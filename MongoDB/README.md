@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB - Materiais Didáticos (12.º Ano)
 
 Conjunto de materiais em Markdown para aprender MongoDB com foco prático em APIs Node/Express e integração fullstack.
@@ -43,3 +45,5 @@ Conjunto de materiais em Markdown para aprender MongoDB com foco prático em API
 ## Changelog
 
 - 2026-04-17: módulo recriado com 8 capítulos e alinhamento curricular com Node/React/Fullstack.
+
+![Footer](../Images/Footer.png)

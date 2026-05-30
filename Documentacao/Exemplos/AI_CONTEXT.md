@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AI_CONTEXT.md
 
 Contexto do projeto:
@@ -16,3 +18,5 @@ Limites:
 - Não renomear ficheiros
 - Não mudar numeração
 - Não criar ficheiros novos sem pedido
+
+![Footer](../../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AI_TESTING.md
 
 Fonte: TESTES.md
@@ -13,3 +15,5 @@ Validação manual:
 - GET /api/tarefas devolve { items, page, limit, total }
 - POST /api/tarefas sem título -> 422
 - Status codes corretos + erro no formato padrão
+
+![Footer](../../Images/Footer.png)

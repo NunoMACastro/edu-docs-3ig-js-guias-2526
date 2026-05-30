@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 01 · Visão geral
 
 > **Objetivo deste ficheiro**
@@ -183,3 +185,5 @@ Vais comparar o que é "suficiente" com o que é "excelente". Isto ajuda-te a ge
 -   2026-01-14: expansão pedagógica com explicações e exemplos detalhados.
 -   2026-01-14: estruturas mínima e completa de documentação profissional.
 -   2026-01-14: regras para evitar doc drift e ligações entre docs.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js - Materiais Didáticos (12.º Ano)
 
 Conjunto de materiais em Markdown para o módulo de React.js.
@@ -64,3 +66,5 @@ npm run dev
 - [15 - Upload, paginação, filtros e cliente de API](15_upload_paginacao_filtros_e_cliente_api.md)
 - [16 - Qualidade profissional: TypeScript, testes e tooling](16_qualidade_profissional_tooling_testes_typescript.md)
 - [17 - Organização, boas práticas e mini-projeto guiado](17_organizacao_boas_praticas_e_miniprojeto_guiado.md)
+
+![Footer](../Images/Footer.png)

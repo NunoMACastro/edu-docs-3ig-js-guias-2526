@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Fullstack (12.º Ano) - 03 · Setup e correr os 3 juntos
 
 > **Objetivo deste ficheiro**
@@ -189,3 +191,5 @@ export default defineConfig({
 
 -   2026-01-14: criação do ficheiro com setup fullstack.
 -   2026-01-14: cookies/credentials, proxy e exercícios guiados.
+
+![Footer](../Images/Footer.png)

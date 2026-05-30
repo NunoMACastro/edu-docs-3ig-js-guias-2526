@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Pokédex v3 com Backend + Context (Tutorial 02 - Parte 3) (12.º ano)
 
 Este tutorial **continua diretamente a Ficha 4**.
@@ -2504,3 +2506,5 @@ Se isto fosse um mini-projeto a entregar, eu esperava:
 ---
 
 Fim.
+
+![Footer](../../Images/Footer.png)

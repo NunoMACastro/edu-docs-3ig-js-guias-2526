@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 09) Segurança, logging e compressão
 
 ## CORS
@@ -104,3 +106,5 @@ Mesmo que ainda não implementem, contextualiza porque estas práticas são indi
 -   **v1.1.0 - 2025-11-10**
     -   Acrescentadas descrições detalhadas de CORS, Helmet, rate-limit, logging, compressão e autenticação.
     -   Incluído snippet completo de configuração e secção de changelog.
+
+![Footer](../Images/Footer.png)

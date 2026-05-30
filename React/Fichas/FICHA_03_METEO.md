@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Weather Dashboard (Ficha React 12.º ano)
 
 Este tutorial explica, do início ao fim, como construir a app **weather-dashboard**.
@@ -2846,3 +2848,5 @@ Distribuição sugerida (aproximada):
 ---
 
 Fim.
+
+![Footer](../../Images/Footer.png)

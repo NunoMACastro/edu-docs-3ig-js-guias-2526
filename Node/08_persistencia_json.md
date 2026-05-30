@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 08) Persistência em ficheiro JSON
 
 Objetivo didático para começar. Depois trocamos por MongoDB.
@@ -101,3 +103,5 @@ export const remover = (id) => repo.remover(id);
 -   **v1.1.0 - 2025-11-10**
     -   Incluídas explicações sobre segurança ao escrever ficheiros, limitações de concorrência e exercícios de extensão.
     -   Secção de changelog adicionada.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Tutorial passo a passo - Task Tracker Fullstack (12.º ano)
 
 Esta ficha guia-te na construção de uma pequena app **fullstack** com:
@@ -395,7 +397,7 @@ export function validateTitulo(req, res, next) {
         });
         return;
     }
-
+    
     const tituloLimpo = titulo.trim();
 
     if (tituloLimpo.length > 120) {
@@ -1359,3 +1361,5 @@ A versão base está completa quando:
 
 - 2026-05-19: adicionados `.env.example`, notas sobre placeholders do Atlas, diagnóstico de `/api/health` e limpeza mais explícita do template Vite.
 - 2026-05-18: criação da ficha inicial com integração React, Express, Mongoose e MongoDB Atlas usando apenas `GET` e `POST`; `PATCH` definido como desafio final.
+
+![Footer](../Images/Footer.png)

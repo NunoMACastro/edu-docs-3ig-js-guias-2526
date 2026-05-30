@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 16 · Qualidade profissional: TypeScript, testes e tooling
 
 > **Objetivo deste ficheiro**
@@ -460,3 +462,5 @@ Isto garante que o código passa na qualidade mínima.
 ## Changelog
 
 - 2026-01-28: criação do ficheiro (qualidade profissional com TypeScript, testes e tooling).
+
+![Footer](../Images/Footer.png)

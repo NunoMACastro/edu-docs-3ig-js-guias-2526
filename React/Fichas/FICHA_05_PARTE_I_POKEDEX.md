@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Pokédex Explorer (Tutorial 02 - Parte I) (12.º ano)
 
 Este tutorial explica, do início ao fim, como construir a app **pokedex-explorer**.
@@ -2462,3 +2464,5 @@ Depois abre o endereço que o Vite te der.
 ---
 
 Fim.
+
+![Footer](../../Images/Footer.png)

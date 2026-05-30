@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Fullstack (12.º Ano) - 02 · Contrato de API e erros
 
 > **Objetivo deste ficheiro**
@@ -186,3 +188,5 @@
 
 -   2026-01-14: criação do ficheiro com contrato e erros base.
 -   2026-01-14: envelope em GET, regras de erro e exercícios guiados.
+
+![Footer](../Images/Footer.png)

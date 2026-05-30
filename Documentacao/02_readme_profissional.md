@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 02 · README profissional
 
 > **Objetivo deste ficheiro**
@@ -225,3 +227,5 @@ Esta secção é útil se outras pessoas vão colaborar contigo.
 -   2026-01-14: checklist de conteúdo obrigatório para README oficial.
 -   2026-01-14: alinhado com a estrutura mínima e completa de documentação.
 -   2026-01-14: extras profissionais (screenshots, .env.example, licença).
+
+![Footer](../Images/Footer.png)

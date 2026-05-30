@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação da API
 
 ## Base URL
@@ -120,3 +122,5 @@ Body: { "titulo": "Rever React" }
 - 409 DUPLICATE_KEY
 - 422 VALIDATION_ERROR
 - 500 INTERNAL_ERROR
+
+![Footer](../../Images/Footer.png)

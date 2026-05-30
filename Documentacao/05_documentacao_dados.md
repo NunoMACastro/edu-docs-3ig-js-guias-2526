@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 05 · Documentação de dados
 
 > **Objetivo deste ficheiro**
@@ -197,3 +199,5 @@ Vais listar regras que não são só "tipo de campo", mas sim **lógica do proje
 -   2026-01-14: checklist de documentação oficial por entidade.
 -   2026-01-14: alinhado com a estrutura mínima e completa de documentação.
 -   2026-01-14: timestamps em createdAt/updatedAt e regra de ligação à API.
+
+![Footer](../Images/Footer.png)

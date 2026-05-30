@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # [7] Arrays - Versão Didática (11.º ano)
 
 > **Objetivo**: trabalhar listas ordenadas de valores, saber quando alterar o array original e quando criar cópias imutáveis, além de dominar métodos básicos usados todos os dias.
@@ -143,3 +145,5 @@ Desestruturação permite extrair valores por posição com sintaxe concisa.
 -   **v1.1.0 - 2025-11-10**
     -   Secção de Exercícios expandida para sete desafios sobre mutação, cópia e pesquisa.
     -   Changelog adicionado para manter histórico de alterações do capítulo.
+
+![Footer](../Images/Footer.png)

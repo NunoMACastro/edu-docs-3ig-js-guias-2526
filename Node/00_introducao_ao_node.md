@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 00) Introdução ao Node.js
 
 > **Objetivo**: entender o que é o Node.js, a sua história, arquitetura interna, casos de uso ideais, quando evitar, como instalar e manter atualizado, e os primeiros passos para correr JavaScript fora do browser.
@@ -167,3 +169,5 @@ Browser (cliente) --HTTP--> Express (servidor) --fs/DB--> Ficheiro/BD
     -   Adicionadas secções sobre arquitetura cliente-servidor aplicada ao Node e princípios de APIs REST.
 -   **v1.0.0 - 2025-11-10**
     -   Criação do capítulo introdutório com história, arquitetura, casos de uso e glossário do Node.js.
+
+![Footer](../Images/Footer.png)

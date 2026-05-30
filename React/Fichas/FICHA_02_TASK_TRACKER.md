@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Task Tracker da Turma (Ficha React 12.º ano)
 
 Este tutorial guia-te na construção de uma app React de tarefas com progressão **realmente incremental**.
@@ -1318,3 +1320,5 @@ export default App;
 - [ ] Persistência com `localStorage`
 - [ ] Componentização concluída
 - [ ] Consegues explicar o papel de `useState`, `useEffect`, `.map()` e `.filter()`
+
+![Footer](../../Images/Footer.png)

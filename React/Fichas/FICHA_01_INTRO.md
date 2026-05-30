@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Tutorial passo a passo - Lista de Boas-vindas (Ficha React 12.º ano)
 
 Este tutorial leva-te do zero a uma app React simples, mas completa para uma aula introdutória.
@@ -711,3 +713,5 @@ Antes de terminares, confirma:
 - [ ] lista de nomes acumulada e visível;
 - [ ] app separada em componentes;
 - [ ] consegues explicar, com as tuas palavras, o papel de `useState`, `props` e `.map()`.
+
+![Footer](../../Images/Footer.png)

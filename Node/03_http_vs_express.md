@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 03) HTTP nativo vs Express
 
 ## HTTP nativo (exemplo mínimo)
@@ -56,3 +58,5 @@ O Express automatiza estes passos:
 -   **v1.1.0 - 2025-11-10**
     -   Adicionadas explicações sobre o ciclo pedido/resposta e critérios para escolher entre HTTP nativo e Express.
     -   Acrescentada secção de changelog.
+
+![Footer](../Images/Footer.png)

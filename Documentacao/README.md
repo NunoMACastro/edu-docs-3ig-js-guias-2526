@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação - Materiais Didáticos (12.º Ano)
 
 Conjunto de materiais em Markdown para ensinar documentação de projetos fullstack.
@@ -33,3 +35,5 @@ Conjunto de materiais em Markdown para ensinar documentação de projetos fullst
 - [ ] Testes mínimos descritos e como correr
 - [ ] Deploy/operação (dev/prod, logs, backups)
 - [ ] Documentação para IA (contexto e limites)
+
+![Footer](../Images/Footer.png)

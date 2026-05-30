@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 11 · Consumo de API e backend Node.js
 
 > **Objetivo deste ficheiro**
@@ -1069,3 +1071,5 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 - 2026-01-11: criação do ficheiro.
 - 2026-01-26: reescrita para maior detalhe e coerência com o ficheiro 08; adição de secção de Axios, cliente API, e checklist de diagnóstico.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Fullstack (12.º Ano) - 01 · Fluxo React → Express → MongoDB
 
 > **Objetivo deste ficheiro**
@@ -185,3 +187,5 @@ function App() {
 
 -   2026-01-14: criação do ficheiro com o fluxo fullstack base.
 -   2026-01-14: contrato GET com envelope, links corrigidos e exercícios guiados.
+
+![Footer](../Images/Footer.png)

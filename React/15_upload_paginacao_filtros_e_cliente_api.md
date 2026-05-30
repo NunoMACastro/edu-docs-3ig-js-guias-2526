@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 15 · Upload, paginação, filtros e cliente de API
 
 > **Objetivo deste ficheiro**
@@ -879,3 +881,5 @@ export async function uploadAvatar(file, onProgress) {
     - upload com FormData e validações básicas,
     - debounce, abort, timeout/retry,
     - introdução do Axios no contexto certo.
+
+![Footer](../Images/Footer.png)

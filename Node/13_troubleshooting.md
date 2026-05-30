@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 13) Troubleshooting - erros comuns
 
 ## 1) Error [ERR_MODULE_NOT_FOUND]: Cannot find package ' .' imported from ...
@@ -77,3 +79,5 @@ Mantém logs limpos e mensagens de erro claras.
 -   **v1.1.0 - 2025-11-10**
     -   Acrescentado método estruturado de troubleshooting e lista de ferramentas auxiliares.
     -   Criada secção de changelog.
+
+![Footer](../Images/Footer.png)

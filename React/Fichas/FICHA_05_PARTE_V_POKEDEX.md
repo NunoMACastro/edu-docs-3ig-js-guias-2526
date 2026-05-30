@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Pokédex v4 (Tutorial 02 - Parte 5)
 
 Esta ficha continua diretamente da Tutorial 02 - Parte 4.
@@ -1283,3 +1285,5 @@ Se tudo estiver marcado, o projeto está concluído.
 - Reforçada a secção **5.1** com regra para projetos que já tenham `src/pages`.
 - Adicionada mini-regra para variações de naming em **5.1**: mover componentes de rota para `pages/` e manter UI reutilizável em `components/`.
 - Mantidos contratos, endpoints, checkpoints e ordem geral das secções sem alterações funcionais.
+
+![Footer](../../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](Images/Header.png)
+
 # Tuts - Materiais de Programação (12.º ano)
 
 Este repositório reúne os materiais usados nas aulas de Programação (12.º IG), organizados por módulos: Git, JavaScript, Node.js, MongoDB, React, Fullstack e Documentação.
@@ -187,3 +189,5 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 - Browser atualizado (DevTools)
 - Node.js LTS + npm
 - Editor de código (VS Code ou equivalente)
+
+![Footer](Images/Footer.png)

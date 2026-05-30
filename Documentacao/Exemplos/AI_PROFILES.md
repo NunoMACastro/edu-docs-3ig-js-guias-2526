@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AI_PROFILES.md
 
 Perfil: Revisão de documentação
@@ -11,3 +13,5 @@ Perfil: Edição de texto
 Perfil: Exemplos de código
 - Objetivo: gerar snippets completos e coerentes
 - Output: blocos de código com imports/exports
+
+![Footer](../../Images/Footer.png)

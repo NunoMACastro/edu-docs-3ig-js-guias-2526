@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # AGENTS.md
 
 Projeto: [NOME_PROJETO]
@@ -17,3 +19,5 @@ Contrato de erro:
 Testes:
 - npm run test
 - npm run lint (se existir)
+
+![Footer](../../Images/Footer.png)

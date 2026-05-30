@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # [NOME_PROJETO]
 
 [RESUMO_CURTO_EM_1_2_FRASES]
@@ -113,3 +115,5 @@ VITE_API_BASE=http://localhost:3000
 ## Contacto
 
 [CONTACTO]
+
+![Footer](../../Images/Footer.png)

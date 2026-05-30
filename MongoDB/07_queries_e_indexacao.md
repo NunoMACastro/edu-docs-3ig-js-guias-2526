@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 07 · Queries e indexação
 
 > **Objetivo deste ficheiro**
@@ -142,3 +144,5 @@ Objetivo didático: perceber diferença de documentos examinados.
 ## Changelog
 
 - 2026-04-17: capítulo criado (queries práticas e fundamentos de indexação).
+
+![Footer](../Images/Footer.png)

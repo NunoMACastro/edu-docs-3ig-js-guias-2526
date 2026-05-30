@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 12) Views com EJS (SSR opcional)
 
 ## O que é EJS
@@ -151,3 +153,5 @@ Explica que o `res.render` recebe um objeto com dados e a view transforma essas 
 -   **v1.1.0 - 2025-11-10**
     -   Acrescentadas explicações sobre quando usar SSR, fluxo de dados, formulários e exercícios.
     -   Incluída secção de changelog.
+
+![Footer](../Images/Footer.png)

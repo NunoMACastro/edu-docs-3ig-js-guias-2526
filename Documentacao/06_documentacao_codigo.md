@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 06 · Documentação de código
 
 > **Objetivo deste ficheiro**
@@ -248,3 +250,5 @@ const response = await fetch(url);
 -   2026-01-14: checklist de documentação de código oficial.
 -   2026-01-14: alinhado com a estrutura completa de documentação.
 -   2026-01-14: contratos internos e nota sobre lint/formatting.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Guia Completo de Comandos Git (10º ao 12º Ano)
 
 > **Objetivo:**  
@@ -178,3 +180,5 @@ git add .
 git commit -m "Resolução da Ficha 6"
 git push origin ficha6
 ```
+
+![Footer](../Images/Footer.png)

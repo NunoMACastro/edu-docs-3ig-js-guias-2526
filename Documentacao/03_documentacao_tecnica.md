@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 03 · Documentação técnica
 
 > **Objetivo deste ficheiro**
@@ -235,3 +237,5 @@ Consequências: Depende de internet, mas é simples de usar
 -   2026-01-14: alinhado com a estrutura mínima e completa de documentação.
 -   2026-01-14: regra de chamadas entre camadas e ligações a API/Dados.
 -   2026-01-14: exemplo de paginação alinhado com o contrato da API.
+
+![Footer](../Images/Footer.png)

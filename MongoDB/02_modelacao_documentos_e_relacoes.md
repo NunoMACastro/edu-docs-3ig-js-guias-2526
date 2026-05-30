@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 02 · Modelação de documentos e relações
 
 > **Objetivo deste ficheiro**
@@ -146,3 +148,5 @@ Exemplo base:
 ## Changelog
 
 - 2026-04-17: capítulo criado (modelação documental e relações).
+
+![Footer](../Images/Footer.png)

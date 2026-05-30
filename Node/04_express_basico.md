@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 04) Express - app base, middlewares e estáticos
 
 ## src/app.js
@@ -100,3 +102,5 @@ app.listen(PORT, HOST, () => {
 -   **v1.1.0 - 2025-11-10**
     -   Adicionadas explicações sobre a ordem dos middlewares, função de cada bloco e separação app/server.
     -   Criada secção de changelog.
+
+![Footer](../Images/Footer.png)

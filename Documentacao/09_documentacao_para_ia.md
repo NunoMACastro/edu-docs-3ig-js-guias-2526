@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 09 · Documentação para agentes de IA
 
 > **Objetivo deste ficheiro**
@@ -333,3 +335,5 @@ MONGODB_URI=mongodb+srv://user:pass@cluster0.xxxxx.mongodb.net/escola
 -   2026-01-14: checklist de documentação oficial para agentes de IA.
 -   2026-01-14: alinhado com a estrutura completa de documentação.
 -   2026-01-14: validação manual com envelope e regra para pedidos à IA.
+
+![Footer](../Images/Footer.png)

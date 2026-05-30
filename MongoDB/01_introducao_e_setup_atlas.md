@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 01 · Introdução e setup Atlas
 
 > **Objetivo deste ficheiro**
@@ -153,3 +155,5 @@ try {
 ## Changelog
 
 - 2026-04-17: capítulo criado (setup Atlas + ligação mínima Node).
+
+![Footer](../Images/Footer.png)

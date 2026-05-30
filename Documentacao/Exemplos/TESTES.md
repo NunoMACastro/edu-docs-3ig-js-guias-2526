@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação de Testes
 
 ## Tipos de testes (curto)
@@ -47,3 +49,5 @@ npm run test -- --coverage
 - GET /api/tarefas devolve { items, page, limit, total }
 - POST /api/tarefas sem título -> 422
 - Frontend mostra erro
+
+![Footer](../../Images/Footer.png)

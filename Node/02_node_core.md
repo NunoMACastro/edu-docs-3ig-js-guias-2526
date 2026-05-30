@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 02) Node core útil
 
 ## path
@@ -108,3 +110,5 @@ try {
 -   **v1.1.0 - 2025-11-10**
     -   Expandidas as descrições dos módulos core e adicionado guia de timers, JSON e tratamento de erros.
     -   Criada esta secção de changelog.
+
+![Footer](../Images/Footer.png)

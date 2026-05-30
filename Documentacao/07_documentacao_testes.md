@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 07 · Documentação de testes
 
 > **Objetivo deste ficheiro**
@@ -202,3 +204,5 @@ npm run test -- --coverage
 -   2026-01-14: checklist de documentação oficial de testes.
 -   2026-01-14: alinhado com a estrutura mínima e completa de documentação.
 -   2026-01-14: testes críticos com envelope e critérios de aceitação.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 03 · CRUD básico e operadores
 
 > **Objetivo deste ficheiro**
@@ -152,3 +154,5 @@ await col.find({
 ## Changelog
 
 - 2026-04-17: capítulo criado (CRUD, filtros e operadores essenciais).
+
+![Footer](../Images/Footer.png)

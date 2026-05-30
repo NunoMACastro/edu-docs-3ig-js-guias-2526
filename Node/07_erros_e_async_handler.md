@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 07) Erros (404 e 500) e asyncHandler
 
 ## Middlewares de erro
@@ -62,3 +64,5 @@ No `errorHandler` podes ler `err.status` para devolver códigos corretos. Ensina
 -   **v1.1.0 - 2025-11-10**
     -   Adicionados fluxos explicativos sobre middlewares, criação de erros personalizados e boas práticas.
     -   Criada secção de changelog.
+
+![Footer](../Images/Footer.png)

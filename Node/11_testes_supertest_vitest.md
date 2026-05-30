@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 11) Testes com Supertest e Vitest
 
 ## Instalar
@@ -78,3 +80,5 @@ describe("todos", () => {
 -   **v1.1.0 - 2025-11-10**
     -   Acrescentadas razões pedagógicas para testar, estrutura recomendada e novo exemplo de teste para criação de todos.
     -   Incluída secção de changelog.
+
+![Footer](../Images/Footer.png)

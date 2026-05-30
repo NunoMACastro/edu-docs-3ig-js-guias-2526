@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 06) Rotas, controladores e validação (Zod opcional)
 
 ## Router
@@ -143,3 +145,5 @@ Mantém o plural para coleções e usa `:` para parâmetros dinâmicos (`:id`).
 -   **v1.1.0 - 2025-11-10**
     -   Explicadas as responsabilidades de router/controller/service e reforçado o uso de verbos HTTP.
     -   Incluída análise sobre validação com e sem Zod e secção de changelog.
+
+![Footer](../Images/Footer.png)

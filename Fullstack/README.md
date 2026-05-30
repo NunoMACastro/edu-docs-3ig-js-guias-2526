@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Fullstack - Materiais Didáticos (12.º Ano)
 
 Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
@@ -38,3 +40,5 @@ Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
 
 -   2026-05-18: adicionada ficha prática `Task Tracker Fullstack`.
 -   2026-01-14: links revistos e contrato de GET com envelope destacado.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação de Código
 
 ## Convenções de nomes
@@ -45,3 +47,5 @@ export async function createTarefa(data) {
 
 - ESLint para regras de estilo
 - Prettier para formatação automática
+
+![Footer](../../Images/Footer.png)

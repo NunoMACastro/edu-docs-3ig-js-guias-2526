@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # [9] Exceções (12.º ano)
 
 > **Objetivo**: perceber como o JavaScript reage a erros, como lançar (`throw`) e apanhar (`try/catch`) exceções e como tratar erros assíncronos com `Promises` ou `async/await` de forma simples.
@@ -197,3 +199,5 @@ function lerJSONSeguro(texto, fallback = {}) {
 -   **v1.1.0 - 2025-11-10**
     -   Mini desafios expandidos para sete propostas cobrindo erros síncronos e assíncronos.
     -   Changelog inaugurado para seguir alterações do capítulo.
+
+![Footer](../Images/Footer.png)

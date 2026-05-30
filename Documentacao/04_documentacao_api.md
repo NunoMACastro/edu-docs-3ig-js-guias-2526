@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 04 · Documentação da API
 
 > **Objetivo deste ficheiro**
@@ -245,3 +247,5 @@ Mesmo que não uses OpenAPI, um README com exemplos já ajuda muito.
 -   2026-01-14: checklist de documentação oficial por endpoint.
 -   2026-01-14: alinhado com a estrutura mínima e completa de documentação.
 -   2026-01-14: GET com envelope, sort por createdAt e ligações a dados.
+
+![Footer](../Images/Footer.png)

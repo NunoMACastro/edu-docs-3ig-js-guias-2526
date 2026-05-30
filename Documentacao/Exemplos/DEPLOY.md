@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Deploy e Operação
 
 ## Ambientes
@@ -56,3 +58,5 @@ mongorestore --uri "$MONGODB_URI" ./backups/AAAA-MM-DD
 
 - Operação: [CONTACTO]
 - Incidentes: [CONTACTO]
+
+![Footer](../../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 05) Estrutura de pastas (MVC leve e camadas)
 
 ```
@@ -60,3 +62,5 @@ Responsabilidades:
 -   **v1.1.0 - 2025-11-10**
     -   Adicionadas analogias para explicar as camadas e checklist para novas funcionalidades.
     -   Incluída esta secção de changelog.
+
+![Footer](../Images/Footer.png)

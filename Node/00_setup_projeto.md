@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # 00) Setup rápido de projeto
 
 > Se ainda não leste o capítulo [Introdução ao Node.js](./00_introducao_ao_node.md), começa por aí para perceberes o contexto e a arquitetura do runtime.
@@ -102,3 +104,5 @@ Dica: cria também .editorconfig, eslint.config.js e prettier.config.cjs para un
     -   Adicionadas explicações teóricas sobre cada comando, dependência e sobre a estrutura de pastas.
     -   Incluído checklist pedagógico e criada a secção de changelog para acompanhar futuras alterações.
     -   Referência cruzada para o novo capítulo de introdução ao Node.
+
+![Footer](../Images/Footer.png)

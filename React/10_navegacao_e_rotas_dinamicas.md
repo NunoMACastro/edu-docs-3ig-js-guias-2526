@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # React.js (12.º Ano) - 10 · Navegação e rotas dinâmicas
 
 > **Objetivo deste ficheiro**
@@ -976,3 +978,5 @@ A regra é:
 - 2026-01-11: criação do ficheiro.
 - 2026-01-12: exemplos base de `useParams`, `useNavigate`, `Outlet`, 404 e query string.
 - 2026-01-26: reescrita completa com modelo mental (rotas como molde), validação de params, diferença Link/NavLink, layouts com rotas aninhadas (`index`), query string com sincronização de UI e ligação explícita ao padrão de `useEffect` (AbortController) para detalhes por id.
+
+![Footer](../Images/Footer.png)

@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 04 · Node driver: fundamentos
 
 > **Objetivo deste ficheiro**
@@ -180,3 +182,5 @@ if (!ObjectId.isValid(id)) {
 ## Changelog
 
 - 2026-04-17: capítulo criado (integração Node driver com estrutura de API).
+
+![Footer](../Images/Footer.png)

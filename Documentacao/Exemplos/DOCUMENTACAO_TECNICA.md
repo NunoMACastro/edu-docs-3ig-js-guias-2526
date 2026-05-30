@@ -1,3 +1,5 @@
+![Header](../../Images/Header.png)
+
 # Documentação Técnica
 
 ## Objetivo
@@ -65,3 +67,5 @@ Contexto: [CONTEXTO]
 Decisão: [DECISAO_TOMADA]
 Consequências: [IMPACTO]
 ```
+
+![Footer](../../Images/Footer.png)

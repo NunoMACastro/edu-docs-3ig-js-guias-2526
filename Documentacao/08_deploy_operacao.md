@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # Documentação (12.º Ano) - 08 · Deploy e operação
 
 > **Objetivo deste ficheiro**
@@ -286,3 +288,5 @@ Indica onde guardar backups e quem tem acesso.
 -   2026-01-14: explicações de conceitos base (dev/prod, logs, monitorização, backups).
 -   2026-01-14: checklist de operação oficial e alinhamento com estrutura mínima/completa.
 -   2026-01-14: build/arranque, rollback/health check e reforço de segurança nos logs.
+
+![Footer](../Images/Footer.png)

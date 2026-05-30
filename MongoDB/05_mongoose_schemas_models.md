@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 05 · Mongoose: schemas e models
 
 > **Objetivo deste ficheiro**
@@ -149,3 +151,5 @@ Outros extras úteis:
 ## Changelog
 
 - 2026-04-17: capítulo criado (schemas, models, CRUD e populate).
+
+![Footer](../Images/Footer.png)

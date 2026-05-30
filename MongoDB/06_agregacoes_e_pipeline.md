@@ -1,3 +1,5 @@
+![Header](../Images/Header.png)
+
 # MongoDB (12.º Ano) - 06 · Agregações e pipeline
 
 > **Objetivo deste ficheiro**
@@ -124,3 +126,5 @@ Isto é útil para dashboards simples sem lógica pesada no frontend.
 ## Changelog
 
 - 2026-04-17: capítulo criado (pipeline base e casos práticos).
+
+![Footer](../Images/Footer.png)
