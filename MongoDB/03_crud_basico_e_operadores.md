@@ -290,6 +290,7 @@ const filter = { deletedAt: { $exists: false } };
 ```js
 const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
 const feito = req.query.feito;
+const prioridade = req.query.prioridade;
 
 const filter = {
     deletedAt: { $exists: false },
@@ -302,9 +303,14 @@ if (q) {
 if (feito === "true" || feito === "false") {
     filter.feito = feito === "true";
 }
+
+if (["baixa", "normal", "alta"].includes(prioridade)) {
+    filter.prioridade = prioridade;
+}
 ```
 
 Pesquisa com `$regex` é simples, mas deve ser usada com limites e índices quando os dados crescem.
+Não construas filtros diretamente a partir de `req.query` inteiro. Escolhe explicitamente os campos aceites para evitar queries inesperadas.
 
 ---
 
@@ -330,6 +336,7 @@ res.json({ items, page, limit, total });
 ```
 
 O contrato `{ items, page, limit, total }` ajuda o frontend a desenhar paginação.
+A projeção (`project`) também é uma decisão de segurança: a API devolve apenas os campos necessários, em vez de expor o documento completo.
 
 ---
 
@@ -338,12 +345,15 @@ O contrato `{ items, page, limit, total }` ajuda o frontend a desenhar paginaç�
 - Aceitar `limit=100000`.
 - Fazer pesquisa sem limite de resultados.
 - Esquecer `total`, obrigando o frontend a adivinhar se há mais páginas.
+- Passar filtros desconhecidos diretamente de `req.query` para MongoDB.
+- Devolver campos internos ou sensíveis por falta de projeção.
 
 ### 4.4 Checkpoint
 
 - Porque limitamos `limit` a um máximo?
 - Para que serve `skip`?
 - Porque é útil devolver `total`?
+- Porque é perigoso aceitar qualquer filtro vindo da query string?
 
 <a id="sec-5"></a>
 
@@ -385,6 +395,8 @@ const filter = {
 8. Devolve `{ items, page, limit, total }`.
 9. Usa `$in` para filtrar tarefas por prioridades permitidas.
 10. Explica por escrito por que motivo não deves passar `req.body` inteiro para `$set`.
+11. Explica por escrito por que motivo não deves passar `req.query` inteiro para `find`.
+12. Garante que a listagem usa projeção e não devolve campos desnecessários.
 
 <a id="changelog"></a>
 

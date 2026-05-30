@@ -334,7 +334,7 @@ Depois volta a correr:
 npm run dev
 ```
 
-> Se estiveres na escola e não tiveres permissões, chama o professor para ajudar.
+> Se não tiveres permissões para alterar esta configuração, usa outro terminal disponível ou trabalha num ambiente já configurado.
 
 ---
 

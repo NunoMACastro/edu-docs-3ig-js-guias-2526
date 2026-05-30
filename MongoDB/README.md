@@ -51,6 +51,36 @@ Este módulo liga a persistência real aos projetos Node/Express e Fullstack. A 
 
 ---
 
+## Modelo mental fullstack
+
+MongoDB aparece no fim do fluxo, mas influencia o contrato todo:
+
+```text
+evento no browser
+  ↓
+fetch no React
+  ↓
+rota Express
+  ↓
+controller
+  ↓
+validação
+  ↓
+service
+  ↓
+repository
+  ↓
+MongoDB
+  ↓
+resposta JSON
+  ↓
+estado atualizado no React
+```
+
+O frontend não conhece a connection string nem faz queries à base de dados. A API recebe o pedido, valida, aplica regras e só depois consulta MongoDB. A resposta deve voltar num formato que React consiga usar sem adivinhar nomes de campos.
+
+---
+
 ## Contrato base usado nos exemplos
 
 Muitos exemplos usam o recurso `tarefas`.
@@ -93,6 +123,7 @@ Erros seguem o mesmo formato usado nos módulos Node e Fullstack:
 
 ## Changelog
 
+- 2026-05-30: acrescentado modelo mental fullstack e reforçada a ligação entre React, Express e MongoDB.
 - 2026-05-30: README reestruturado para alinhar o módulo com React, Node e Fullstack.
 - 2026-04-17: módulo recriado com 8 capítulos e ligação curricular a Node/React/Fullstack.
 

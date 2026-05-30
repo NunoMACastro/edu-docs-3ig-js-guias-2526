@@ -135,6 +135,8 @@ password: uma-password-forte
 
 Guarda estes valores apenas no teu `.env`.
 
+Usa o princípio do menor privilégio: uma aplicação deve ter apenas as permissões de que precisa. Para desenvolvimento, um utilizador limitado à base de dados do projeto costuma ser suficiente. Evita usar credenciais de administração geral da conta Atlas dentro da aplicação.
+
 ---
 
 ### 2.3 Acesso de rede
@@ -154,11 +156,13 @@ Opções:
 
 - Criar utilizador da conta Atlas e esquecer o utilizador da base de dados.
 - Copiar a URI antes de substituir `<password>`.
+- Usar permissões demasiado amplas quando a aplicação só precisa de ler e escrever numa base de dados.
 - Deixar `0.0.0.0/0` como se fosse uma configuração segura para qualquer contexto.
 
 ### 2.5 Checkpoint
 
 - Para que serve o utilizador de base de dados?
+- Porque é que permissões mínimas reduzem risco?
 - O que controla `Network Access`?
 - Porque é que `0.0.0.0/0` deve ser tratado como opção temporária?
 

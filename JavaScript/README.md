@@ -77,6 +77,7 @@ Se usares `import`/`export` em Node, define no `package.json`:
 - Tratar erros de forma visível e previsível.
 - Evitar `innerHTML` com dados do utilizador; preferir `textContent`.
 - Usar `async/await` para código assíncrono legível.
+- Preferir funções puras quando possível: são mais fáceis de testar, reutilizar e levar para React ou Node.
 
 ## Troubleshooting rápido
 

@@ -631,7 +631,39 @@ O que treinas neste exemplo:
 
 ---
 
-### 3.4 Estado do ecrã (opcional, mas já muito útil)
+### 3.4 Feedback acessível
+
+Um erro visual também deve estar ligado ao campo que o causou. Isto ajuda leitores de ecrã e também torna o HTML mais explícito.
+
+Exemplo para o campo `email`:
+
+```jsx
+<label htmlFor="email">Email</label>
+<input
+    id="email"
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    aria-invalid={erros.email ? "true" : "false"}
+    aria-describedby={erros.email ? "email-erro" : undefined}
+/>
+{erros.email && (
+    <p id="email-erro" role="alert">
+        {erros.email}
+    </p>
+)}
+```
+
+Ideias importantes:
+
+- `label htmlFor` liga o texto ao input.
+- `aria-invalid` indica que o campo está inválido.
+- `aria-describedby` liga o campo à mensagem de erro.
+- `role="alert"` torna a mensagem mais fácil de anunciar quando aparece.
+
+---
+
+### 3.5 Estado do ecrã (opcional, mas já muito útil)
 
 Em formulários reais, costuma existir um estado do ecrã:
 
@@ -650,11 +682,12 @@ Isto ajuda-te a mostrar mensagens e a desativar botões quando necessário.
 
 ---
 
-### 3.5 Checkpoint
+### 3.6 Checkpoint
 
 - Para que serve `e.preventDefault()`?
 - Porque é que validar com `trim()` evita casos “falsos”?
 - Qual é a vantagem de ter mensagens de erro por campo?
+- Porque é útil ligar uma mensagem de erro ao input com `aria-describedby`?
 
 ---
 
@@ -906,6 +939,7 @@ function Upload() {
 12. (EXTRA) Mostra o `form` com `<pre>{JSON.stringify(form, null, 2)}</pre>` para validar mentalmente o que está a acontecer.
 13. (EXTRA) Cria um campo `password` e valida “mínimo 6 caracteres”.
 14. (EXTRA) Cria um estado `status` (`"idle" | "success"`) e mostra “Enviado com sucesso” quando o submit for válido.
+15. (EXTRA) Liga pelo menos uma mensagem de erro ao input respetivo com `aria-invalid`, `aria-describedby` e `role="alert"`.
 
 ---
 
@@ -916,5 +950,6 @@ function Upload() {
 - 2026-01-11: criação do ficheiro.
 - 2026-01-12: exemplos base de inputs controlados, submit e validação simples.
 - 2026-01-26: reescrita completa para maior clareza e detalhe (nível do ficheiro 08), com modelo mental, decisões práticas, exemplos completos, validação por campo, estado em objeto e secção de diagnóstico.
+- 2026-05-30: acrescentado reforço de acessibilidade para mensagens de erro associadas a campos.
 
 ![Footer](../Images/Footer.png)

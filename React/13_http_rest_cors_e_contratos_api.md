@@ -352,13 +352,16 @@ Exemplo de contrato de lista paginada:
         { "id": "b2", "nome": "Bruno" }
     ],
     "page": 1,
-    "pageSize": 10,
-    "totalItems": 42,
-    "totalPages": 5
+    "limit": 10,
+    "total": 42
 }
 ```
 
-Isto evita “adivinhações” no frontend.
+Isto evita “adivinhações” no frontend. Se precisares do número total de páginas, calcula no cliente:
+
+```js
+const totalPages = Math.ceil(total / limit);
+```
 
 ### 4.5 Datas e IDs (regras simples que evitam bugs)
 
@@ -498,7 +501,7 @@ Query params são coisas na URL depois do `?`.
 
 Exemplos:
 
-- `/api/alunos?page=2&pageSize=10`
+- `/api/alunos?page=2&limit=10`
 - `/api/alunos?q=ana`
 - `/api/alunos?curso=web&ano=12`
 
@@ -514,8 +517,8 @@ No Express, lês com `req.query`.
 **Paginação**
 
 - `page` (começa em 1)
-- `pageSize` (quantos items por página)
-- Ex.: `/api/alunos?page=1&pageSize=10`
+- `limit` (quantos itens por página)
+- Ex.: `/api/alunos?page=1&limit=10`
 
 **Ordenação**
 
@@ -533,12 +536,12 @@ app.get("/api/alunos", (req, res) => {
         .trim()
         .toLowerCase();
     const page = Number(req.query.page ?? 1);
-    const pageSize = Number(req.query.pageSize ?? 10);
+    const limit = Number(req.query.limit ?? 10);
 
     const pageOk = Number.isFinite(page) && page >= 1 ? page : 1;
-    const pageSizeOk =
-        Number.isFinite(pageSize) && pageSize >= 1 && pageSize <= 50
-            ? pageSize
+    const limitOk =
+        Number.isFinite(limit) && limit >= 1 && limit <= 50
+            ? limit
             : 10;
 
     // Exemplo com “dados fake”
@@ -552,18 +555,16 @@ app.get("/api/alunos", (req, res) => {
         ? todos.filter((a) => a.nome.toLowerCase().includes(q))
         : todos;
 
-    const totalItems = filtrados.length;
-    const totalPages = Math.max(1, Math.ceil(totalItems / pageSizeOk));
+    const total = filtrados.length;
 
-    const start = (pageOk - 1) * pageSizeOk;
-    const items = filtrados.slice(start, start + pageSizeOk);
+    const start = (pageOk - 1) * limitOk;
+    const items = filtrados.slice(start, start + limitOk);
 
     return res.json({
         items,
         page: pageOk,
-        pageSize: pageSizeOk,
-        totalItems,
-        totalPages,
+        limit: limitOk,
+        total,
     });
 });
 ```
@@ -571,7 +572,7 @@ app.get("/api/alunos", (req, res) => {
 **Checkpoint**
 
 - O que são query params?
-- Porque é que é importante ter defaults e limites (ex.: `pageSize <= 50`)?
+- Porque é que é importante ter defaults e limites (ex.: `limit <= 50`)?
 
 ---
 
@@ -856,7 +857,7 @@ Checklist:
 2. **REST na prática:** para um recurso “tarefas”, desenha 5 endpoints REST (listar, obter 1, criar, editar, apagar).
 3. **Status codes:** para cada endpoint de tarefas, decide qual o status de sucesso (200/201/204) e justifica.
 4. **Contrato de erro:** define um formato único de erro `{ error: { code, message, details } }` e dá 3 exemplos reais (ex.: campo em falta, login necessário, id inexistente).
-5. **Paginação:** desenha a resposta de uma lista paginada (items, page, pageSize, totalItems, totalPages).
+5. **Paginação:** desenha a resposta de uma lista paginada `{ items, page, limit, total }` e calcula `Math.ceil(total / limit)` no frontend.
 6. **CORS:** cria um frontend em `localhost:5173` e um backend em `localhost:3000`. Força um erro de CORS (sem configuração) e depois resolve com o middleware `cors`.
 7. **Preflight:** cria um `PATCH` com `Content-Type: application/json` e observa no Network tab que aparece um `OPTIONS` antes.
 8. **Axios (opcional):** cria `src/lib/api.js` com `axios.create` e reescreve um `GET` e um `POST` que já tinhas em `fetch`.

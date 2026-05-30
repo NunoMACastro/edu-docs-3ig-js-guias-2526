@@ -271,7 +271,32 @@ function adicionar(n) {
 }
 ```
 
-### 5.3 Diagnóstico rápido
+### 5.3 Testar funções puras
+
+Uma função pura é uma boa candidata a teste porque podes verificar o resultado sem preparar browser, DOM, API ou base de dados.
+
+Exemplo de função:
+
+```js
+export function calcularTotal(items) {
+    return items.reduce((total, item) => total + item.preco * item.quantidade, 0);
+}
+```
+
+Teste manual simples:
+
+```js
+const carrinho = [
+    { preco: 10, quantidade: 2 },
+    { preco: 5, quantidade: 1 },
+];
+
+console.log(calcularTotal(carrinho) === 25); // true
+```
+
+A ideia é a mesma quando usares uma ferramenta de testes mais tarde: defines entrada, chamas a função e comparas a saída esperada.
+
+### 5.4 Diagnóstico rápido
 
 | Sintoma | Causa provável | Solução |
 | ------- | -------------- | ------- |
@@ -292,6 +317,8 @@ function adicionar(n) {
 6. Cria `calcular(a, b, operacao)` e testa com soma, subtração, produto e divisão.
 7. Cria `fatorial(n)` com recursão.
 8. Reescreve uma função impura para devolver um novo valor sem alterar variável externa.
+9. Cria `calcularTotal(items)` como função pura e escreve três testes manuais com `console.log(resultado === esperado)`.
+10. Cria um caso de teste com carrinho vazio e decide qual deve ser o resultado.
 
 <a id="changelog"></a>
 
@@ -300,5 +327,6 @@ function adicionar(n) {
 - **v2.0.0 - 2026-05-30**
     - Reestruturado com objetivos, índice, enquadramento, níveis, checkpoints e exercícios.
     - Reforçados modelos mentais de closure, callback e pureza.
+    - Acrescentada ponte para testes simples de funções puras.
 
 ![Footer](../Images/Footer.png)

@@ -115,6 +115,8 @@ Para este percurso, usa com:
 
 Para pesquisa textual avançada, MongoDB tem opções próprias como text indexes ou Atlas Search, mas ficam fora do essencial deste módulo.
 
+Se `q` vier diretamente do utilizador, mantém limites curtos e evita combinar pesquisa livre com listas sem paginação. Pesquisa textual parece simples, mas pode transformar-se numa query cara quando a coleção cresce.
+
 ---
 
 ### 1.4 Erros comuns
@@ -122,12 +124,14 @@ Para pesquisa textual avançada, MongoDB tem opções próprias como text indexe
 - Devolver listas sem paginação.
 - Aceitar `limit` sem máximo.
 - Usar `$regex` em tudo sem perceber o custo.
+- Criar índices antes de perceber que filtros e ordenações a API realmente usa.
 
 ### 1.5 Checkpoint
 
 - Porque é que uma API não deve devolver todos os documentos de uma vez?
 - Para que serve `total`?
 - Porque limitamos o valor máximo de `limit`?
+- Porque é que índices devem seguir padrões reais de acesso?
 
 <a id="sec-2"></a>
 

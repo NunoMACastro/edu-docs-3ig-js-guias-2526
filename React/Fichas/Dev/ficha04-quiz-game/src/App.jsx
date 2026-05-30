@@ -133,7 +133,7 @@ function App() {
 
     useEffect(() => {
         // Este efeito é externo: comunica com a API.
-        // Está separado do temporizador para os alunos distinguirem bem os dois usos de useEffect.
+        // Está separado do temporizador para distinguir bem os dois usos de useEffect.
         if (!gameRequest) return;
 
         const controller = new AbortController();

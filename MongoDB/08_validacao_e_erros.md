@@ -435,6 +435,35 @@ Antes de considerar a API pronta, confirma:
 - Listagens usam paginação.
 - Queries frequentes têm índices adequados.
 - Erros internos não expõem detalhes em produção.
+- Dados sensíveis não são devolvidos por engano em listagens ou detalhes.
+- Filtros aceites pela API estão numa lista explícita.
+
+### 5.1 Testes de integração com MongoDB
+
+Testar uma API com MongoDB significa controlar bem os dados usados no teste.
+
+Modelo mental:
+
+```text
+preparar base de dados de teste
+  ↓
+inserir dados previsíveis
+  ↓
+chamar endpoint
+  ↓
+validar resposta
+  ↓
+limpar coleção
+```
+
+Boas regras:
+
+- usa uma base de dados de teste, nunca a de desenvolvimento principal;
+- limpa as coleções antes ou depois de cada teste;
+- cria poucos documentos, mas com valores pensados para o caso que queres testar;
+- testa sucesso e erro: criação válida, validação inválida, duplicado e ID inexistente.
+
+Não precisas de uma dependência nova para perceber este modelo. O essencial é que cada teste comece num estado conhecido e não dependa da ordem de execução dos testes anteriores.
 
 <a id="exercicios"></a>
 
@@ -450,12 +479,14 @@ Antes de considerar a API pronta, confirma:
 8. Cria índice único em `categorias.nome`.
 9. Insere duas categorias com o mesmo nome e confirma `409 DUPLICATE_KEY`.
 10. Confirma que o formato `{ error: { code, message, details } }` é sempre respeitado.
+11. Escreve um plano de teste de integração para `GET /api/v1/tarefas` com base de dados de teste.
+12. Explica por que motivo cada teste deve limpar ou recriar os dados de que precisa.
 
 <a id="changelog"></a>
 
 ## Changelog
 
-- 2026-05-30: reestruturação do capítulo com validação, códigos de erro, middleware consistente, checkpoints e exercícios.
+- 2026-05-30: reestruturação do capítulo com validação, códigos de erro, middleware consistente, testes de integração, checkpoints e exercícios.
 - 2026-04-17: capítulo criado com validação, mapeamento de erros e contrato de erro.
 
 ![Footer](../Images/Footer.png)
