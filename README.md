@@ -2,7 +2,7 @@
 
 # Materiais de Programação (12.º ano)
 
-Este repositório reúne materiais de apoio ao estudo de Programação no 12.º ano. A organização segue uma progressão didática: primeiro as bases da linguagem e das ferramentas, depois backend, bases de dados, frontend, integração fullstack e documentação de projetos.
+Este repositório reúne materiais de apoio ao estudo de Programação no 12.º ano. A organização segue a progressão que pode ser consultada a seguir.
 
 ---
 
