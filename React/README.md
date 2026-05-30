@@ -4,12 +4,6 @@
 
 Conjunto de materiais para aprender React.js de forma progressiva: primeiro componentes e estado, depois efeitos, rotas, consumo de API e organização de projetos.
 
-## Como usar
-
-- Começa no ficheiro `01_fundamentos_e_setup.md` e segue a ordem.
-- Faz os exemplos no teu projeto e depois resolve os exercícios.
-- Os blocos [EXTRA] são opcionais para quem quer aprofundar.
-
 ## Pré-requisitos
 
 - **Node.js + npm:** idealmente Node 18+.

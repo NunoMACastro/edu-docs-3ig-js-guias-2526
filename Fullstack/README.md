@@ -4,12 +4,6 @@
 
 Conjunto de materiais para aprender a ligar React, Node/Express e MongoDB num projeto completo.
 
-## Como usar
-
--   Começa no ficheiro `01_fluxo_front_back_db.md` e segue a ordem.
--   Faz os exemplos no teu projeto e depois resolve os exercícios.
--   Os blocos [EXTRA] são opcionais para quem quer aprofundar.
-
 ## O que vais aprender
 
 -   Fluxo completo React → Express → MongoDB.

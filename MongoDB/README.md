@@ -4,12 +4,6 @@
 
 Conjunto de materiais para aprender MongoDB com foco prático em APIs Node/Express e integração fullstack.
 
-## Como usar
-
-- Começa no ficheiro `01_introducao_e_setup_atlas.md` e segue a ordem.
-- Faz os exemplos em pequenos projetos e valida os dados no Atlas.
-- Os blocos [EXTRA] são opcionais para aprofundar.
-
 ## Pré-requisitos
 
 - **JavaScript:** fundamentos concluídos.

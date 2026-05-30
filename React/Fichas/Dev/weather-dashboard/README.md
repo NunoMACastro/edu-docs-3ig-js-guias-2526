@@ -9,7 +9,7 @@ Projeto de apoio à ficha de React sobre consumo de dados, `useEffect`, estados 
 - Como carregar dados externos a partir de serviços JavaScript.
 - Como separar componentes, dados locais e chamadas à API.
 - Como mostrar loading, erro, detalhe e listas no mesmo ecrã.
-- Como usar `useMemo` para calcular informação derivada.
+- Uso de `useMemo` para calcular informação derivada.
 
 ## Como experimentar
 

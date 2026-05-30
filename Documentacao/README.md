@@ -4,12 +4,6 @@
 
 Conjunto de materiais para aprender a explicar projetos fullstack com clareza: o que foi construído, como funciona, que decisões foram tomadas e como outra pessoa pode estudar ou continuar o trabalho.
 
-## Como usar
-
--   Começa no ficheiro `01_visao_geral.md` e segue a ordem.
--   Faz os exemplos no teu projeto e depois adapta para o teu trabalho final.
--   Os blocos [EXTRA] são opcionais para aprofundar.
-
 ## Pré-requisitos
 
 -   Ter um projeto React + Node + MongoDB a funcionar.
