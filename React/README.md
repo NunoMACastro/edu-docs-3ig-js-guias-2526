@@ -2,7 +2,7 @@
 
 # React.js - Materiais Didáticos (12.º Ano)
 
-Conjunto de materiais em Markdown para o módulo de React.js.
+Conjunto de materiais para aprender React.js de forma progressiva: primeiro componentes e estado, depois efeitos, rotas, consumo de API e organização de projetos.
 
 ## Como usar
 
@@ -17,7 +17,7 @@ Conjunto de materiais em Markdown para o módulo de React.js.
 - **Terminal:** para correr comandos (`npm`, `node`).
 - **Browser atualizado:** Chrome, Edge ou Firefox.
 
-## Setup rápido
+## Preparação inicial
 
 ```bash
 # criar projeto React com Vite
@@ -27,19 +27,19 @@ npm install
 npm run dev
 ```
 
-## Comandos mais usados
+## Comandos que vais usar nas aulas
 
 - `npm install`: instala dependências.
-- `npm run dev`: inicia o servidor local.
-- `npm run build`: gera a versão final.
-- `npm run preview`: testa a versão final localmente.
+- `npm run dev`: abre o projeto em modo de desenvolvimento.
+- `npm run build`: prepara uma versão final do projeto.
+- `npm run preview`: permite observar localmente a versão final.
 
-## Portas típicas
+## Endereços habituais durante os exercícios
 
 - **Vite (frontend):** `http://localhost:5173`
 - **Backend Node (exemplos):** `http://localhost:3000`
 
-## Troubleshooting rápido
+## Quando algo não funciona
 
 - **Erro de dependências:** apaga `node_modules` e corre `npm install`.
 - **Página em branco:** confirma o `div#root` no `index.html`.
@@ -66,5 +66,17 @@ npm run dev
 - [15 - Upload, paginação, filtros e cliente de API](15_upload_paginacao_filtros_e_cliente_api.md)
 - [16 - Qualidade profissional: TypeScript, testes e tooling](16_qualidade_profissional_tooling_testes_typescript.md)
 - [17 - Organização, boas práticas e mini-projeto guiado](17_organizacao_boas_praticas_e_miniprojeto_guiado.md)
+
+## Fichas práticas
+
+- [Ficha 01 - Introdução](Fichas/FICHA_01_INTRO.md)
+- [Ficha 02 - Task Tracker](Fichas/FICHA_02_TASK_TRACKER.md)
+- [Ficha 03 - Meteo](Fichas/FICHA_03_METEO.md)
+- [Ficha 04 - Quiz](Fichas/FICHA_04_QUIZ.md)
+- [Ficha 05 Parte I - Pokedex](Fichas/FICHA_05_PARTE_I_POKEDEX.md)
+- [Ficha 05 Parte II - Pokedex](Fichas/FICHA_05_PARTE_II_POKEDEX.md)
+- [Ficha 05 Parte III - Pokedex](Fichas/FICHA_05_PARTE_III_POKEDEX.md)
+- [Ficha 05 Parte IV - Pokedex](Fichas/FICHA_05_PARTE_IV_POKEDEX.md)
+- [Ficha 05 Parte V - Pokedex](Fichas/FICHA_05_PARTE_V_POKEDEX.md)
 
 ![Footer](../Images/Footer.png)

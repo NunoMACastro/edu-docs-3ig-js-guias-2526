@@ -2,7 +2,9 @@
 
 # Ficha 04 - Quiz Game
 
-Resolução da ficha 04 de React, construída seguindo a ficha passo a passo.
+Projeto de apoio à ficha 04 de React. A app serve para estudar estado, eventos, componentes, efeitos, contexto e consumo opcional de API num jogo de perguntas.
+
+## Como experimentar
 
 ```bash
 npm install

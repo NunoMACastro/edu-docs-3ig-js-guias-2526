@@ -1,8 +1,8 @@
 ![Header](Images/Header.png)
 
-# Tuts - Materiais de Programação (12.º ano)
+# Materiais de Programação (12.º ano)
 
-Este repositório reúne os materiais usados nas aulas de Programação (12.º IG), organizados por módulos: Git, JavaScript, Node.js, MongoDB, React, Fullstack e Documentação.
+Este repositório reúne materiais de apoio ao estudo de Programação no 12.º ano. A organização segue uma progressão didática: primeiro as bases da linguagem e das ferramentas, depois backend, bases de dados, frontend, integração fullstack e documentação de projetos.
 
 [Índice de repositórios do 3.º IG](https://github.com/NunoMACastro/edu-3ig-indice-2526 "Índice de repositórios do 3.º IG")
 
@@ -10,29 +10,32 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 
 ## Mapa do repositório
 
-| Pasta/ficheiro           | Conteúdo                                                                   |
-| ------------------------ | -------------------------------------------------------------------------- |
-| `Git/`                   | Guia rápido de comandos Git e template de `.gitignore`.                    |
-| `JavaScript/`            | 17 capítulos de JavaScript (fundamentos a browser/intermédio).             |
-| `Node/`                  | Percurso completo de Node.js + Express (15 guias em Markdown + 1 guia JS). |
-| `MongoDB/`               | 8 capítulos de MongoDB (Atlas, Node driver, Mongoose e desempenho).         |
-| `React/`                 | 17 capítulos de React + README próprio do módulo.                          |
-| `React/Fichas/`          | 8 fichas/tutorials práticos com imagens de apoio.                          |
-| `Fullstack/`             | 3 capítulos para integrar React + Express + MongoDB.                       |
-| `Documentacao/`          | 9 capítulos sobre documentação técnica/produto + README do módulo.         |
-| `Documentacao/Exemplos/` | 15 ficheiros modelo para documentação de projetos e contexto para IA.      |
+| Pasta | O que se aprende aqui |
+| ----- | --------------------- |
+| [`Git/`](Git/) | Primeiros comandos de Git e um template de `.gitignore` para projetos das aulas. |
+| [`JavaScript/`](JavaScript/) | 17 capítulos para consolidar fundamentos, funções, arrays, objetos, módulos, DOM e código assíncrono. |
+| [`Node/`](Node/) | Percurso de Node.js e Express com 15 guias em Markdown e 1 guia JS de apoio. |
+| [`MongoDB/`](MongoDB/) | 8 capítulos sobre Atlas, modelação de dados, CRUD, Node driver, Mongoose, agregações e validação. |
+| [`React/`](React/) | 17 capítulos para aprender React de forma progressiva, desde componentes até organização de projetos. |
+| [`React/Fichas/`](React/Fichas/) | 9 fichas práticas para aplicar React em pequenos projetos guiados. |
+| [`React/Fichas/Dev/`](React/Fichas/Dev/) | Projetos de apoio usados nas fichas práticas. |
+| [`Fullstack/`](Fullstack/) | Materiais para ligar React, Express e MongoDB num mesmo projeto. |
+| [`Fullstack/Dev/`](Fullstack/Dev/) | Projeto de desenvolvimento usado como apoio ao módulo fullstack. |
+| [`Documentacao/`](Documentacao/) | 9 capítulos para aprender a explicar, justificar e documentar projetos de software. |
+| [`Documentacao/Exemplos/`](Documentacao/Exemplos/) | Modelos de documentação que os alunos podem adaptar aos seus projetos. |
+| [`Images/`](Images/) | Imagens usadas como cabeçalho e rodapé dos materiais. |
 
 ---
 
-## Percurso recomendado
+## Percurso de aprendizagem sugerido
 
-1. `Git/` (base de trabalho em equipa)
-2. `JavaScript/` (fundamentos da linguagem)
-3. `Node/` (backend e APIs)
-4. `MongoDB/` (persistência e modelação de dados)
-5. `React/` (frontend SPA)
-6. `Fullstack/` (integração front + back + dados)
-7. `Documentacao/` (documentação técnica e operacional)
+1. [`Git/`](Git/) para criar uma base de trabalho organizada.
+2. [`JavaScript/`](JavaScript/) para consolidar a linguagem antes de avançar para frameworks.
+3. [`Node/`](Node/) para perceber como se constrói uma API.
+4. [`MongoDB/`](MongoDB/) para guardar, consultar e modelar dados.
+5. [`React/`](React/) para construir interfaces interativas.
+6. [`Fullstack/`](Fullstack/) para juntar frontend, backend e base de dados.
+7. [`Documentacao/`](Documentacao/) para explicar o projeto, as decisões tomadas e a forma de o usar.
 
 ---
 
@@ -73,7 +76,7 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 ## Node.js (guia didático)
 
 1. [00 - Introdução ao Node.js](Node/00_introducao_ao_node.md)
-2. [00 - Setup rápido de projeto](Node/00_setup_projeto.md)
+2. [00 - Preparação inicial de projeto](Node/00_setup_projeto.md)
 3. [01 - Módulos em Node](Node/01_modulos_node.md)
 4. [02 - Node core útil](Node/02_node_core.md)
 5. [03 - HTTP nativo vs Express](Node/03_http_vs_express.md)
@@ -87,7 +90,7 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 13. [10 - Config e 12-Factor](Node/10_config_e_12factor.md)
 14. [11 - Testes com Supertest/Vitest](Node/11_testes_supertest_vitest.md)
 15. [12 - Views com EJS](Node/12_ejs_views.md)
-16. [13 - Troubleshooting](Node/13_troubleshooting.md)
+16. [13 - Diagnóstico de problemas](Node/13_troubleshooting.md)
 
 ---
 
@@ -131,12 +134,13 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 
 - [Ficha 01 - Introdução](React/Fichas/FICHA_01_INTRO.md)
 - [Ficha 02 - Task Tracker](React/Fichas/FICHA_02_TASK_TRACKER.md)
-- [Tutorial 01 - Meteo](React/Fichas/TUTORIAL_01_METEO.md)
-- [Tutorial 02 Parte I - Pokedex](React/Fichas/TUTORIAL_02_PARTE_I_POKEDEX.md)
-- [Tutorial 02 Parte II - Pokedex](React/Fichas/TUTORIAL_02_PARTE_II_POKEDEX.md.md)
-- [Tutorial 02 Parte III - Pokedex](React/Fichas/TUTORIAL_02_PARTE_III_POKEDEX.md)
-- [Tutorial 02 Parte IV - Pokedex](React/Fichas/TUTORIAL_02_PARTE_IV_POKEDEX.md.md)
-- [Tutorial 02 Parte V - Pokedex](React/Fichas/TUTORIAL_02_PARTE_V_POKEDEX.md.md)
+- [Ficha 03 - Meteo](React/Fichas/FICHA_03_METEO.md)
+- [Ficha 04 - Quiz](React/Fichas/FICHA_04_QUIZ.md)
+- [Ficha 05 Parte I - Pokedex](React/Fichas/FICHA_05_PARTE_I_POKEDEX.md)
+- [Ficha 05 Parte II - Pokedex](React/Fichas/FICHA_05_PARTE_II_POKEDEX.md)
+- [Ficha 05 Parte III - Pokedex](React/Fichas/FICHA_05_PARTE_III_POKEDEX.md)
+- [Ficha 05 Parte IV - Pokedex](React/Fichas/FICHA_05_PARTE_IV_POKEDEX.md)
+- [Ficha 05 Parte V - Pokedex](React/Fichas/FICHA_05_PARTE_V_POKEDEX.md)
 
 ---
 
@@ -146,6 +150,7 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 - [01 - Fluxo React -> Express -> MongoDB](Fullstack/01_fluxo_front_back_db.md)
 - [02 - Contrato de API e erros](Fullstack/02_contrato_api_e_erros.md)
 - [03 - Setup fullstack](Fullstack/03_setup_fullstack.md)
+- [Ficha 01 - Task Tracker Fullstack](Fullstack/FICHA_01_TASK_TRACKER_FULLSTACK.md)
 
 ---
 
@@ -161,7 +166,7 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 - [05 - Documentação de dados](Documentacao/05_documentacao_dados.md)
 - [06 - Documentação de código](Documentacao/06_documentacao_codigo.md)
 - [07 - Documentação de testes](Documentacao/07_documentacao_testes.md)
-- [08 - Deploy e operação](Documentacao/08_deploy_operacao.md)
+- [08 - Deploy explicado e cuidados em produção](Documentacao/08_deploy_operacao.md)
 - [09 - Documentação para agentes de IA](Documentacao/09_documentacao_para_ia.md)
 
 ### Exemplos (`Documentacao/Exemplos/`)
@@ -184,10 +189,10 @@ Este repositório reúne os materiais usados nas aulas de Programação (12.º I
 
 ---
 
-## Ambiente sugerido
+## Preparação para as aulas
 
-- Browser atualizado (DevTools)
-- Node.js LTS + npm
-- Editor de código (VS Code ou equivalente)
+- Browser atualizado com DevTools.
+- Node.js LTS com npm.
+- Editor de código, como VS Code ou equivalente.
 
 ![Footer](Images/Footer.png)

@@ -4,27 +4,29 @@
 
 [RESUMO_CURTO_EM_1_2_FRASES]
 
-## Features
+Usa este ficheiro como modelo: substitui os placeholders pelo conteúdo real do teu projeto e remove as secções que não fizerem sentido.
 
-- [FEATURE_1]
-- [FEATURE_2]
-- [FEATURE_3]
+## Funcionalidades principais
 
-## Stack
+- [FUNCIONALIDADE_1]
+- [FUNCIONALIDADE_2]
+- [FUNCIONALIDADE_3]
 
-- Frontend: [STACK_FRONTEND]
-- Backend: [STACK_BACKEND]
-- Base de dados: [STACK_DB]
+## Tecnologias usadas
+
+- Frontend: [TECNOLOGIAS_FRONTEND]
+- Backend: [TECNOLOGIAS_BACKEND]
+- Base de dados: [TECNOLOGIAS_BASE_DADOS]
 - Autenticação: [COOKIE_HTTPONLY | BEARER]
 
-## Decisões padrão do kit
+## Decisões de referência
 
 - Contrato de erro: `{ "error": { "code": "...", "message": "...", "details": [] } }`
 - Listas devolvem envelope: `{ "items": [], "page": 1, "limit": 20, "total": 0 }`
 - POST/GET detalhe devolvem objeto; PATCH devolve objeto atualizado; DELETE devolve `204`.
 - Autenticação recomendada: cookie httpOnly com JWT. Alternativa: Bearer token (documentar header).
 - Timestamps: `createdAt` / `updatedAt`.
-- Paginação: `page >= 1`, `limit` default 20, máximo 100.
+- Paginação: `page >= 1`, `limit` com valor inicial 20 e máximo 100.
 
 ## Requisitos
 
@@ -32,7 +34,7 @@
 - npm [VERSÃO]
 - [OUTROS_REQUISITOS]
 
-## Como correr (dev)
+## Como experimentar o projeto em desenvolvimento
 
 ### Instalação
 
@@ -63,7 +65,7 @@ JWT_SECRET=...
 VITE_API_BASE=http://localhost:3000
 ```
 
-### Comandos
+### Comandos úteis
 
 ```text
 - npm run dev: [DESCRIÇÃO]
@@ -74,39 +76,39 @@ VITE_API_BASE=http://localhost:3000
 
 ## Estrutura de documentação
 
-- DOCUMENTACAO_TECNICA.md
-- API.md
-- DADOS.md
-- TESTES.md
-- DEPLOY.md
-- DOCUMENTACAO_CODIGO.md
-- DOCUMENTACAO_IA.md
-- AGENTS.md
-- AI_CONTEXT.md
-- AI_PROFILES.md
-- AI_CONTRACTS.md
-- AI_TESTING.md
-- AI_LIMITS.md
-- AI_CHANGELOG.md
+- [DOCUMENTACAO_TECNICA.md](DOCUMENTACAO_TECNICA.md)
+- [API.md](API.md)
+- [DADOS.md](DADOS.md)
+- [TESTES.md](TESTES.md)
+- [DEPLOY.md](DEPLOY.md)
+- [DOCUMENTACAO_CODIGO.md](DOCUMENTACAO_CODIGO.md)
+- [DOCUMENTACAO_IA.md](DOCUMENTACAO_IA.md)
+- [AGENTS.md](AGENTS.md)
+- [AI_CONTEXT.md](AI_CONTEXT.md)
+- [AI_PROFILES.md](AI_PROFILES.md)
+- [AI_CONTRACTS.md](AI_CONTRACTS.md)
+- [AI_TESTING.md](AI_TESTING.md)
+- [AI_LIMITS.md](AI_LIMITS.md)
+- [AI_CHANGELOG.md](AI_CHANGELOG.md)
 
-## Troubleshooting
+## Quando algo não funciona
 
 - Backend não arranca: confirmar `.env` e `MONGODB_URI`.
 - CORS bloqueado: confirmar `CORS_ORIGIN`.
 - Página em branco: confirmar `div#root` e consola.
 
-## Checklist de entrega
+## Antes de entregar
 
 - [ ] README completo e sem placeholders
 - [ ] API documentada (exemplos + erros)
 - [ ] Dados documentados (campos/validações/índices)
 - [ ] Testes mínimos descritos e como correr
-- [ ] Deploy/operação com dev/prod e backups
+- [ ] Deploy explicado, com ambientes e backups descritos
 - [ ] Documentação para IA com regras e limites
 
-## Proibido entregar com placeholders
+## Última revisão
 
-- Remover `[NOME_PROJETO]`, `[FEATURE_X]`, `TODO`, `TBD`, `???`.
+- Remover `[NOME_PROJETO]`, `[FUNCIONALIDADE_X]`, `TODO`, `TBD`, `???`.
 
 ## Licença
 

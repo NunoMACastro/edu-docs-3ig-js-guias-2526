@@ -2,7 +2,7 @@
 
 # MongoDB - Materiais Didáticos (12.º Ano)
 
-Conjunto de materiais em Markdown para aprender MongoDB com foco prático em APIs Node/Express e integração fullstack.
+Conjunto de materiais para aprender MongoDB com foco prático em APIs Node/Express e integração fullstack.
 
 ## Como usar
 
@@ -36,11 +36,11 @@ Conjunto de materiais em Markdown para aprender MongoDB com foco prático em API
 - [07 - Queries e indexação](07_queries_e_indexacao.md)
 - [08 - Validação e erros](08_validacao_e_erros.md)
 
-## Continuidade com outros módulos
+## Ligação com outros módulos
 
-- Node: `../Node/06_rotas_controladores_validacao.md`
-- React: `../React/11_consumo_api_e_backend_node.md`
-- Fullstack: `../Fullstack/01_fluxo_front_back_db.md`
+- [Node: rotas, controladores e validação](../Node/06_rotas_controladores_validacao.md)
+- [React: consumo de API com backend Node.js](../React/11_consumo_api_e_backend_node.md)
+- [Fullstack: fluxo React, Express e MongoDB](../Fullstack/01_fluxo_front_back_db.md)
 
 ## Changelog
 

@@ -1,20 +1,38 @@
 ![Header](../../../../Images/Header.png)
 
-# React + Vite
+# Frontend - Task Tracker Fullstack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto React usado na ficha **Task Tracker Fullstack**. Este frontend comunica com o backend Express e permite observar, de forma simples, o percurso completo entre interface, API e MongoDB.
 
-Currently, two official plugins are available:
+## O que este projeto permite estudar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Como carregar dados do backend quando a aplicação abre.
+- Como criar uma tarefa através de um formulário React.
+- Como guardar loading, erro e dados no estado do componente.
+- Como isolar chamadas HTTP num ficheiro de serviços.
 
-## React Compiler
+## Como experimentar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Antes de abrir o frontend, confirma que o backend da ficha está a correr.
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Variável de ambiente
+
+Cria um ficheiro `.env` a partir de `.env.example` quando precisares de alterar o endereço da API.
+
+```text
+VITE_API_BASE=http://localhost:3000
+```
+
+## Comandos úteis
+
+- `npm run dev`: abre o projeto em modo de desenvolvimento.
+- `npm run build`: cria a versão final.
+- `npm run lint`: verifica problemas comuns de código.
+- `npm run preview`: mostra localmente a versão final.
 
 ![Footer](../../../../Images/Footer.png)

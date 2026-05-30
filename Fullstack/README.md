@@ -2,7 +2,7 @@
 
 # Fullstack - Materiais Didáticos (12.º Ano)
 
-Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
+Conjunto de materiais para aprender a ligar React, Node/Express e MongoDB num projeto completo.
 
 ## Como usar
 
@@ -21,10 +21,10 @@ Conjunto de materiais em Markdown para integrar React, Node e MongoDB.
 -   **React + Vite:** módulo React concluído até ao consumo de API.
 -   **Node + Express:** módulo Node com app base e rotas.
 -   **MongoDB Atlas:** cluster criado e `MONGODB_URI` funcional.
--   **MongoDB (módulo):** recomendado concluir `../MongoDB/01_introducao_e_setup_atlas.md` a `../MongoDB/08_validacao_e_erros.md`.
+-   **MongoDB (módulo):** recomendado concluir de [01 - Introdução e setup Atlas](../MongoDB/01_introducao_e_setup_atlas.md) a [08 - Validação e erros](../MongoDB/08_validacao_e_erros.md).
 -   **Terminal:** para correr frontend e backend em paralelo.
 
-## Portas típicas
+## Endereços habituais durante os exercícios
 
 -   **Frontend (Vite):** `http://localhost:5173`
 -   **Backend (Express):** `http://localhost:3000`
